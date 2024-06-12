@@ -4,10 +4,9 @@
     <dimen name="layout_margin_bottom_8">8dp</dimen>
     <dimen name="layout_margin_16">16dp</dimen>
 
-    <dimen name="button_margin_end_2">2dp</dimen>
-    <dimen name="button_margin_start_2">2dp</dimen>
+    <dimen name="button_margin_2">2dp</dimen>
     <dimen name="button_padding_text_vertical_10">10dp</dimen>
-    
+    <dimen name="corner_radius_8">8dp</dimen>
 
     <dimen name="text_size_16">16sp</dimen>
 

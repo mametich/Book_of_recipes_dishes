@@ -22,14 +22,14 @@
            android:text="@string/title_categories"
            android:backgroundTint="@color/blue_button"
            style="@style/StyleNavButton"
-           android:layout_marginEnd="@dimen/button_margin_end_2"
+           android:layout_marginEnd="@dimen/button_margin_2"
            android:layout_weight="1"/>
 
       <Button
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="@string/favourites"
-          android:layout_marginStart="@dimen/button_margin_start_2"
+          android:text="@string/title_favourites"
+          android:layout_marginStart="@dimen/button_margin_2"
           style="@style/StyleNavButton"
           android:backgroundTint="@color/red_button"
           app:icon="@drawable/ic_heart_empty"
