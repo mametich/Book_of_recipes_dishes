@@ -11,28 +11,28 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        app:layout_constraintBottom_toBottomOf="@+id/main"
-       android:layout_marginStart="@dimen/margin_16"
-       android:layout_marginBottom="8dp"
-       android:layout_marginEnd="@dimen/margin_16">
+       android:layout_marginStart="@dimen/layout_margin_16"
+       android:layout_marginBottom="@dimen/layout_margin_bottom_8"
+       android:layout_marginEnd="@dimen/layout_margin_16">
 
        <Button
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:id="@+id/button_categories"
-           android:text="@string/categories"
+           android:text="@string/title_categories"
            android:backgroundTint="@color/blue_button"
            style="@style/StyleNavButton"
-           android:layout_marginEnd="2dp"
+           android:layout_marginEnd="@dimen/button_margin_end_2"
            android:layout_weight="1"/>
 
       <Button
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="@string/favourites"
-          android:layout_marginStart="2dp"
+          android:layout_marginStart="@dimen/button_margin_start_2"
           style="@style/StyleNavButton"
           android:backgroundTint="@color/red_button"
-          app:icon="@drawable/heart"
+          app:icon="@drawable/ic_heart_empty"
           app:iconGravity="textEnd"
           android:layout_weight="1"/>
 

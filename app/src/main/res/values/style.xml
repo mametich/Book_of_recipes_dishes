@@ -3,14 +3,14 @@
 
     <style name="StyleTitle14" parent="TextAppearance.AppCompat">
         <item name="fontFamily">@font/montserrat_alternates_semi_bold</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/category_color</item>
     </style>
 
     <style name="StyleNavButton" parent="Widget.Material3.Button">
         <item name="android:textAppearance">@style/StyleTitle14</item>
-        <item name="android:paddingVertical">10dp</item>
+        <item name="android:paddingVertical">@dimen/button_padding_text_vertical_10</item>
         <item name="android:paddingHorizontal">10dp</item>
         <item name="cornerRadius">8dp</item>
 

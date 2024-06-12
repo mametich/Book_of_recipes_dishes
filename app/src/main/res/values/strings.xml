@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">BurgerShop</string>
-    <string name="categories">категории</string>
+    <string name="title_categories">категории</string>
     <string name="favourites">избранное</string>
 </resources>
