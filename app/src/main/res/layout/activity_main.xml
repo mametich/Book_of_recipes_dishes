@@ -32,7 +32,7 @@
           android:layout_marginStart="@dimen/button_margin_2"
           style="@style/StyleNavButton"
           android:backgroundTint="@color/red_button"
-          app:icon="@drawable/ic_heart_empty"
+          app:icon="@drawable/ic_heart_svg"
           app:iconGravity="textEnd"
           android:layout_weight="1"/>
 
