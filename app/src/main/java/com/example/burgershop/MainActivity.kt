@@ -19,5 +19,14 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.mainContainer)
+        if (currentFragment == null){
+            val fragment = CategoriesListFragment()
+            supportFragmentManager
+                .beginTransaction()
+                .add(R.id.mainContainer, fragment)
+                .commit()
+        }
     }
 }
