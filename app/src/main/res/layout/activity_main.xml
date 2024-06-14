@@ -6,6 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_background"
     tools:context=".MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -38,6 +39,7 @@
             android:text="@string/title_categories" />
 
         <Button
+            android:id="@+id/button_favourites"
             style="@style/StyleNavButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

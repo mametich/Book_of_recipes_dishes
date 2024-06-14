@@ -7,25 +7,42 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.example.burgershop.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private var _binding: ActivityMainBinding? = null
+    private val binding
+        get() = _binding
+            ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .commit {
-                    setReorderingAllowed(true)
-                    add<CategoriesListFragment>(R.id.mainContainer)
-                }
+        binding.buttonCategories.setOnClickListener {
+            goOnCategoriesFragment()
         }
 
+        binding.buttonFavourites.setOnClickListener {
+            goOnFavouritesFragment()
+        }
+    }
+
+    private fun goOnCategoriesFragment() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<CategoriesListFragment>(R.id.mainContainer)
+        }
+    }
+
+    private fun goOnFavouritesFragment() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace<FavoritesFragment>(R.id.mainContainer)
+        }
     }
 }
