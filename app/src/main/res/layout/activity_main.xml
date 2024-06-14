@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -7,35 +8,46 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       app:layout_constraintBottom_toBottomOf="@+id/main"
-       android:layout_marginStart="@dimen/layout_margin_16"
-       android:layout_marginBottom="@dimen/layout_margin_bottom_8"
-       android:layout_marginEnd="@dimen/layout_margin_16">
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mainContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/layout_margin_16"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-       <Button
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:id="@+id/button_categories"
-           android:text="@string/title_categories"
-           android:backgroundTint="@color/blue_button"
-           style="@style/StyleNavButton"
-           android:layout_marginEnd="@dimen/button_margin_2"
-           android:layout_weight="1"/>
 
-      <Button
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/title_favourites"
-          android:layout_marginStart="@dimen/button_margin_2"
-          style="@style/StyleNavButton"
-          android:backgroundTint="@color/red_button"
-          app:icon="@drawable/ic_heart_svg"
-          app:iconGravity="textEnd"
-          android:layout_weight="1"/>
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/layout_margin_bottom_8"
+        app:layout_constraintBottom_toBottomOf="@+id/main"
+        >
 
-   </LinearLayout>
+        <Button
+            android:id="@+id/button_categories"
+            style="@style/StyleNavButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/button_margin_2"
+            android:layout_weight="1"
+            android:backgroundTint="@color/blue_button"
+            android:text="@string/title_categories" />
+
+        <Button
+            style="@style/StyleNavButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/button_margin_2"
+            android:layout_weight="1"
+            android:backgroundTint="@color/red_button"
+            android:text="@string/title_favourites"
+            app:icon="@drawable/ic_heart_svg"
+            app:iconGravity="textEnd" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
