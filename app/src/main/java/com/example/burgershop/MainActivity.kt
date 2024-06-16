@@ -23,6 +23,13 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        if(savedInstanceState == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                add<CategoriesListFragment>(R.id.mainContainer)
+            }
+        }
+
         binding.buttonCategories.setOnClickListener {
             goOnCategoriesFragment()
         }
