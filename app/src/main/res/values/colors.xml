@@ -5,4 +5,5 @@
     <color name="blue_button">#525DC0</color>
     <color name="red_button">#E13E3E</color>
     <color name="main_background">#F4FAFF</color>
+    <color name="color_text_view">#5F3678</color>
 </resources>
