@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,28 +9,28 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="224dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/title_categories"
             android:scaleType="centerCrop"
-            android:src="@drawable/bcg_categories"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="-16dp" />
-
+            android:src="@drawable/bcg_categories"/>
 
         <TextView
             style="@style/StyleTitle14"
-            android:layout_width="149dp"
-            android:layout_height="44dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/button_padding_text_vertical_10"
             android:layout_marginStart="@dimen/layout_margin_16"
             android:layout_marginBottom="@dimen/layout_margin_16"
             android:background="@drawable/shape"
+            android:cornerRadius="4dp"
             android:gravity="center"
             android:text="@string/title_categories"
-            android:textColor="@color/color_text_view"
+            android:textColor="@color/text_view_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -38,12 +39,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategories"
         android:layout_width="match_parent"
-        android:layout_height="429dp"
-        android:layout_margin="@dimen/layout_margin_16"
-        android:layout_marginHorizontal="@dimen/layout_margin_bottom_8"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin_bottom_8"
+        app:layoutManager="GridLayoutManager"
         app:spanCount="2"
-        tools:itemCount="6"
         tools:listitem="@layout/item_category" />
 
 
