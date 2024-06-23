@@ -45,5 +45,4 @@
         app:spanCount="2"
         tools:listitem="@layout/item_category" />
 
-
 </LinearLayout>
