@@ -27,7 +27,6 @@
             android:layout_marginStart="@dimen/layout_margin_16"
             android:layout_marginBottom="@dimen/layout_margin_16"
             android:background="@drawable/shape"
-            android:cornerRadius="4dp"
             android:gravity="center"
             android:text="@string/title_categories"
             android:textColor="@color/text_view_color"
