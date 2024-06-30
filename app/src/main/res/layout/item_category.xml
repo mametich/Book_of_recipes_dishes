@@ -16,7 +16,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/image_category"
             android:layout_width="wrap_content"
             android:layout_height="130dp"
             android:scaleType="centerCrop"
@@ -28,7 +28,7 @@
             tools:src="@drawable/burger" />
 
         <TextView
-            android:id="@+id/header_example"
+            android:id="@+id/tv_title_category"
             style="@style/StyleTitle14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             tools:text="Бургеры" />
 
         <TextView
-            android:id="@+id/description_text"
+            android:id="@+id/tv_text_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/layout_margin_bottom_8"
