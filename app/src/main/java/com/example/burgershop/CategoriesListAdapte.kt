@@ -30,7 +30,7 @@ class CategoriesListAdapter(
 
     override fun onBindViewHolder(holder: CategoriesViewHolder, position: Int) {
         val category = dataset[position]
-        
+
         holder.titleTextView.text = category.title
         holder.descriptionTextView.text = category.description
 
