@@ -17,9 +17,9 @@ class CategoriesListAdapter(
 ) : RecyclerView.Adapter<CategoriesListAdapter.CategoriesViewHolder>() {
 
     class CategoriesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imageView: ImageView = view.findViewById(R.id.image_category)
-        val titleTextView: TextView = view.findViewById(R.id.tv_title_category)
-        val descriptionTextView: TextView = view.findViewById(R.id.tv_text_description)
+        val imageView: ImageView = view.findViewById(R.id.imageCategory)
+        val titleTextView: TextView = view.findViewById(R.id.tvTitleCategory)
+        val descriptionTextView: TextView = view.findViewById(R.id.tvTextDescription)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
