@@ -1,12 +1,17 @@
 package com.example.burgershop
 
 import android.os.Bundle
+import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.burgershop.databinding.FragmentListCategoriesBinding
+
 
 class CategoriesListFragment : Fragment() {
 
@@ -31,12 +36,25 @@ class CategoriesListFragment : Fragment() {
 
     private fun initRecycler() {
         val categoriesListAdapter = CategoriesListAdapter(STUB.getCategories())
+        categoriesListAdapter.setOnItemClickListener(object : CategoriesListAdapter.OnItemClickListener {
+            override fun onItemClick() {
+               openRecipesByCategoryId()
+            }
+        })
         binding.rvCategories.adapter = categoriesListAdapter
     }
 
+    fun openRecipesByCategoryId() {
+        parentFragmentManager.commit {
+            replace<RecipesListFragment>(R.id.mainContainer)
+            setReorderingAllowed(true)
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }
