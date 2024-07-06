@@ -5,17 +5,12 @@ import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.burgershop.databinding.FragmentListCategoriesBinding
-
-private const val ARG_CATEGORY_ID = "ARG_CATEGORY_ID"
-private const val ARG_CATEGORY_NAME = "ARG_CATEGORY_NAME"
-private const val ARG_CATEGORY_IMAGE_URL = "ARG_CATEGORY_IMAGE_URL"
 
 
 class CategoriesListFragment : Fragment() {
@@ -42,12 +37,13 @@ class CategoriesListFragment : Fragment() {
     private fun initRecycler() {
         val categoriesListAdapter = CategoriesListAdapter(STUB.getCategories())
         categoriesListAdapter.setOnItemClickListener(object : CategoriesListAdapter.OnItemClickListener {
-            override fun onItemClick(categoryId: Int) {
-               openRecipesByCategoryId(categoryId)
+            override fun onItemClick() {
+               openRecipesByCategoryId()
             }
         })
         binding.rvCategories.adapter = categoriesListAdapter
     }
+
 
     fun openRecipesByCategoryId(categoryId: Int) {
         val categoryName = STUB.getCategories()[categoryId].title
@@ -58,8 +54,11 @@ class CategoriesListFragment : Fragment() {
             ARG_CATEGORY_NAME to categoryName,
             ARG_CATEGORY_IMAGE_URL to categoryImageUrl
         )
+
+    fun openRecipesByCategoryId() {
+
         parentFragmentManager.commit {
-            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
+            replace<RecipesListFragment>(R.id.mainContainer)
             setReorderingAllowed(true)
         }
     }

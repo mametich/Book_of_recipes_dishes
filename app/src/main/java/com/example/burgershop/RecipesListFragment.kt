@@ -7,21 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.burgershop.databinding.FragmentListRecipesBinding
 
-private const val ARG_CATEGORY_ID = "ARG_CATEGORY_ID"
-private const val ARG_CATEGORY_NAME = "ARG_CATEGORY_NAME"
-private const val ARG_CATEGORY_IMAGE_URL = "ARG_CATEGORY_IMAGE_URL"
-
-
 class RecipesListFragment : Fragment() {
 
     private var _binding: FragmentListRecipesBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentListRecipesBinding must not be null")
-
-    private var categoryId: Int? = null
-    private var categoryName: String? = null
-    private var categoryUrlImage: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
