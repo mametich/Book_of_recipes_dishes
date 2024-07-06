@@ -50,7 +50,7 @@ class CategoriesListFragment : Fragment() {
     }
 
     fun openRecipesByCategoryId(categoryId: Int) {
-        val categoryName = STUB.getCategories()[categoryId].id
+        val categoryName = STUB.getCategories()[categoryId].title
         val categoryImageUrl = STUB.getCategories()[categoryId].imgUrl
 
         val bundle = bundleOf(
@@ -68,6 +68,4 @@ class CategoriesListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }
