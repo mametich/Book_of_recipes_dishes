@@ -37,5 +37,4 @@ class RecipesListFragment : Fragment() {
         categoryName = requireArguments().getString(ARG_CATEGORY_NAME)
         categoryUrlImage = requireArguments().getString(ARG_CATEGORY_IMAGE_URL)
     }
-
 }
