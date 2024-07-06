@@ -11,15 +11,24 @@ class RecipesListFragment : Fragment() {
 
     private var _binding: FragmentListRecipesBinding? = null
     private val binding
-        get() = _binding ?: throw IllegalStateException("Binding for FragmentListRecipesBinding must not be null")
+        get() = _binding
+            ?: throw IllegalStateException("Binding for FragmentListRecipesBinding must not be null")
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentListRecipesBinding.inflate(layoutInflater, container,false)
+        _binding = FragmentListRecipesBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireArguments().let {
+            categoryId = it.getInt(ARG_CATEGORY_ID)
+            categoryName = it.getString(ARG_CATEGORY_NAME)
+            categoryUrlImage = it.getString(ARG_CATEGORY_IMAGE_URL)
+        }
+    }
 }

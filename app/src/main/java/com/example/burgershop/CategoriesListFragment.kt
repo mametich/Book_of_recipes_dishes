@@ -44,7 +44,19 @@ class CategoriesListFragment : Fragment() {
         binding.rvCategories.adapter = categoriesListAdapter
     }
 
+
+    fun openRecipesByCategoryId(categoryId: Int) {
+        val categoryName = STUB.getCategories()[categoryId].title
+        val categoryImageUrl = STUB.getCategories()[categoryId].imgUrl
+
+        val bundle = bundleOf(
+            ARG_CATEGORY_ID to categoryId,
+            ARG_CATEGORY_NAME to categoryName,
+            ARG_CATEGORY_IMAGE_URL to categoryImageUrl
+        )
+
     fun openRecipesByCategoryId() {
+
         parentFragmentManager.commit {
             replace<RecipesListFragment>(R.id.mainContainer)
             setReorderingAllowed(true)
@@ -55,6 +67,4 @@ class CategoriesListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }
