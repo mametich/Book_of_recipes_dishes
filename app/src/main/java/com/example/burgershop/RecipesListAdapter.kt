@@ -25,10 +25,11 @@ class RecipesListAdapter(
         recipeClickListener = listener
     }
 
-    class RecipesViewHolder(private val binding: ItemRecipeBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val textView: TextView = binding.tvTitleCategory
-        val imageView: ImageView = binding.imageCategory
+    class RecipesViewHolder(
+        private val binding: ItemRecipeBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        val textView: TextView = binding.tvRecipeCategory
+        val imageView: ImageView = binding.imageRecipe
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipesViewHolder {

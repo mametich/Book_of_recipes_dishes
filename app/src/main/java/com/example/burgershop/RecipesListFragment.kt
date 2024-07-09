@@ -41,27 +41,24 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun initRecyclerViewRecipes() {
-        val recipeListAdapter = RecipesListAdapter(STUB.getRecipesByCategoryId(categoryId))
-        recipeListAdapter.setOnRecipeClickListener(object : RecipesListAdapter.OnRecipeClickListener{
-            override fun onItemClick(categoryId: Int) {
-               openRecipeByRecipeId(categoryId)
+        val recipeListAdapter = categoryId?.let { STUB.getRecipesByCategoryId(it) }
+            ?.let { RecipesListAdapter(it) }
+
+        recipeListAdapter?.setOnRecipeClickListener(object : RecipesListAdapter.OnRecipeClickListener{
+            override fun onItemClick(recipeId: Int) {
+               openRecipeByRecipeId()
             }
         })
         binding.rvRecipes.adapter = recipeListAdapter
     }
 
-    private fun openRecipeByRecipeId(recipeId: Int) {
-        val recipeName = STUB.getRecipesByCategoryId(recipeId)[recipeId].title
-        val recipeImgUrl = STUB.getRecipesByCategoryId(recipeId)[recipeId].imageUrl
-
-        val bundle = bundleOf(
-            ARG_RECIPE_ID to recipeId,
-            ARG_RECIPE_NAME to recipeName,
-            ARG_RECIPE_IMAGE_URL to recipeImgUrl
-        )
+    private fun openRecipeByRecipeId() {
+//        val recipeName = STUB.getRecipesByCategoryId(recipeId)[recipeId].title
+//        val recipeImgUrl = STUB.getRecipesByCategoryId(recipeId)[recipeId].imageUrl
         parentFragmentManager.commit {
-            replace<RecipeFragment>(R.layout.fragment_recipe)
             setReorderingAllowed(true)
+            replace<RecipeFragment>(R.id.mainContainer)
+
         }
     }
 }

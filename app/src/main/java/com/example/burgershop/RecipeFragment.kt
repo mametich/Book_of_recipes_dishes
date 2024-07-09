@@ -15,10 +15,6 @@ class RecipeFragment : Fragment() {
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentRecipeBinding must not be null")
 
-    private var recipeId: Int? = null
-    private var recipeName: String? = null
-    private var recipeImgUrl: String? = null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,15 +22,4 @@ class RecipeFragment : Fragment() {
         _binding = FragmentRecipeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        requireArguments().let {
-            recipeId = it.getInt(ARG_RECIPE_ID)
-            recipeName = it.getString(ARG_RECIPE_NAME)
-            recipeImgUrl = it.getString(ARG_RECIPE_IMAGE_URL)
-        }
-    }
-
-
 }
