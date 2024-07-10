@@ -1,10 +1,12 @@
 package com.example.burgershop
 
 import android.os.Bundle
+import android.provider.SyncStateContract.Constants
 import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
@@ -36,9 +38,10 @@ class CategoriesListFragment : Fragment() {
 
     private fun initRecycler() {
         val categoriesListAdapter = CategoriesListAdapter(STUB.getCategories())
-        categoriesListAdapter.setOnItemClickListener(object : CategoriesListAdapter.OnItemClickListener {
-            override fun onItemClick() {
-               openRecipesByCategoryId()
+        categoriesListAdapter.setOnItemClickListener(object :
+            CategoriesListAdapter.OnItemClickListener {
+            override fun onItemClick(categoryId: Int) {
+                openRecipesByCategoryId(categoryId)
             }
         })
         binding.rvCategories.adapter = categoriesListAdapter
@@ -54,11 +57,8 @@ class CategoriesListFragment : Fragment() {
             ARG_CATEGORY_NAME to categoryName,
             ARG_CATEGORY_IMAGE_URL to categoryImageUrl
         )
-
-    fun openRecipesByCategoryId() {
-
         parentFragmentManager.commit {
-            replace<RecipesListFragment>(R.id.mainContainer)
+            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
             setReorderingAllowed(true)
         }
     }
@@ -68,3 +68,4 @@ class CategoriesListFragment : Fragment() {
         _binding = null
     }
 }
+
