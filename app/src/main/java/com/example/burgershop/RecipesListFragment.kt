@@ -46,18 +46,18 @@ class RecipesListFragment : Fragment() {
 
         recipeListAdapter?.setOnRecipeClickListener(object : RecipesListAdapter.OnRecipeClickListener{
             override fun onItemClick(recipeId: Int) {
-               openRecipeByRecipeId()
+               openRecipeByRecipeId(recipeId)
             }
         })
         binding.rvRecipes.adapter = recipeListAdapter
     }
 
-    private fun openRecipeByRecipeId() {
-//        val recipeName = STUB.getRecipesByCategoryId(recipeId)[recipeId].title
-//        val recipeImgUrl = STUB.getRecipesByCategoryId(recipeId)[recipeId].imageUrl
+    private fun openRecipeByRecipeId(recipeId: Int) {
+        val recipe = STUB.getRecipeById(recipeId)
+        val bundle = bundleOf(ARG_RECIPE to recipe)
         parentFragmentManager.commit {
             setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.mainContainer)
+            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
 
         }
     }

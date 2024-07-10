@@ -1,5 +1,6 @@
 package com.example.burgershop
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,5 +22,15 @@ class RecipeFragment : Fragment() {
     ): View {
         _binding = FragmentRecipeBinding.inflate(layoutInflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val newRecipe = requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java) as Recipe
+            binding.tvRecipeTitle.text = newRecipe.title
+        } else {
+            val newRecipe = requireArguments().getParcelable<Recipe>(ARG_RECIPE)
+        }
     }
 }
