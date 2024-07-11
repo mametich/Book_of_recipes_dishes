@@ -26,11 +26,11 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val newRecipe = requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java) as Recipe
-            binding.tvRecipeTitle.text = newRecipe.title
+        val recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java) as Recipe
         } else {
-            val newRecipe = requireArguments().getParcelable<Recipe>(ARG_RECIPE)
+             requireArguments().getParcelable(ARG_RECIPE)
         }
+        binding.tvRecipeTitle.text = recipe?.title
     }
 }
