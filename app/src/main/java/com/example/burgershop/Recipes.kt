@@ -252,4 +252,6 @@ object STUB {
     }
 
     fun getCategories(): List<Category> = categories
+
+    fun getRecipeById(id: Int): Recipe = burgerRecipes.first { it.id == id }
 }
