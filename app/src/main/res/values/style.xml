@@ -16,6 +16,30 @@
 
     </style>
 
+    <style name="StyleTitle20" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/montserrat_alternates_semi_bold</item>
+        <item name="android:textSize">@dimen/text_size_20</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/text_view_color</item>
+
+    </style>
+
+    <style name="TextIngredients14" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/text_ingredient_color</item>
+
+    </style>
+
+    <style name="TextIngredients14ForMeasure" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/text_ingredient_color</item>
+
+    </style>
+
+
     <style name="StyleDescription" parent="TextAppearance.AppCompat">
         <item name="fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">@dimen/text_size_12</item>

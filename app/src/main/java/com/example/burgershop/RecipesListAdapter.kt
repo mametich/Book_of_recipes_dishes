@@ -26,7 +26,7 @@ class RecipesListAdapter(
     }
 
     class RecipesViewHolder(
-        private val binding: ItemRecipeBinding
+        binding: ItemRecipeBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         val textView: TextView = binding.tvRecipeCategory
         val imageView: ImageView = binding.imageRecipe

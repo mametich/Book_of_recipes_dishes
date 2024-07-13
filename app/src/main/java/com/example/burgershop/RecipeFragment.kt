@@ -1,5 +1,6 @@
 package com.example.burgershop
 
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -29,8 +30,29 @@ class RecipeFragment : Fragment() {
         val recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java) as Recipe
         } else {
-             requireArguments().getParcelable(ARG_RECIPE)
+            requireArguments().getParcelable(ARG_RECIPE)
         }
-        binding.tvRecipeTitle.text = recipe?.title
+        if (recipe != null) {
+            initRecycler(recipe)
+            initUi(recipe)
+        }
+    }
+
+    private fun initRecycler(recipe: Recipe) {
+        val ingredientsAdapter = IngredientsAdapter(recipe.ingredients)
+        val methodAdapter = MethodAdapter(recipe.method, recipe)
+        binding.apply {
+            rvIngredients.adapter = ingredientsAdapter
+            rvMethod.adapter = methodAdapter
+        }
+    }
+
+    private fun initUi(recipe: Recipe) {
+        val drawable =
+            Drawable.createFromStream(requireContext().assets.open(recipe.imageUrl), null)
+        binding.apply {
+            imageViewRecipes.setImageDrawable(drawable)
+            titleOfRecipe.text = recipe.title
+        }
     }
 }

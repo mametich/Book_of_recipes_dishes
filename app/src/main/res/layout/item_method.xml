@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/layout_margin_12"
+    android:layout_marginStart="@dimen/layout_margin_12"
+    android:layout_marginEnd="@dimen/layout_margin_12"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvStepMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextIngredients14ForMeasure"
+        tools:text="Фарш из нута приготовьте по
+        вашему рецепту (можно использовать консервированный)."/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerThickness="@dimen/divider_thickness"
+        android:layout_marginTop="@dimen/layout_margin_bottom_8"
+        app:dividerColor="@color/divider_color" />
+
+</LinearLayout>
