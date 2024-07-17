@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.burgershop.databinding.FragmentListRecipesBinding
+import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipesListFragment : Fragment() {
 

@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.blue
+import androidx.recyclerview.widget.RecyclerView
 
 import com.example.burgershop.databinding.FragmentRecipeBinding
+import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
 
@@ -41,9 +44,20 @@ class RecipeFragment : Fragment() {
     private fun initRecycler(recipe: Recipe) {
         val ingredientsAdapter = IngredientsAdapter(recipe.ingredients)
         val methodAdapter = MethodAdapter(recipe.method, recipe)
+
+        val dividerItemDecoration = MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
+        dividerItemDecoration.apply {
+            isLastItemDecorated = false
+            setDividerInsetStartResource(requireContext(), R.dimen.margin_12)
+            setDividerInsetEndResource(requireContext(), R.dimen.margin_12)
+            dividerColor
+        }
+
         binding.apply {
             rvIngredients.adapter = ingredientsAdapter
+            rvIngredients.addItemDecoration(dividerItemDecoration)
             rvMethod.adapter = methodAdapter
+            rvMethod.addItemDecoration(dividerItemDecoration)
         }
     }
 

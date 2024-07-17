@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="layout_margin_bottom_8">8dp</dimen>
-    <dimen name="layout_margin_16">16dp</dimen>
     <dimen name="text_size_20">20sp</dimen>
     <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
-    <dimen name="layout_margin_12">12dp</dimen>
-
-    <dimen name="button_margin_2">2dp</dimen>
-    <dimen name="button_padding_text_vertical_10">10dp</dimen>
-    <dimen name="corner_radius_8">8dp</dimen>
-    <dimen name="corner_radius_10">10dp</dimen>
-    <dimen name="height_image">224dp</dimen>
-
     <dimen name="text_size_16">16sp</dimen>
 
-    <dimen name="divider_thickness">1dp</dimen>
+    <dimen name="margin_1">1dp</dimen>
+    <dimen name="margin_2">2dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="height_image">224dp</dimen>
+
 
 
 </resources>
