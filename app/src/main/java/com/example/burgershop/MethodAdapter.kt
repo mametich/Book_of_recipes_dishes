@@ -27,7 +27,11 @@ class MethodAdapter(
 
     override fun onBindViewHolder(holder: MethodViewHolder, position: Int) {
         val listOfMethod = recipe.method
-        val method = listOfMethod[position]
+
+        val listMethodIndex = listOfMethod.mapIndexed { index, method ->
+            "${index+1}. ${method}"
+        }
+        val method = listMethodIndex[position]
         holder.textView.text = method
     }
 

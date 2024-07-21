@@ -40,6 +40,7 @@ class RecipesListAdapter(
 
     override fun onBindViewHolder(holder: RecipesViewHolder, position: Int) {
         val recipe = dataset[position]
+
         holder.textView.text = recipe.title
 
         holder.itemView.setOnClickListener {

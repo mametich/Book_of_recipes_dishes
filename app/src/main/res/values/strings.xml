@@ -3,7 +3,6 @@
     <string name="title_categories">категории</string>
     <string name="title_favourites">избранное</string>
     <string name="title_burgers">бургеры</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="ingredients">ингредиенты</string>
-    <string name="cookingMethod">способ приготовления</string>
+    <string name="title_ingredients">ингредиенты</string>
+    <string name="title_cookingMethod">способ приготовления</string>
 </resources>

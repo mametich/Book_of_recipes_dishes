@@ -10,6 +10,7 @@
     <TextView
         android:id="@+id/tvStepMethod"
         style="@style/TextIngredients14ForMeasure"
+        android:text="@string/number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Фарш из нута приготовьте по
