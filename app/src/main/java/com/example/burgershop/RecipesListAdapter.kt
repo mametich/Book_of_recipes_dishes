@@ -26,7 +26,7 @@ class RecipesListAdapter(
     }
 
     class RecipesViewHolder(
-        private val binding: ItemRecipeBinding
+        binding: ItemRecipeBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         val textView: TextView = binding.tvRecipeCategory
         val imageView: ImageView = binding.imageRecipe
@@ -40,6 +40,7 @@ class RecipesListAdapter(
 
     override fun onBindViewHolder(holder: RecipesViewHolder, position: Int) {
         val recipe = dataset[position]
+
         holder.textView.text = recipe.title
 
         holder.itemView.setOnClickListener {

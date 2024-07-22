@@ -1,5 +1,6 @@
 package com.example.burgershop
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.example.burgershop.databinding.FragmentListRecipesBinding
+import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipesListFragment : Fragment() {
 
@@ -38,6 +40,7 @@ class RecipesListFragment : Fragment() {
             categoryUrlImage = it.getString(ARG_CATEGORY_IMAGE_URL)
         }
         initRecyclerViewRecipes()
+        initUI()
     }
 
     private fun initRecyclerViewRecipes() {
@@ -58,7 +61,13 @@ class RecipesListFragment : Fragment() {
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer, args = bundle)
-
         }
+    }
+
+    private fun initUI() {
+        val drawable = Drawable.createFromStream(categoryUrlImage?.let {
+            requireContext().assets?.open(it)
+        },null)
+        binding.imageViewRecipes.setImageDrawable(drawable)
     }
 }

@@ -16,6 +16,30 @@
 
     </style>
 
+    <style name="StyleTitle20" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/montserrat_alternates_semi_bold</item>
+        <item name="android:textSize">@dimen/text_size_20</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/text_view_color</item>
+
+    </style>
+
+    <style name="TextIngredients14" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/card_text_description_color</item>
+
+    </style>
+
+    <style name="TextIngredients14ForMeasure" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/card_text_description_color</item>
+
+    </style>
+
+
     <style name="StyleDescription" parent="TextAppearance.AppCompat">
         <item name="fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">@dimen/text_size_12</item>
@@ -25,9 +49,9 @@
 
     <style name="StyleNavButton" parent="Widget.Material3.Button">
         <item name="android:textAppearance">@style/StyleTitle14</item>
-        <item name="android:paddingVertical">@dimen/button_padding_text_vertical_10</item>
-        <item name="android:paddingHorizontal">@dimen/button_padding_text_vertical_10</item>
-        <item name="cornerRadius">@dimen/corner_radius_8</item>
+        <item name="android:paddingVertical">@dimen/margin_10</item>
+        <item name="android:paddingHorizontal">@dimen/margin_10</item>
+        <item name="cornerRadius">@dimen/margin_8</item>
     </style>
 
 </resources>

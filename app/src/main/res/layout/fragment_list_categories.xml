@@ -19,14 +19,14 @@
             android:src="@drawable/bcg_categories" />
 
         <TextView
-            style="@style/StyleTitle14"
+            style="@style/StyleTitle20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/layout_margin_16"
-            android:layout_marginBottom="@dimen/layout_margin_16"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
             android:background="@drawable/shape"
             android:gravity="center"
-            android:padding="@dimen/button_padding_text_vertical_10"
+            android:padding="@dimen/margin_10"
             android:text="@string/title_categories"
             android:textColor="@color/text_view_color"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -38,8 +38,8 @@
         android:id="@+id/rvCategories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/layout_margin_bottom_8"
-        android:layout_marginVertical="@dimen/layout_margin_bottom_8"
+        android:layout_marginHorizontal="@dimen/margin_8"
+        android:layout_marginVertical="@dimen/margin_8"
         app:layoutManager="GridLayoutManager"
         app:spanCount="2"
         tools:listitem="@layout/item_category" />
