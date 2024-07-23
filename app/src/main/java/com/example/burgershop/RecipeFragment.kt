@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.core.graphics.blue
 import androidx.recyclerview.widget.RecyclerView
 
@@ -45,7 +46,8 @@ class RecipeFragment : Fragment() {
         val ingredientsAdapter = IngredientsAdapter(recipe.ingredients)
         val methodAdapter = MethodAdapter(recipe.method, recipe)
 
-        val dividerItemDecoration = MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
+        val dividerItemDecoration =
+            MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
         dividerItemDecoration.apply {
             isLastItemDecorated = false
             setDividerInsetStartResource(requireContext(), R.dimen.margin_12)
@@ -58,6 +60,21 @@ class RecipeFragment : Fragment() {
             rvIngredients.addItemDecoration(dividerItemDecoration)
             rvMethod.adapter = methodAdapter
             rvMethod.addItemDecoration(dividerItemDecoration)
+            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    ingredientsAdapter.updateIngredients(progress)
+                    ingredientsAdapter.notifyDataSetChanged()
+                    countOfPortion.text = progress.toString()
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
         }
     }
 
