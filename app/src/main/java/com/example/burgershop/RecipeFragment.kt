@@ -75,6 +75,7 @@ class RecipeFragment : Fragment() {
 
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             })
+            seekBar.setPadding(0,6,0,0)
         }
     }
 

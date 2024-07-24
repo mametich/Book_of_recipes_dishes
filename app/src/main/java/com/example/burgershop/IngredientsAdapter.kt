@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.burgershop.databinding.ItemIngredientBinding
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.NumberFormat
 
 class IngredientsAdapter(
@@ -22,17 +24,16 @@ class IngredientsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(ingredient: Ingredient, quantity: Int) {
-            val countOfQuantity = ingredient.quantity.toDouble() * quantity
-            val textOfCountOfQuantity = if (countOfQuantity.rem(1).equals(0.0)) {
-                countOfQuantity.toInt().toString()
-            } else {
-                NumberFormat.getInstance().format(countOfQuantity).toString()
+            val bigDecimalQuantity = BigDecimal(quantity)
+            var countOfQuantity = BigDecimal(ingredient.quantity).multiply(bigDecimalQuantity)
+            if (countOfQuantity.scale() > 1) {
+                countOfQuantity = countOfQuantity.setScale(1, RoundingMode.HALF_UP)
             }
 
             binding.apply {
                 ingredientName.text = ingredient.description
                 ingredientUnitOfMeasure.text = ingredient.unitOfMeasure
-                ingredientQuantity.text = textOfCountOfQuantity
+                ingredientQuantity.text = countOfQuantity.toPlainString()
             }
         }
     }
