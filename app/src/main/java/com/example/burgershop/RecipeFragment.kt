@@ -1,5 +1,6 @@
 package com.example.burgershop
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -61,6 +62,7 @@ class RecipeFragment : Fragment() {
             rvMethod.adapter = methodAdapter
             rvMethod.addItemDecoration(dividerItemDecoration)
             seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onProgressChanged(
                     seekBar: SeekBar?,
                     progress: Int,
@@ -75,7 +77,14 @@ class RecipeFragment : Fragment() {
 
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             })
-            seekBar.setPadding(0,6,0,0)
+            val sizeInDpTop = resources.getDimensionPixelSize(R.dimen.margin_6)
+            val sizeInDpStartEndBottom = resources.getDimensionPixelSize(R.dimen.margin_0)
+            seekBar.setPadding(
+                sizeInDpStartEndBottom,
+                sizeInDpTop,
+                sizeInDpStartEndBottom,
+                sizeInDpStartEndBottom
+            )
         }
     }
 

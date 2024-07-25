@@ -2,12 +2,10 @@ package com.example.burgershop
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.burgershop.databinding.ItemIngredientBinding
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.text.NumberFormat
 
 class IngredientsAdapter(
     private val dataSet: List<Ingredient>
@@ -26,7 +24,7 @@ class IngredientsAdapter(
         fun bind(ingredient: Ingredient, quantity: Int) {
             val bigDecimalQuantity = BigDecimal(quantity)
             var countOfQuantity = BigDecimal(ingredient.quantity).multiply(bigDecimalQuantity)
-            if (countOfQuantity.scale() > 1) {
+            if (countOfQuantity.scale() > 0) {
                 countOfQuantity = countOfQuantity.setScale(1, RoundingMode.HALF_UP)
             }
 
