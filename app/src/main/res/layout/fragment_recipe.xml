@@ -93,6 +93,7 @@
                 android:id="@+id/seekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/styleSeekBar"
                 android:max="5"
                 android:min="1"
                 android:progress="1" />
