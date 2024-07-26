@@ -5,4 +5,6 @@
     <string name="title_burgers">бургеры</string>
     <string name="title_ingredients">ингредиенты</string>
     <string name="title_cookingMethod">способ приготовления</string>
+    <string name="nameOfPortion">Порции:</string>
+    <string name="defaultCountOfPortion">1</string>
 </resources>

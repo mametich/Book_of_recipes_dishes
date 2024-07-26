@@ -29,7 +29,7 @@ class MethodAdapter(
         val listOfMethod = recipe.method
 
         val listMethodIndex = listOfMethod.mapIndexed { index, method ->
-            "${index+1}. ${method}"
+            "${index + 1}. $method"
         }
         val method = listMethodIndex[position]
         holder.textView.text = method

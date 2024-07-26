@@ -64,6 +64,39 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_ingredients" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/StyleTitle16forPortion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_6"
+                    android:layout_marginEnd="@dimen/margin_6"
+                    android:layout_marginBottom="@dimen/margin_6"
+                    android:text="@string/nameOfPortion" />
+
+                <TextView
+                    android:id="@+id/countOfPortion"
+                    style="@style/StyleTitle16forPortion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_6"
+                    android:layout_marginBottom="@dimen/margin_6"
+                    android:text="@string/defaultCountOfPortion" />
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="5"
+                android:min="1"
+                android:progress="1" />
+
         </LinearLayout>
 
         <androidx.cardview.widget.CardView

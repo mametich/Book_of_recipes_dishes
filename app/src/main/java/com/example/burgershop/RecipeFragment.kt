@@ -1,5 +1,6 @@
 package com.example.burgershop
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.core.graphics.blue
 import androidx.recyclerview.widget.RecyclerView
 
@@ -45,7 +47,8 @@ class RecipeFragment : Fragment() {
         val ingredientsAdapter = IngredientsAdapter(recipe.ingredients)
         val methodAdapter = MethodAdapter(recipe.method, recipe)
 
-        val dividerItemDecoration = MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
+        val dividerItemDecoration =
+            MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
         dividerItemDecoration.apply {
             isLastItemDecorated = false
             setDividerInsetStartResource(requireContext(), R.dimen.margin_12)
@@ -58,6 +61,30 @@ class RecipeFragment : Fragment() {
             rvIngredients.addItemDecoration(dividerItemDecoration)
             rvMethod.adapter = methodAdapter
             rvMethod.addItemDecoration(dividerItemDecoration)
+            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    ingredientsAdapter.updateIngredients(progress)
+                    ingredientsAdapter.notifyDataSetChanged()
+                    countOfPortion.text = progress.toString()
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
+            val sizeInDpTop = resources.getDimensionPixelSize(R.dimen.margin_6)
+            val sizeInDpStartEndBottom = resources.getDimensionPixelSize(R.dimen.margin_0)
+            seekBar.setPadding(
+                sizeInDpStartEndBottom,
+                sizeInDpTop,
+                sizeInDpStartEndBottom,
+                sizeInDpStartEndBottom
+            )
         }
     }
 
