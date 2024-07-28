@@ -17,6 +17,8 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
 
+    private var isHeartVisible = false
+
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -40,6 +42,19 @@ class RecipeFragment : Fragment() {
         if (recipe != null) {
             initRecycler(recipe)
             initUi(recipe)
+        }
+        binding.ivHeartFavourites.setOnClickListener {
+            chooseFavorites()
+        }
+    }
+
+    private fun chooseFavorites() {
+        if (isHeartVisible) {
+            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
+            isHeartVisible = false
+        } else {
+            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
+            isHeartVisible = true
         }
     }
 
@@ -94,6 +109,7 @@ class RecipeFragment : Fragment() {
         binding.apply {
             imageViewRecipes.setImageDrawable(drawable)
             titleOfRecipe.text = recipe.title
+            ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
         }
     }
 }
