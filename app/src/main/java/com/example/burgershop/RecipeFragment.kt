@@ -1,6 +1,8 @@
 package com.example.burgershop
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -15,9 +17,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.burgershop.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
+
+
 class RecipeFragment : Fragment() {
 
     private var isHeartVisible = false
+    private var setOfId: Set<String> = emptySet()
 
     private var _binding: FragmentRecipeBinding? = null
     private val binding
@@ -55,6 +60,7 @@ class RecipeFragment : Fragment() {
         } else {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
             isHeartVisible = true
+            saveFavorites(setOfId)
         }
     }
 
@@ -109,7 +115,35 @@ class RecipeFragment : Fragment() {
         binding.apply {
             imageViewRecipes.setImageDrawable(drawable)
             titleOfRecipe.text = recipe.title
-            ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
+
         }
+        val setOfId = getFavorites()
+        if(setOfId.contains(recipe.id.toString())) {
+            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
+        } else {
+            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
+        }
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    private fun saveFavorites(setId: Set<String>) {
+        val sharedPref = requireContext().getSharedPreferences(
+            SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
+        )
+       sharedPref.edit().putStringSet(SET_ID, setId).apply()
+    }
+
+    private fun getFavorites() : MutableSet<String> {
+        val sharedPref = requireContext().getSharedPreferences(
+            SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
+        )
+        val setOfIdFromSharedPref = sharedPref.getStringSet(SET_ID, emptySet())
+        val newSetOfId: MutableSet<String> = mutableSetOf()
+            if (setOfIdFromSharedPref != null) {
+            newSetOfId.addAll(setOfIdFromSharedPref)
+        } else {
+            emptySet<String>()
+        }
+        return newSetOfId
     }
 }
