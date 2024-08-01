@@ -18,11 +18,10 @@ import com.example.burgershop.databinding.FragmentRecipeBinding
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 
-
 class RecipeFragment : Fragment() {
 
     private var isHeartVisible = false
-    private var setOfId: Set<String> = emptySet()
+    private var setOfId: HashSet<String> = hashSetOf()
 
     private var _binding: FragmentRecipeBinding? = null
     private val binding
@@ -49,17 +48,25 @@ class RecipeFragment : Fragment() {
             initUi(recipe)
         }
         binding.ivHeartFavourites.setOnClickListener {
-            chooseFavorites()
+            if (recipe != null) {
+                chooseFavorites(recipe.id)
+            }
         }
     }
 
-    private fun chooseFavorites() {
+    private fun chooseFavorites(numberOfId: Int) {
+        binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
+        setOfId.add(numberOfId.toString())
+        saveFavorites(setOfId)
+
         if (isHeartVisible) {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
             isHeartVisible = false
+            setOfId.remove(numberOfId.toString())
         } else {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
             isHeartVisible = true
+            setOfId.add(numberOfId.toString())
             saveFavorites(setOfId)
         }
     }
@@ -115,35 +122,26 @@ class RecipeFragment : Fragment() {
         binding.apply {
             imageViewRecipes.setImageDrawable(drawable)
             titleOfRecipe.text = recipe.title
-
         }
         val setOfId = getFavorites()
-        if(setOfId.contains(recipe.id.toString())) {
+        if (setOfId.contains(recipe.id.toString())) {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
         } else {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
         }
     }
 
-    @SuppressLint("CommitPrefEdits")
     private fun saveFavorites(setId: Set<String>) {
         val sharedPref = requireContext().getSharedPreferences(
             SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
         )
-       sharedPref.edit().putStringSet(SET_ID, setId).apply()
+        sharedPref.edit().putStringSet(SET_ID, setId).apply()
     }
 
-    private fun getFavorites() : MutableSet<String> {
+    private fun getFavorites(): MutableSet<String> {
         val sharedPref = requireContext().getSharedPreferences(
             SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
         )
-        val setOfIdFromSharedPref = sharedPref.getStringSet(SET_ID, emptySet())
-        val newSetOfId: MutableSet<String> = mutableSetOf()
-            if (setOfIdFromSharedPref != null) {
-            newSetOfId.addAll(setOfIdFromSharedPref)
-        } else {
-            emptySet<String>()
-        }
-        return newSetOfId
+        return HashSet(sharedPref?.getStringSet(SET_ID, HashSet<String>()) ?: mutableSetOf())
     }
 }
