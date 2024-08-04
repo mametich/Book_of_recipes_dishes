@@ -7,5 +7,5 @@
     <string name="title_cookingMethod">способ приготовления</string>
     <string name="nameOfPortion">Порции:</string>
     <string name="defaultCountOfPortion">1</string>
-    <string name="buttonAddRecipeToFavorites">buttonAddRecipeToFavorites</string>
+    <string name="addToFavorites">добавить в избранное</string>
 </resources>

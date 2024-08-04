@@ -20,8 +20,10 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
 
-    private var isHeartVisible = false
-    private var setOfId: HashSet<String> = hashSetOf()
+//    private val setOfId: HashSet<String> = hashSetOf()
+    private var _recipe: Recipe? = null
+    private val recipe
+        get() = _recipe
 
     private var _binding: FragmentRecipeBinding? = null
     private val binding
@@ -38,42 +40,20 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        _recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java) as Recipe
         } else {
             requireArguments().getParcelable(ARG_RECIPE)
         }
         if (recipe != null) {
-            initRecycler(recipe)
-            initUi(recipe)
-        }
-        binding.ivHeartFavourites.setOnClickListener {
-            if (recipe != null) {
-                chooseFavorites(recipe.id)
-            }
+            initRecycler()
+            initUI()
         }
     }
 
-    private fun chooseFavorites(numberOfId: Int) {
-        binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
-        setOfId.add(numberOfId.toString())
-        saveFavorites(setOfId)
-
-        if (isHeartVisible) {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
-            isHeartVisible = false
-            setOfId.remove(numberOfId.toString())
-        } else {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
-            isHeartVisible = true
-            setOfId.add(numberOfId.toString())
-            saveFavorites(setOfId)
-        }
-    }
-
-    private fun initRecycler(recipe: Recipe) {
-        val ingredientsAdapter = IngredientsAdapter(recipe.ingredients)
-        val methodAdapter = MethodAdapter(recipe.method, recipe)
+    private fun initRecycler() {
+        val ingredientsAdapter = recipe?.let { IngredientsAdapter(it.ingredients) }
+        val methodAdapter = recipe?.let { MethodAdapter(it.method, recipe!!) }
 
         val dividerItemDecoration =
             MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
@@ -96,8 +76,8 @@ class RecipeFragment : Fragment() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    ingredientsAdapter.updateIngredients(progress)
-                    ingredientsAdapter.notifyDataSetChanged()
+                    ingredientsAdapter?.updateIngredients(progress)
+                    ingredientsAdapter?.notifyDataSetChanged()
                     countOfPortion.text = progress.toString()
                 }
 
@@ -116,15 +96,33 @@ class RecipeFragment : Fragment() {
         }
     }
 
-    private fun initUi(recipe: Recipe) {
+    private fun initUI() {
         val drawable =
-            Drawable.createFromStream(requireContext().assets.open(recipe.imageUrl), null)
+            Drawable.createFromStream(
+                recipe?.let { requireContext().assets.open(it.imageUrl) },
+                null
+            )
         binding.apply {
             imageViewRecipes.setImageDrawable(drawable)
-            titleOfRecipe.text = recipe.title
+            titleOfRecipe.text = recipe?.title ?: ""
+            ivHeartFavourites.setOnClickListener {
+                addToFavorites()
+            }
         }
         val setOfId = getFavorites()
-        if (setOfId.contains(recipe.id.toString())) {
+        if (setOfId.contains(recipe?.id.toString())) {
+            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
+        } else {
+            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
+        }
+    }
+
+    private fun addToFavorites() {
+        val idOfRecipe = recipe?.id.toString()
+        val setOfId = getFavorites()
+        setOfId.add(idOfRecipe)
+        saveFavorites(setOfId)
+        if (setOfId.contains(recipe?.id.toString())) {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
         } else {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
@@ -132,10 +130,12 @@ class RecipeFragment : Fragment() {
     }
 
     private fun saveFavorites(setId: Set<String>) {
-        val sharedPref = requireContext().getSharedPreferences(
-            SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
-        )
-        sharedPref.edit().putStringSet(SET_ID, setId).apply()
+        val sharedPref = requireContext()
+            .getSharedPreferences(SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putStringSet(SET_ID, setId)
+            apply()
+        }
     }
 
     private fun getFavorites(): MutableSet<String> {

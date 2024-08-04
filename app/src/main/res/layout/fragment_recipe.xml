@@ -48,7 +48,7 @@
                 android:layout_marginEnd="@dimen/margin_16"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
-                android:contentDescription="@string/buttonAddRecipeToFavorites"
+                android:contentDescription="@string/addToFavorites"
                 android:focusable="true"
                 tools:src="@drawable/ic_heart_favourites_default"
                 app:layout_constraintEnd_toEndOf="@+id/imageViewRecipes"
