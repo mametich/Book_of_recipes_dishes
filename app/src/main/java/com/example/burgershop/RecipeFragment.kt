@@ -129,18 +129,6 @@ class RecipeFragment : Fragment() {
             setOfIds.remove(idOfRecipe)
             saveFavorites(setOfIds)
         }
-
-//        if (setOfIds.contains(recipe?.id.toString())) {
-//
-//            setOfIds.add(idOfRecipe)
-//
-////            setOfIds.clear()
-////            saveFavorites(setOfIds)
-//        } else {
-//            setOfIds.remove(idOfRecipe)
-//            saveFavorites(setOfIds)
-//            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
-//        }
     }
 
     private fun saveFavorites(setId: Set<String>) {
