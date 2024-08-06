@@ -1,10 +1,7 @@
 package com.example.burgershop
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -48,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     private fun goOnFavouritesFragment() {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            replace<FavoritesFragment>(R.id.mainContainer)
+            replace<FavoritesListFragment>(R.id.mainContainer)
         }
     }
 }

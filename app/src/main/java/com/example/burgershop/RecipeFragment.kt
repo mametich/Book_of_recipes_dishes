@@ -2,7 +2,6 @@ package com.example.burgershop
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.core.graphics.blue
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.burgershop.databinding.FragmentRecipeBinding
@@ -20,7 +18,6 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
 
-//    private val setOfId: HashSet<String> = hashSetOf()
     private var _recipe: Recipe? = null
     private val recipe
         get() = _recipe
@@ -119,14 +116,31 @@ class RecipeFragment : Fragment() {
 
     private fun addToFavorites() {
         val idOfRecipe = recipe?.id.toString()
-        val setOfId = getFavorites()
-        setOfId.add(idOfRecipe)
-        saveFavorites(setOfId)
-        if (setOfId.contains(recipe?.id.toString())) {
+        val setOfIds = getFavorites()
+
+        saveFavorites(setOfIds)
+
+        if (setOfIds.contains(recipe?.id.toString())) {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
+            setOfIds.add(idOfRecipe)
+            saveFavorites(setOfIds)
         } else {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
+            setOfIds.remove(idOfRecipe)
+            saveFavorites(setOfIds)
         }
+
+//        if (setOfIds.contains(recipe?.id.toString())) {
+//
+//            setOfIds.add(idOfRecipe)
+//
+////            setOfIds.clear()
+////            saveFavorites(setOfIds)
+//        } else {
+//            setOfIds.remove(idOfRecipe)
+//            saveFavorites(setOfIds)
+//            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
+//        }
     }
 
     private fun saveFavorites(setId: Set<String>) {
