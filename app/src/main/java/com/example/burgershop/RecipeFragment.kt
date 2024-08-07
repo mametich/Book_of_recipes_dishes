@@ -20,11 +20,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
 
-//    private val setOfId: HashSet<String> = hashSetOf()
-    private var _recipe: Recipe? = null
-    private val recipe
-        get() = _recipe
-
+    private var recipe: Recipe? = null
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -40,15 +36,19 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (getRecipe() != null) {
+            initRecycler()
+            initUI()
+        }
+    }
+
+    private fun getRecipe(): Recipe? {
+        recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java) as Recipe
         } else {
             requireArguments().getParcelable(ARG_RECIPE)
         }
-        if (recipe != null) {
-            initRecycler()
-            initUI()
-        }
+        return recipe
     }
 
     private fun initRecycler() {
@@ -109,8 +109,8 @@ class RecipeFragment : Fragment() {
                 addToFavorites()
             }
         }
-        val setOfId = getFavorites()
-        if (setOfId.contains(recipe?.id.toString())) {
+
+        if (getFavorites().contains(recipe?.id.toString())) {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
         } else {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
@@ -120,12 +120,15 @@ class RecipeFragment : Fragment() {
     private fun addToFavorites() {
         val idOfRecipe = recipe?.id.toString()
         val setOfId = getFavorites()
-        setOfId.add(idOfRecipe)
-        saveFavorites(setOfId)
+
         if (setOfId.contains(recipe?.id.toString())) {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
-        } else {
             binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
+            setOfId.remove(idOfRecipe)
+            saveFavorites(setOfId)
+        } else {
+            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
+            setOfId.add(idOfRecipe)
+            saveFavorites(setOfId)
         }
     }
 

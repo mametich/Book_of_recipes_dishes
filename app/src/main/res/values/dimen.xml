@@ -17,6 +17,7 @@
     <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_30">30dp</dimen>
     <dimen name="height_image">224dp</dimen>
+    <dimen name="height_for_text_attention">202dp</dimen>
 
 
 
