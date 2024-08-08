@@ -8,4 +8,5 @@
     <string name="nameOfPortion">Порции:</string>
     <string name="defaultCountOfPortion">1</string>
     <string name="addToFavorites">добавить в избранное</string>
+    <string name="textYorNotAddRecipe">Вы еще не добавили ни одного рецепта в избранное</string>
 </resources>
