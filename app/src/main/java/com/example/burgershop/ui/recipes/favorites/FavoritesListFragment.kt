@@ -1,4 +1,4 @@
-package com.example.burgershop
+package com.example.burgershop.ui.recipes.favorites
 
 import android.content.Context
 import android.os.Bundle
@@ -9,7 +9,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.example.burgershop.ARG_RECIPE
+import com.example.burgershop.R
+import com.example.burgershop.SET_ID
+import com.example.burgershop.SHARED_PREF_BURGER_SHOP
+import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListFavoritesBinding
+import com.example.burgershop.ui.recipes.recipe.RecipeFragment
+import com.example.burgershop.ui.recipes.recipe.RecipesListAdapter
 
 class FavoritesListFragment : Fragment() {
 
@@ -70,8 +77,7 @@ class FavoritesListFragment : Fragment() {
         )
         return HashSet(sharedPref?.getStringSet(SET_ID, HashSet<String>()) ?: mutableSetOf())
     }
-
-
+    
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

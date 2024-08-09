@@ -1,18 +1,20 @@
-package com.example.burgershop
+package com.example.burgershop.ui.category
 
 import android.os.Bundle
-import android.provider.SyncStateContract.Constants
-import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import androidx.recyclerview.widget.GridLayoutManager
+import com.example.burgershop.ARG_CATEGORY_ID
+import com.example.burgershop.ARG_CATEGORY_IMAGE_URL
+import com.example.burgershop.ARG_CATEGORY_NAME
+import com.example.burgershop.R
+import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListCategoriesBinding
+import com.example.burgershop.ui.recipes.listOfRecipes.RecipesListFragment
 
 
 class CategoriesListFragment : Fragment() {

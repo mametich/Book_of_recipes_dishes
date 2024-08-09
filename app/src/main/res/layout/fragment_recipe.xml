@@ -98,6 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/styleSeekBar"
+                android:thumbOffset="@dimen/margin_0"
                 android:max="5"
                 android:min="1"
                 android:progress="1" />

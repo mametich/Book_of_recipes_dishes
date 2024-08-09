@@ -1,4 +1,4 @@
-package com.example.burgershop
+package com.example.burgershop.ui.recipes.listOfRecipes
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -9,8 +9,15 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import com.example.burgershop.ARG_CATEGORY_ID
+import com.example.burgershop.ARG_CATEGORY_IMAGE_URL
+import com.example.burgershop.ARG_CATEGORY_NAME
+import com.example.burgershop.ARG_RECIPE
+import com.example.burgershop.R
+import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListRecipesBinding
-import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.example.burgershop.ui.recipes.recipe.RecipesListAdapter
+import com.example.burgershop.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
 
@@ -47,7 +54,8 @@ class RecipesListFragment : Fragment() {
         val recipeListAdapter = categoryId?.let { STUB.getRecipesByCategoryId(it) }
             ?.let { RecipesListAdapter(it) }
 
-        recipeListAdapter?.setOnRecipeClickListener(object : RecipesListAdapter.OnRecipeClickListener{
+        recipeListAdapter?.setOnRecipeClickListener(object :
+            RecipesListAdapter.OnRecipeClickListener {
             override fun onItemClick(recipeId: Int) {
                openRecipeByRecipeId(recipeId)
             }

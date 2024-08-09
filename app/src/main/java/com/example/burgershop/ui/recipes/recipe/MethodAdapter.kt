@@ -1,11 +1,13 @@
-package com.example.burgershop
+package com.example.burgershop.ui.recipes.recipe
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.burgershop.R
 import com.example.burgershop.databinding.ItemMethodBinding
+import com.example.burgershop.model.Recipe
 
 class MethodAdapter(
     private val dataSet: List<String>,
