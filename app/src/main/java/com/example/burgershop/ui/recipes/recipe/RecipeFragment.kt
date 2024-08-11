@@ -5,11 +5,13 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
@@ -20,8 +22,11 @@ import com.example.burgershop.databinding.FragmentRecipeBinding
 import com.example.burgershop.model.Recipe
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
+private const val INFO = "!!!"
 
 class RecipeFragment : Fragment() {
+
+    private val recipeViewModel: RecipeViewModel by viewModels()
 
     private var recipe: Recipe? = null
     private var _binding: FragmentRecipeBinding? = null
@@ -39,6 +44,11 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        recipeViewModel.recipeUiState.observe(viewLifecycleOwner) { newRecipeUiState ->
+            Log.i(INFO, "${newRecipeUiState.isFavorite}")
+        }
+
         if (getRecipe() != null) {
             initRecycler()
             initUI()
