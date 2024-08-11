@@ -12,4 +12,5 @@ class RecipeViewModel : ViewModel() {
         val portionsCount: Int = 1,
         val isFavorite: Boolean = false,
     )
+
 }
