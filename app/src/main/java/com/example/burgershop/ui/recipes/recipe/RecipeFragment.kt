@@ -48,7 +48,6 @@ class RecipeFragment : Fragment() {
         recipeViewModel.recipeUiState.observe(viewLifecycleOwner) { newRecipeUiState ->
             Log.i(INFO, "${newRecipeUiState.isFavorite}")
         }
-
         if (getRecipe() != null) {
             initRecycler()
             initUI()
