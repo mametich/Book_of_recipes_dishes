@@ -1,8 +1,7 @@
-package com.example.burgershop
+package com.example.burgershop.ui.recipes.recipe
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -11,10 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.core.graphics.blue
 import androidx.recyclerview.widget.RecyclerView
+import com.example.burgershop.ARG_RECIPE
+import com.example.burgershop.R
+import com.example.burgershop.SET_ID
+import com.example.burgershop.SHARED_PREF_BURGER_SHOP
 
 import com.example.burgershop.databinding.FragmentRecipeBinding
+import com.example.burgershop.model.Recipe
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 

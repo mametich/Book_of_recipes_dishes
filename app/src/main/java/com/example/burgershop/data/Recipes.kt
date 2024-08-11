@@ -1,4 +1,8 @@
-package com.example.burgershop
+package com.example.burgershop.data
+
+import com.example.burgershop.model.Category
+import com.example.burgershop.model.Ingredient
+import com.example.burgershop.model.Recipe
 
 object STUB {
 

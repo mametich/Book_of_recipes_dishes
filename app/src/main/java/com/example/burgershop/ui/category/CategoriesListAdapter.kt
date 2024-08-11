@@ -1,4 +1,4 @@
-package com.example.burgershop
+package com.example.burgershop.ui.category
 
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.burgershop.R
 import com.example.burgershop.databinding.ItemCategoryBinding
+import com.example.burgershop.model.Category
 
 
 class CategoriesListAdapter(
