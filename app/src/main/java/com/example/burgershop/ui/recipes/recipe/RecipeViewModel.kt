@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.burgershop.model.Recipe
+import kotlinx.coroutines.launch
 
 class RecipeViewModel : ViewModel() {
 
@@ -13,16 +15,17 @@ class RecipeViewModel : ViewModel() {
     val recipeUiSt: LiveData<RecipeUiState> = _recipeUiSt
 
     init {
-        _recipeUiSt.value = RecipeUiState(
-            isFavorite = true
-        )
+       val updatesState = recipeUiSt.value?.copy(
+           isFavorite = true
+       )
+        _recipeUiSt.value = updatesState
         Log.d("MyLog", "${recipeUiSt.value?.isFavorite}")
     }
 
     data class RecipeUiState(
         val recipe: Recipe? = null,
         val portionsCount: Int = 1,
-        var isFavorite: Boolean = false,
+        val isFavorite: Boolean = false,
     )
 
 }
