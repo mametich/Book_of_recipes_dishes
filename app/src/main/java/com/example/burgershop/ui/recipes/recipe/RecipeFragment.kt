@@ -45,7 +45,7 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recipeViewModel.recipeUiState.observe(viewLifecycleOwner) { newRecipeUiState ->
+        recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
             Log.i(INFO, "${newRecipeUiState.isFavorite}")
         }
         if (getRecipe() != null) {
