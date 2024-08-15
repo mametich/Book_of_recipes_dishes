@@ -45,9 +45,6 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
-            Log.i(INFO, "${newRecipeUiState.isFavorite}")
-        }
         if (getRecipe() != null) {
             initRecycler()
             initUI()
@@ -109,54 +106,27 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
-        val drawable =
-            Drawable.createFromStream(
-                recipe?.let { requireContext().assets.open(it.imageUrl) },
-                null
-            )
-        binding.apply {
-            imageViewRecipes.setImageDrawable(drawable)
-            titleOfRecipe.text = recipe?.title ?: ""
-            ivHeartFavourites.setOnClickListener {
-                addToFavorites()
+
+        recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
+            val drawable =
+                Drawable.createFromStream(
+                    newRecipeUiState.recipe?.imageUrl?.let { requireContext().assets.open(it.imageUrl) },
+                    null
+                )
+            binding.apply {
+                imageViewRecipes.setImageDrawable(drawable)
+                titleOfRecipe.text = newRecipeUiState.recipe?.title ?: ""
+                ivHeartFavourites.setOnClickListener {
+                    recipeViewModel.onFavoritesClicked()
+                }
             }
         }
 
-        if (getFavorites().contains(recipe?.id.toString())) {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
-        } else {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
-        }
-    }
+//        if (getFavorites().contains(recipe?.id.toString())) {
+//            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
+//        } else {
+//            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
+//        }
+//    }
 
-    private fun addToFavorites() {
-        val idOfRecipe = recipe?.id.toString()
-        val setOfId = getFavorites()
-
-        if (setOfId.contains(recipe?.id.toString())) {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
-            setOfId.remove(idOfRecipe)
-            saveFavorites(setOfId)
-        } else {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
-            setOfId.add(idOfRecipe)
-            saveFavorites(setOfId)
-        }
-    }
-
-    private fun saveFavorites(setId: Set<String>) {
-        val sharedPref = requireContext()
-            .getSharedPreferences(SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putStringSet(SET_ID, setId)
-            apply()
-        }
-    }
-
-    private fun getFavorites(): MutableSet<String> {
-        val sharedPref = requireContext().getSharedPreferences(
-            SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
-        )
-        return HashSet(sharedPref?.getStringSet(SET_ID, HashSet<String>()) ?: mutableSetOf())
-    }
 }

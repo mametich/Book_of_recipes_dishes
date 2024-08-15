@@ -43,8 +43,8 @@ class RecipesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         requireArguments().let {
             categoryId = it.getInt(ARG_CATEGORY_ID)
-            categoryName = it.getString(ARG_CATEGORY_NAME)
-            categoryUrlImage = it.getString(ARG_CATEGORY_IMAGE_URL)
+//            categoryName = it.getString(ARG_CATEGORY_NAME)
+//            categoryUrlImage = it.getString(ARG_CATEGORY_IMAGE_URL)
         }
         initRecyclerViewRecipes()
         initUI()
