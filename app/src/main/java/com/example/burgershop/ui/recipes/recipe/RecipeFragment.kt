@@ -12,17 +12,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
 import com.example.burgershop.SET_ID
 import com.example.burgershop.SHARED_PREF_BURGER_SHOP
+import com.example.burgershop.data.STUB
 
 import com.example.burgershop.databinding.FragmentRecipeBinding
 import com.example.burgershop.model.Recipe
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
-private const val INFO = "!!!"
 
 class RecipeFragment : Fragment() {
 
@@ -44,20 +45,12 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (getRecipe() != null) {
+        val recipeId = arguments?.getInt(ARG_RECIPE)
+        if (recipeId != null) {
+            recipeViewModel.loadRecipe(recipeId)
             initRecycler()
-            initUI()
+            initUI(recipeId)
         }
-    }
-
-    private fun getRecipe(): Recipe? {
-        recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java) as Recipe
-        } else {
-            requireArguments().getParcelable(ARG_RECIPE)
-        }
-        return recipe
     }
 
     private fun initRecycler() {
@@ -105,14 +98,18 @@ class RecipeFragment : Fragment() {
         }
     }
 
-    private fun initUI() {
+    private fun initUI(id: Int) {
+
+        val recipe = STUB.getRecipeById(id)
+
+        val drawable =
+            Drawable.createFromStream(
+                recipe.imageUrl.let { requireContext().assets.open(it) },
+                null
+            )
 
         recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
-            val drawable =
-                Drawable.createFromStream(
-                    newRecipeUiState.recipe?.imageUrl?.let { requireContext().assets.open(it.imageUrl) },
-                    null
-                )
+
             binding.apply {
                 imageViewRecipes.setImageDrawable(drawable)
                 titleOfRecipe.text = newRecipeUiState.recipe?.title ?: ""
@@ -121,12 +118,5 @@ class RecipeFragment : Fragment() {
                 }
             }
         }
-
-//        if (getFavorites().contains(recipe?.id.toString())) {
-//            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
-//        } else {
-//            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
-//        }
-//    }
-
+    }
 }

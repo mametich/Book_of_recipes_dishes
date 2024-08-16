@@ -21,6 +21,7 @@ class RecipeViewModel : AndroidViewModel(application = Application()) {
     private val _recipeUiSt = MutableLiveData(RecipeUiState())
     val recipeUiSt: LiveData<RecipeUiState> = _recipeUiSt
 
+
     //TODO load from network
     fun loadRecipe(recipeId: Int) {
         val newRecipe = STUB.getRecipeById(recipeId)
@@ -36,22 +37,14 @@ class RecipeViewModel : AndroidViewModel(application = Application()) {
         _recipeUiSt.value = currentState
     }
 
-//    init {
-//        val updatesState = recipeUiSt.value?.copy(
-//            isFavorite = true
-//        )
-//        _recipeUiSt.value = updatesState
-//        Log.d("MyLog", "${recipeUiSt.value?.isFavorite}")
-//    }
-
     fun onFavoritesClicked() {
         val idOfRecipe = recipeUiSt.value?.recipe?.id.toString()
         val setOfId = getFavorites()
 
         val currentState = if (setOfId.contains(idOfRecipe)) {
-           recipeUiSt.value?.copy(
-               isFavorite = true
-           )
+            recipeUiSt.value?.copy(
+                isFavorite = true
+            )
         } else {
             recipeUiSt.value?.copy(
                 isFavorite = false
@@ -75,7 +68,6 @@ class RecipeViewModel : AndroidViewModel(application = Application()) {
             apply()
         }
     }
-
 
     data class RecipeUiState(
         val recipe: Recipe? = null,
