@@ -16,11 +16,10 @@ import com.example.burgershop.data.STUB
 import com.example.burgershop.model.Recipe
 import kotlinx.coroutines.launch
 
-class RecipeViewModel : AndroidViewModel(application = Application()) {
+class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
 
     private val _recipeUiSt = MutableLiveData(RecipeUiState())
     val recipeUiSt: LiveData<RecipeUiState> = _recipeUiSt
-
 
     //TODO load from network
     fun loadRecipe(recipeId: Int) {
@@ -41,28 +40,34 @@ class RecipeViewModel : AndroidViewModel(application = Application()) {
         val idOfRecipe = recipeUiSt.value?.recipe?.id.toString()
         val setOfId = getFavorites()
 
-        val currentState = if (setOfId.contains(idOfRecipe)) {
-            recipeUiSt.value?.copy(
-                isFavorite = true
-            )
-        } else {
-            recipeUiSt.value?.copy(
+        if (setOfId.contains(idOfRecipe)) {
+            val currentState = recipeUiSt.value?.copy(
                 isFavorite = false
             )
+            _recipeUiSt.value = currentState
+            setOfId.remove(idOfRecipe)
+            saveFavorites(setOfId)
+        } else {
+            val currentState = recipeUiSt.value?.copy(
+                isFavorite = true
+            )
+            setOfId.add(idOfRecipe)
+            saveFavorites(setOfId)
+            _recipeUiSt.value = currentState
         }
-        _recipeUiSt.value = currentState
     }
 
     private fun getFavorites(): MutableSet<String> {
-        val sharedPr = getApplication<Application>().getSharedPreferences(
+        val sharedPr = application.getSharedPreferences(
             SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
         )
         return HashSet(sharedPr.getStringSet(SET_ID, HashSet<String>()) ?: mutableSetOf())
     }
 
     private fun saveFavorites(setId: Set<String>) {
-        val sharedPref = getApplication<Application>()
-            .getSharedPreferences(SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE)
+        val sharedPref = application.getSharedPreferences(
+            SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
+        )
         with(sharedPref.edit()) {
             putStringSet(SET_ID, setId)
             apply()

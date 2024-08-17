@@ -24,12 +24,10 @@ import com.example.burgershop.databinding.FragmentRecipeBinding
 import com.example.burgershop.model.Recipe
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
-
 class RecipeFragment : Fragment() {
 
     private val recipeViewModel: RecipeViewModel by viewModels()
 
-    private var recipe: Recipe? = null
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -48,14 +46,16 @@ class RecipeFragment : Fragment() {
         val recipeId = arguments?.getInt(ARG_RECIPE)
         if (recipeId != null) {
             recipeViewModel.loadRecipe(recipeId)
-            initRecycler()
             initUI(recipeId)
+            initRecycler(recipeId)
         }
     }
 
-    private fun initRecycler() {
-        val ingredientsAdapter = recipe?.let { IngredientsAdapter(it.ingredients) }
-        val methodAdapter = recipe?.let { MethodAdapter(it.method, recipe!!) }
+
+    private fun initRecycler(id: Int) {
+        val recipe = STUB.getRecipeById(id)
+        val ingredientsAdapter = IngredientsAdapter(recipe.ingredients)
+        val methodAdapter = MethodAdapter(recipe.method, recipe)
 
         val dividerItemDecoration =
             MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
@@ -78,8 +78,8 @@ class RecipeFragment : Fragment() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    ingredientsAdapter?.updateIngredients(progress)
-                    ingredientsAdapter?.notifyDataSetChanged()
+                    ingredientsAdapter.updateIngredients(progress)
+                    ingredientsAdapter.notifyDataSetChanged()
                     countOfPortion.text = progress.toString()
                 }
 
@@ -109,10 +109,14 @@ class RecipeFragment : Fragment() {
             )
 
         recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
-
             binding.apply {
                 imageViewRecipes.setImageDrawable(drawable)
                 titleOfRecipe.text = newRecipeUiState.recipe?.title ?: ""
+                if (newRecipeUiState.isFavorite) {
+                    ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
+                } else {
+                    ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
+                }
                 ivHeartFavourites.setOnClickListener {
                     recipeViewModel.onFavoritesClicked()
                 }

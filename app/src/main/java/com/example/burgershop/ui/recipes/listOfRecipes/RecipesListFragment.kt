@@ -27,7 +27,6 @@ class RecipesListFragment : Fragment() {
             ?: throw IllegalStateException("Binding for FragmentListRecipesBinding must not be null")
 
     private var categoryId: Int? = null
-    private var categoryName: String? = null
     private var categoryUrlImage: String? = null
 
     override fun onCreateView(
@@ -43,7 +42,6 @@ class RecipesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         requireArguments().let {
             categoryId = it.getInt(ARG_CATEGORY_ID)
-            categoryName = it.getString(ARG_CATEGORY_NAME)
             categoryUrlImage = it.getString(ARG_CATEGORY_IMAGE_URL)
         }
         initRecyclerViewRecipes()
