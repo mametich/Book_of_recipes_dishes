@@ -46,11 +46,10 @@ class RecipeFragment : Fragment() {
         val recipeId = arguments?.getInt(ARG_RECIPE)
         if (recipeId != null) {
             recipeViewModel.loadRecipe(recipeId)
-            initUI(recipeId)
+            initUI()
             initRecycler(recipeId)
         }
     }
-
 
     private fun initRecycler(id: Int) {
         val recipe = STUB.getRecipeById(id)
@@ -98,19 +97,11 @@ class RecipeFragment : Fragment() {
         }
     }
 
-    private fun initUI(id: Int) {
-
-        val recipe = STUB.getRecipeById(id)
-
-        val drawable =
-            Drawable.createFromStream(
-                recipe.imageUrl.let { requireContext().assets.open(it) },
-                null
-            )
+    private fun initUI() {
 
         recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
             binding.apply {
-                imageViewRecipes.setImageDrawable(drawable)
+                imageViewRecipes.setImageDrawable(newRecipeUiState.recipeImage)
                 titleOfRecipe.text = newRecipeUiState.recipe?.title ?: ""
                 if (newRecipeUiState.isFavorite) {
                     ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)

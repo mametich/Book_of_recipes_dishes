@@ -2,7 +2,9 @@ package com.example.burgershop.ui.recipes.recipe
 
 import android.app.Application
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
 
 import androidx.lifecycle.LiveData
@@ -25,15 +27,28 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
     fun loadRecipe(recipeId: Int) {
         val newRecipe = STUB.getRecipeById(recipeId)
         val setOfId = getFavorites()
-        val currentState = if (setOfId.contains(newRecipe.id.toString()))
+
+        val drawable = Drawable.createFromStream(
+                newRecipe.imageUrl.let { application.assets.open(it) },
+                null)
+        try {
+            val currentState = if (setOfId.contains(newRecipe.id.toString()))
+                RecipeUiState(
+                    recipe = newRecipe,
+                    isFavorite = true,
+                    recipeImage = drawable
+                ) else
+                RecipeUiState(
+                    recipe = newRecipe,
+                    recipeImage = drawable
+                )
+            _recipeUiSt.value = currentState
+        } catch (e: Exception) {
+            Log.e("MyTag", "Assets is null")
             RecipeUiState(
-                recipe = newRecipe,
-                isFavorite = true
-            ) else
-            RecipeUiState(
-                recipe = newRecipe,
+                recipeImage = null
             )
-        _recipeUiSt.value = currentState
+        }
     }
 
     fun onFavoritesClicked() {
@@ -78,6 +93,6 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val recipe: Recipe? = null,
         val portionsCount: Int = 1,
         val isFavorite: Boolean = false,
+        val recipeImage: Drawable? = null,
     )
-
 }
