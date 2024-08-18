@@ -12,23 +12,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
 import com.example.burgershop.SET_ID
 import com.example.burgershop.SHARED_PREF_BURGER_SHOP
+import com.example.burgershop.data.STUB
 
 import com.example.burgershop.databinding.FragmentRecipeBinding
 import com.example.burgershop.model.Recipe
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
-private const val INFO = "!!!"
-
 class RecipeFragment : Fragment() {
 
     private val recipeViewModel: RecipeViewModel by viewModels()
 
-    private var recipe: Recipe? = null
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
@@ -44,28 +43,19 @@ class RecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
-            Log.i(INFO, "${newRecipeUiState.isFavorite}")
-        }
-        if (getRecipe() != null) {
-            initRecycler()
-            initUI()
+        val recipeId = arguments?.getInt(ARG_RECIPE)
+        if (recipeId != null) {
+            recipeViewModel.loadRecipe(recipeId)
+            initUI(recipeId)
+            initRecycler(recipeId)
         }
     }
 
-    private fun getRecipe(): Recipe? {
-        recipe = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable(ARG_RECIPE, Recipe::class.java) as Recipe
-        } else {
-            requireArguments().getParcelable(ARG_RECIPE)
-        }
-        return recipe
-    }
 
-    private fun initRecycler() {
-        val ingredientsAdapter = recipe?.let { IngredientsAdapter(it.ingredients) }
-        val methodAdapter = recipe?.let { MethodAdapter(it.method, recipe!!) }
+    private fun initRecycler(id: Int) {
+        val recipe = STUB.getRecipeById(id)
+        val ingredientsAdapter = IngredientsAdapter(recipe.ingredients)
+        val methodAdapter = MethodAdapter(recipe.method, recipe)
 
         val dividerItemDecoration =
             MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
@@ -88,8 +78,8 @@ class RecipeFragment : Fragment() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    ingredientsAdapter?.updateIngredients(progress)
-                    ingredientsAdapter?.notifyDataSetChanged()
+                    ingredientsAdapter.updateIngredients(progress)
+                    ingredientsAdapter.notifyDataSetChanged()
                     countOfPortion.text = progress.toString()
                 }
 
@@ -108,55 +98,29 @@ class RecipeFragment : Fragment() {
         }
     }
 
-    private fun initUI() {
+    private fun initUI(id: Int) {
+
+        val recipe = STUB.getRecipeById(id)
+
         val drawable =
             Drawable.createFromStream(
-                recipe?.let { requireContext().assets.open(it.imageUrl) },
+                recipe.imageUrl.let { requireContext().assets.open(it) },
                 null
             )
-        binding.apply {
-            imageViewRecipes.setImageDrawable(drawable)
-            titleOfRecipe.text = recipe?.title ?: ""
-            ivHeartFavourites.setOnClickListener {
-                addToFavorites()
+
+        recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
+            binding.apply {
+                imageViewRecipes.setImageDrawable(drawable)
+                titleOfRecipe.text = newRecipeUiState.recipe?.title ?: ""
+                if (newRecipeUiState.isFavorite) {
+                    ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
+                } else {
+                    ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
+                }
+                ivHeartFavourites.setOnClickListener {
+                    recipeViewModel.onFavoritesClicked()
+                }
             }
         }
-
-        if (getFavorites().contains(recipe?.id.toString())) {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
-        } else {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
-        }
-    }
-
-    private fun addToFavorites() {
-        val idOfRecipe = recipe?.id.toString()
-        val setOfId = getFavorites()
-
-        if (setOfId.contains(recipe?.id.toString())) {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
-            setOfId.remove(idOfRecipe)
-            saveFavorites(setOfId)
-        } else {
-            binding.ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
-            setOfId.add(idOfRecipe)
-            saveFavorites(setOfId)
-        }
-    }
-
-    private fun saveFavorites(setId: Set<String>) {
-        val sharedPref = requireContext()
-            .getSharedPreferences(SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            putStringSet(SET_ID, setId)
-            apply()
-        }
-    }
-
-    private fun getFavorites(): MutableSet<String> {
-        val sharedPref = requireContext().getSharedPreferences(
-            SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
-        )
-        return HashSet(sharedPref?.getStringSet(SET_ID, HashSet<String>()) ?: mutableSetOf())
     }
 }
