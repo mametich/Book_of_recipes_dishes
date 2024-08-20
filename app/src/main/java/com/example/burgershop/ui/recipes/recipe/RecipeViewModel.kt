@@ -30,7 +30,6 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         наличия в хранилище переданного id рецепта
         при инициализации какого свойства?
         */
-
         getFavorites().contains(newRecipe.id.toString())
 
         val drawable = Drawable.createFromStream(
