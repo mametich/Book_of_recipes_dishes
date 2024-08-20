@@ -26,11 +26,6 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
     //TODO load from network
     fun loadRecipe(recipeId: Int) {
         val newRecipe = STUB.getRecipeById(recipeId)
-        /* Иван не могу понять куда поставить проверку
-        наличия в хранилище переданного id рецепта
-        при инициализации какого свойства?
-        */
-        getFavorites().contains(newRecipe.id.toString())
 
         val drawable = Drawable.createFromStream(
             newRecipe.imageUrl.let { application.assets.open(it) },
@@ -40,13 +35,12 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         try {
             _recipeUiSt.value = RecipeUiState(
                 recipe = newRecipe,
+                isFavorite = getFavorites().contains(newRecipe.id.toString()),
                 recipeImage = drawable
             )
         } catch (e: Exception) {
-            Log.e("MyTag", "Assets is null")
-            _recipeUiSt.value = RecipeUiState(
-                recipeImage = null
-            )
+            Log.e("MyTag", "Error assets is null")
+            _recipeUiSt.value = RecipeUiState()
         }
     }
 
