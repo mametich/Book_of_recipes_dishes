@@ -49,19 +49,17 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val setOfId = getFavorites()
 
         if (setOfId.contains(idOfRecipe)) {
-            val currentState = recipeUiSt.value?.copy(
+            _recipeUiSt.value = recipeUiSt.value?.copy(
                 isFavorite = false
             )
-            _recipeUiSt.value = currentState
             setOfId.remove(idOfRecipe)
             saveFavorites(setOfId)
         } else {
-            val currentState = recipeUiSt.value?.copy(
+            _recipeUiSt.value = recipeUiSt.value?.copy(
                 isFavorite = true
             )
             setOfId.add(idOfRecipe)
             saveFavorites(setOfId)
-            _recipeUiSt.value = currentState
         }
     }
 
