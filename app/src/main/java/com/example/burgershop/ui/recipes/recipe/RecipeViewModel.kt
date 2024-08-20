@@ -26,26 +26,25 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
     //TODO load from network
     fun loadRecipe(recipeId: Int) {
         val newRecipe = STUB.getRecipeById(recipeId)
-        val setOfId = getFavorites()
+        /* Иван не могу понять куда поставить проверку
+        наличия в хранилище переданного id рецепта
+        при инициализации какого свойства?
+        */
+        getFavorites().contains(newRecipe.id.toString())
 
         val drawable = Drawable.createFromStream(
-                newRecipe.imageUrl.let { application.assets.open(it) },
-                null)
+            newRecipe.imageUrl.let { application.assets.open(it) },
+            null
+        )
+
         try {
-            val currentState = if (setOfId.contains(newRecipe.id.toString()))
-                RecipeUiState(
-                    recipe = newRecipe,
-                    isFavorite = true,
-                    recipeImage = drawable
-                ) else
-                RecipeUiState(
-                    recipe = newRecipe,
-                    recipeImage = drawable
-                )
-            _recipeUiSt.value = currentState
+            _recipeUiSt.value = RecipeUiState(
+                recipe = newRecipe,
+                recipeImage = drawable
+            )
         } catch (e: Exception) {
             Log.e("MyTag", "Assets is null")
-            RecipeUiState(
+            _recipeUiSt.value = RecipeUiState(
                 recipeImage = null
             )
         }
