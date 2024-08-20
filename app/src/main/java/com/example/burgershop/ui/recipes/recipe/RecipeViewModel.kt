@@ -40,7 +40,7 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
             )
         } catch (e: Exception) {
             Log.e("MyTag", "Error assets is null")
-            _recipeUiSt.value = RecipeUiState()
+            _recipeUiSt.value = null
         }
     }
 
