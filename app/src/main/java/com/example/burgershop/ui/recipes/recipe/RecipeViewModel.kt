@@ -2,7 +2,9 @@ package com.example.burgershop.ui.recipes.recipe
 
 import android.app.Application
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
 
 import androidx.lifecycle.LiveData
@@ -24,16 +26,22 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
     //TODO load from network
     fun loadRecipe(recipeId: Int) {
         val newRecipe = STUB.getRecipeById(recipeId)
-        val setOfId = getFavorites()
-        val currentState = if (setOfId.contains(newRecipe.id.toString()))
-            RecipeUiState(
+
+        val drawable = Drawable.createFromStream(
+            newRecipe.imageUrl.let { application.assets.open(it) },
+            null
+        )
+
+        try {
+            _recipeUiSt.value = RecipeUiState(
                 recipe = newRecipe,
-                isFavorite = true
-            ) else
-            RecipeUiState(
-                recipe = newRecipe,
+                isFavorite = getFavorites().contains(newRecipe.id.toString()),
+                recipeImage = drawable
             )
-        _recipeUiSt.value = currentState
+        } catch (e: Exception) {
+            Log.e("MyTag", "Error assets is null")
+            _recipeUiSt.value = null
+        }
     }
 
     fun onFavoritesClicked() {
@@ -41,19 +49,17 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val setOfId = getFavorites()
 
         if (setOfId.contains(idOfRecipe)) {
-            val currentState = recipeUiSt.value?.copy(
+            _recipeUiSt.value = recipeUiSt.value?.copy(
                 isFavorite = false
             )
-            _recipeUiSt.value = currentState
             setOfId.remove(idOfRecipe)
             saveFavorites(setOfId)
         } else {
-            val currentState = recipeUiSt.value?.copy(
+            _recipeUiSt.value = recipeUiSt.value?.copy(
                 isFavorite = true
             )
             setOfId.add(idOfRecipe)
             saveFavorites(setOfId)
-            _recipeUiSt.value = currentState
         }
     }
 
@@ -78,6 +84,6 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         val recipe: Recipe? = null,
         val portionsCount: Int = 1,
         val isFavorite: Boolean = false,
+        val recipeImage: Drawable? = null,
     )
-
 }
