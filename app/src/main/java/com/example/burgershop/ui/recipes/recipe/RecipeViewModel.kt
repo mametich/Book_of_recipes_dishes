@@ -44,20 +44,20 @@ class RecipeViewModel(private val application: Application) : AndroidViewModel(a
         }
     }
 
+    fun updatedCountOfPortion(quantityOfPortion: Int) {
+        _recipeUiSt.value = recipeUiSt.value?.copy(portionsCount = quantityOfPortion)
+    }
+
     fun onFavoritesClicked() {
         val idOfRecipe = recipeUiSt.value?.recipe?.id.toString()
         val setOfId = getFavorites()
 
         if (setOfId.contains(idOfRecipe)) {
-            _recipeUiSt.value = recipeUiSt.value?.copy(
-                isFavorite = false
-            )
+            _recipeUiSt.value = recipeUiSt.value?.copy(isFavorite = false)
             setOfId.remove(idOfRecipe)
             saveFavorites(setOfId)
         } else {
-            _recipeUiSt.value = recipeUiSt.value?.copy(
-                isFavorite = true
-            )
+            _recipeUiSt.value = recipeUiSt.value?.copy(isFavorite = true)
             setOfId.add(idOfRecipe)
             saveFavorites(setOfId)
         }

@@ -14,11 +14,11 @@ class IngredientsAdapter(
 
     private var quantity = 1
 
-    fun updateIngredients(progress: Int) {
+    fun updateIngredients(progress: Int)  {
         quantity = progress
     }
 
-    class IngredientViewHolder(
+    inner class IngredientViewHolder(
         private val binding: ItemIngredientBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 

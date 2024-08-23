@@ -47,59 +47,26 @@ class RecipeFragment : Fragment() {
         if (recipeId != null) {
             recipeViewModel.loadRecipe(recipeId)
             initUI()
-            initRecycler(recipeId)
-        }
-    }
-
-    private fun initRecycler(id: Int) {
-        val recipe = STUB.getRecipeById(id)
-        val ingredientsAdapter = IngredientsAdapter(recipe.ingredients)
-        val methodAdapter = MethodAdapter(recipe.method, recipe)
-
-        val dividerItemDecoration =
-            MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
-        dividerItemDecoration.apply {
-            isLastItemDecorated = false
-            setDividerInsetStartResource(requireContext(), R.dimen.margin_12)
-            setDividerInsetEndResource(requireContext(), R.dimen.margin_12)
-            dividerColor
-        }
-
-        binding.apply {
-            rvIngredients.adapter = ingredientsAdapter
-            rvIngredients.addItemDecoration(dividerItemDecoration)
-            rvMethod.adapter = methodAdapter
-            rvMethod.addItemDecoration(dividerItemDecoration)
-            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    ingredientsAdapter.updateIngredients(progress)
-                    ingredientsAdapter.notifyDataSetChanged()
-                    countOfPortion.text = progress.toString()
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-            })
-            val sizeInDpTop = resources.getDimensionPixelSize(R.dimen.margin_6)
-            val sizeInDpStartEndBottom = resources.getDimensionPixelSize(R.dimen.margin_0)
-            seekBar.setPadding(
-                sizeInDpStartEndBottom,
-                sizeInDpTop,
-                sizeInDpStartEndBottom,
-                sizeInDpStartEndBottom
-            )
         }
     }
 
     private fun initUI() {
-
         recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
+
+            val ingredientsAdapter =
+                newRecipeUiState.recipe?.let { IngredientsAdapter(it.ingredients) }
+            val methodAdapter =
+                newRecipeUiState.recipe?.let { MethodAdapter(newRecipeUiState.recipe.method, it) }
+
+            val dividerItemDecoration =
+                MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
+            dividerItemDecoration.apply {
+                isLastItemDecorated = false
+                setDividerInsetStartResource(requireContext(), R.dimen.margin_12)
+                setDividerInsetEndResource(requireContext(), R.dimen.margin_12)
+                dividerColor
+            }
+
             binding.apply {
                 imageViewRecipes.setImageDrawable(newRecipeUiState.recipeImage)
                 titleOfRecipe.text = newRecipeUiState.recipe?.title ?: ""
@@ -111,6 +78,37 @@ class RecipeFragment : Fragment() {
                 ivHeartFavourites.setOnClickListener {
                     recipeViewModel.onFavoritesClicked()
                 }
+                rvIngredients.adapter = ingredientsAdapter
+                rvIngredients.addItemDecoration(dividerItemDecoration)
+                rvMethod.adapter = methodAdapter
+                rvMethod.addItemDecoration(dividerItemDecoration)
+
+                seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onProgressChanged(
+                        seekBar: SeekBar?,
+                        progress: Int,
+                        fromUser: Boolean
+                    ) {
+                        recipeViewModel.updatedCountOfPortion(progress)
+                        val newCountOfPortion = newRecipeUiState.portionsCount
+                        ingredientsAdapter?.updateIngredients(newCountOfPortion)
+                        ingredientsAdapter?.notifyDataSetChanged()
+                        countOfPortion.text = newRecipeUiState.portionsCount.toString()
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+                })
+                val sizeInDpTop = resources.getDimensionPixelSize(R.dimen.margin_6)
+                val sizeInDpStartEndBottom = resources.getDimensionPixelSize(R.dimen.margin_0)
+                seekBar.setPadding(
+                    sizeInDpStartEndBottom,
+                    sizeInDpTop,
+                    sizeInDpStartEndBottom,
+                    sizeInDpStartEndBottom
+                )
             }
         }
     }
