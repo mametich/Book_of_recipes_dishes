@@ -12,10 +12,6 @@ class IngredientsAdapter(
     private val dataSet: List<Ingredient> = emptyList(),
     private var quantity: Int,
 ) : RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder>() {
-//
-//    fun updateIngredients(progress: Int)  {
-//        quantity = progress
-//    }
 
     class IngredientViewHolder(
         private val binding: ItemIngredientBinding
