@@ -97,7 +97,6 @@ class RecipeFragment : Fragment() {
                         countOfPortion.text = newRecipeUiState.portionsCount.toString()
                     }
 
-
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
                     override fun onStopTrackingTouch(seekBar: SeekBar?) {}
