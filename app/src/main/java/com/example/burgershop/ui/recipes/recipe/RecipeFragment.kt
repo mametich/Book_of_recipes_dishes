@@ -27,11 +27,14 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 class RecipeFragment : Fragment() {
 
     private val recipeViewModel: RecipeViewModel by viewModels()
+    private var emptyIngredientAdapter: IngredientsAdapter? = null
+    private var emptyMethodAdapter: MethodAdapter? = null
 
     private var _binding: FragmentRecipeBinding? = null
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentRecipeBinding must not be null")
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,21 +54,25 @@ class RecipeFragment : Fragment() {
     }
 
     private fun initUI() {
+
+        val dividerItemDecoration =
+            MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
+        dividerItemDecoration.apply {
+            isLastItemDecorated = false
+            setDividerInsetStartResource(requireContext(), R.dimen.margin_12)
+            setDividerInsetEndResource(requireContext(), R.dimen.margin_12)
+            dividerColor
+        }
+        binding.apply {
+            rvIngredients.addItemDecoration(dividerItemDecoration)
+            rvMethod.addItemDecoration(dividerItemDecoration)
+        }
+
         recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
-
-            val ingredientsAdapter =
-                newRecipeUiState.recipe?.let { IngredientsAdapter(it.ingredients) }
-            val methodAdapter =
+            emptyIngredientAdapter =
+                newRecipeUiState.recipe?.let { IngredientsAdapter(it.ingredients, newRecipeUiState.portionsCount) }
+            emptyMethodAdapter =
                 newRecipeUiState.recipe?.let { MethodAdapter(newRecipeUiState.recipe.method, it) }
-
-            val dividerItemDecoration =
-                MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
-            dividerItemDecoration.apply {
-                isLastItemDecorated = false
-                setDividerInsetStartResource(requireContext(), R.dimen.margin_12)
-                setDividerInsetEndResource(requireContext(), R.dimen.margin_12)
-                dividerColor
-            }
 
             binding.apply {
                 imageViewRecipes.setImageDrawable(newRecipeUiState.recipeImage)
@@ -78,10 +85,9 @@ class RecipeFragment : Fragment() {
                 ivHeartFavourites.setOnClickListener {
                     recipeViewModel.onFavoritesClicked()
                 }
-                rvIngredients.adapter = ingredientsAdapter
-                rvIngredients.addItemDecoration(dividerItemDecoration)
-                rvMethod.adapter = methodAdapter
-                rvMethod.addItemDecoration(dividerItemDecoration)
+                rvIngredients.adapter = emptyIngredientAdapter
+                rvMethod.adapter = emptyMethodAdapter
+                countOfPortion.text = newRecipeUiState.portionsCount.toString()
 
                 seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     @SuppressLint("NotifyDataSetChanged")
@@ -91,10 +97,6 @@ class RecipeFragment : Fragment() {
                         fromUser: Boolean
                     ) {
                         recipeViewModel.updatedCountOfPortion(progress)
-                        val newCountOfPortion = newRecipeUiState.portionsCount
-                        ingredientsAdapter?.updateIngredients(newCountOfPortion)
-                        ingredientsAdapter?.notifyDataSetChanged()
-                        countOfPortion.text = newRecipeUiState.portionsCount.toString()
                     }
 
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {}

@@ -10,7 +10,7 @@ import com.example.burgershop.databinding.ItemMethodBinding
 import com.example.burgershop.model.Recipe
 
 class MethodAdapter(
-    private val dataSet: List<String>,
+    private val dataSet: List<String> = emptyList(),
     private val recipe: Recipe
 ) : RecyclerView.Adapter<MethodAdapter.MethodViewHolder>() {
 

@@ -9,16 +9,15 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class IngredientsAdapter(
-    private val dataSet: List<Ingredient>
+    private val dataSet: List<Ingredient> = emptyList(),
+    private var quantity: Int,
 ) : RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder>() {
+//
+//    fun updateIngredients(progress: Int)  {
+//        quantity = progress
+//    }
 
-    private var quantity = 1
-
-    fun updateIngredients(progress: Int)  {
-        quantity = progress
-    }
-
-    inner class IngredientViewHolder(
+    class IngredientViewHolder(
         private val binding: ItemIngredientBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
