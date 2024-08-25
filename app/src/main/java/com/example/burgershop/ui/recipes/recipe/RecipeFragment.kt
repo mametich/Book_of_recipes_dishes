@@ -42,6 +42,9 @@ class RecipeFragment : Fragment() {
             recipeViewModel.loadRecipe(recipeId)
             initUI()
         }
+        binding.ivHeartFavourites.setOnClickListener {
+           addToFavorite()
+        }
     }
 
     private fun initUI() {
@@ -78,27 +81,14 @@ class RecipeFragment : Fragment() {
                     } else {
                         ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
                     }
-                    ivHeartFavourites.setOnClickListener {
-                        recipeViewModel.onFavoritesClicked()
-                    }
                     rvIngredients.adapter = emptyIngredientAdapter
                     rvMethod.adapter = emptyMethodAdapter
                     countOfPortion.text = newRecipeUiState.portionsCount.toString()
 
-                    seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                        @SuppressLint("NotifyDataSetChanged")
-                        override fun onProgressChanged(
-                            seekBar: SeekBar?,
-                            progress: Int,
-                            fromUser: Boolean
-                        ) {
-                            recipeViewModel.updatedCountOfPortion(progress)
-                        }
-
-                        override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-                        override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-                    })
+                    seekBar.setOnSeekBarChangeListener(
+                        PortionSeekBarListener { progress ->
+                            recipeViewModel.updatedCountOfPortion(progress) }
+                    )
                     val sizeInDpTop = resources.getDimensionPixelSize(R.dimen.margin_6)
                     val sizeInDpStartEndBottom = resources.getDimensionPixelSize(R.dimen.margin_0)
                     seekBar.setPadding(
@@ -111,5 +101,23 @@ class RecipeFragment : Fragment() {
             }
         }
     }
+
+    class PortionSeekBarListener(
+        val onChangeIngredients: (Int) -> Unit
+    ) : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            onChangeIngredients(progress)
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar?) { }
+
+        override fun onStopTrackingTouch(seekBar: SeekBar?) { }
+    }
+
+    private fun addToFavorite() {
+        recipeViewModel.onFavoritesClicked()
+    }
 }
+
+
 
