@@ -10,8 +10,8 @@ import com.example.burgershop.databinding.ItemMethodBinding
 import com.example.burgershop.model.Recipe
 
 class MethodAdapter(
-    private val dataSet: List<String> = emptyList(),
-    private val recipe: Recipe
+    var dataSet: List<String> = emptyList(),
+    var recipe: Recipe? = null,
 ) : RecyclerView.Adapter<MethodAdapter.MethodViewHolder>() {
 
     class MethodViewHolder(
@@ -28,12 +28,12 @@ class MethodAdapter(
     }
 
     override fun onBindViewHolder(holder: MethodViewHolder, position: Int) {
-        val listOfMethod = recipe.method
+        val listOfMethod = recipe?.method
 
-        val listMethodIndex = listOfMethod.mapIndexed { index, method ->
+        val listMethodIndex = listOfMethod?.mapIndexed { index, method ->
             "${index + 1}. $method"
         }
-        val method = listMethodIndex[position]
+        val method = listMethodIndex?.get(position)
         holder.textView.text = method
     }
 

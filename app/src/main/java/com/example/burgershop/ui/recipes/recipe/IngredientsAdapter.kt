@@ -9,8 +9,8 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 class IngredientsAdapter(
-    private val dataSet: List<Ingredient> = emptyList(),
-    private var quantity: Int,
+    var dataSet: List<Ingredient> = emptyList(),
+    var quantity: Int = 0,
 ) : RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder>() {
 
     class IngredientViewHolder(
