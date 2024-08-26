@@ -42,9 +42,6 @@ class RecipeFragment : Fragment() {
             recipeViewModel.loadRecipe(recipeId)
             initUI()
         }
-        binding.ivHeartFavourites.setOnClickListener {
-           addToFavorite()
-        }
     }
 
     private fun initUI() {
@@ -59,6 +56,22 @@ class RecipeFragment : Fragment() {
         binding.apply {
             rvIngredients.addItemDecoration(dividerItemDecoration)
             rvMethod.addItemDecoration(dividerItemDecoration)
+            ivHeartFavourites.setOnClickListener {
+                recipeViewModel.onFavoritesClicked()
+            }
+            seekBar.setOnSeekBarChangeListener(
+                PortionSeekBarListener { progress ->
+                    recipeViewModel.updatedCountOfPortion(progress)
+                }
+            )
+            val sizeInDpTop = resources.getDimensionPixelSize(R.dimen.margin_6)
+            val sizeInDpStartEndBottom = resources.getDimensionPixelSize(R.dimen.margin_0)
+            seekBar.setPadding(
+                sizeInDpStartEndBottom,
+                sizeInDpTop,
+                sizeInDpStartEndBottom,
+                sizeInDpStartEndBottom
+            )
         }
 
         recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
@@ -84,19 +97,6 @@ class RecipeFragment : Fragment() {
                     rvIngredients.adapter = emptyIngredientAdapter
                     rvMethod.adapter = emptyMethodAdapter
                     countOfPortion.text = newRecipeUiState.portionsCount.toString()
-
-                    seekBar.setOnSeekBarChangeListener(
-                        PortionSeekBarListener { progress ->
-                            recipeViewModel.updatedCountOfPortion(progress) }
-                    )
-                    val sizeInDpTop = resources.getDimensionPixelSize(R.dimen.margin_6)
-                    val sizeInDpStartEndBottom = resources.getDimensionPixelSize(R.dimen.margin_0)
-                    seekBar.setPadding(
-                        sizeInDpStartEndBottom,
-                        sizeInDpTop,
-                        sizeInDpStartEndBottom,
-                        sizeInDpStartEndBottom
-                    )
                 }
             }
         }
@@ -109,13 +109,9 @@ class RecipeFragment : Fragment() {
             onChangeIngredients(progress)
         }
 
-        override fun onStartTrackingTouch(seekBar: SeekBar?) { }
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
-        override fun onStopTrackingTouch(seekBar: SeekBar?) { }
-    }
-
-    private fun addToFavorite() {
-        recipeViewModel.onFavoritesClicked()
+        override fun onStopTrackingTouch(seekBar: SeekBar?) {}
     }
 }
 
