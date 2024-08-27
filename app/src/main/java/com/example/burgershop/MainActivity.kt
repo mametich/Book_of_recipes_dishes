@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             goOnCategoriesFragment()
         }
 
+
         binding.buttonFavourites.setOnClickListener {
             goOnFavouritesFragment()
         }

@@ -56,6 +56,22 @@ class RecipeFragment : Fragment() {
         binding.apply {
             rvIngredients.addItemDecoration(dividerItemDecoration)
             rvMethod.addItemDecoration(dividerItemDecoration)
+            ivHeartFavourites.setOnClickListener {
+                recipeViewModel.onFavoritesClicked()
+            }
+            seekBar.setOnSeekBarChangeListener(
+                PortionSeekBarListener { progress ->
+                    recipeViewModel.updatedCountOfPortion(progress)
+                }
+            )
+            val sizeInDpTop = resources.getDimensionPixelSize(R.dimen.margin_6)
+            val sizeInDpStartEndBottom = resources.getDimensionPixelSize(R.dimen.margin_0)
+            seekBar.setPadding(
+                sizeInDpStartEndBottom,
+                sizeInDpTop,
+                sizeInDpStartEndBottom,
+                sizeInDpStartEndBottom
+            )
         }
 
         recipeViewModel.recipeUiSt.observe(viewLifecycleOwner) { newRecipeUiState ->
@@ -78,38 +94,26 @@ class RecipeFragment : Fragment() {
                     } else {
                         ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites_default)
                     }
-                    ivHeartFavourites.setOnClickListener {
-                        recipeViewModel.onFavoritesClicked()
-                    }
                     rvIngredients.adapter = emptyIngredientAdapter
                     rvMethod.adapter = emptyMethodAdapter
                     countOfPortion.text = newRecipeUiState.portionsCount.toString()
-
-                    seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                        @SuppressLint("NotifyDataSetChanged")
-                        override fun onProgressChanged(
-                            seekBar: SeekBar?,
-                            progress: Int,
-                            fromUser: Boolean
-                        ) {
-                            recipeViewModel.updatedCountOfPortion(progress)
-                        }
-
-                        override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-                        override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-                    })
-                    val sizeInDpTop = resources.getDimensionPixelSize(R.dimen.margin_6)
-                    val sizeInDpStartEndBottom = resources.getDimensionPixelSize(R.dimen.margin_0)
-                    seekBar.setPadding(
-                        sizeInDpStartEndBottom,
-                        sizeInDpTop,
-                        sizeInDpStartEndBottom,
-                        sizeInDpStartEndBottom
-                    )
                 }
             }
         }
     }
+
+    class PortionSeekBarListener(
+        val onChangeIngredients: (Int) -> Unit
+    ) : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+            onChangeIngredients(progress)
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+        override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+    }
 }
+
+
 
