@@ -1,6 +1,5 @@
 package com.example.burgershop.ui.recipes.listOfRecipes
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import com.example.burgershop.ARG_CATEGORY_ID
 import com.example.burgershop.ARG_CATEGORY_IMAGE_URL
 import com.example.burgershop.ARG_CATEGORY_NAME
@@ -16,7 +16,6 @@ import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
 import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListRecipesBinding
-import com.example.burgershop.ui.recipes.recipe.RecipesListAdapter
 import com.example.burgershop.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
@@ -26,8 +25,12 @@ class RecipesListFragment : Fragment() {
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentListRecipesBinding must not be null")
 
-    private var categoryId: Int? = null
-    private var categoryUrlImage: String? = null
+    private var categoryId: Int = 0
+    private var categoryUrlImage: String = ""
+    private var categoryName: String= ""
+
+    private val recipesListViewModel: RecipesListViewModel by viewModels()
+    private val recipesListAdapter = RecipesListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,39 +45,38 @@ class RecipesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         requireArguments().let {
             categoryId = it.getInt(ARG_CATEGORY_ID)
-            categoryUrlImage = it.getString(ARG_CATEGORY_IMAGE_URL)
+            categoryName = it.getString(ARG_CATEGORY_NAME).toString()
+            categoryUrlImage = it.getString(ARG_CATEGORY_IMAGE_URL).toString()
         }
-        initRecyclerViewRecipes()
+        recipesListViewModel.loadListOfRecipes(categoryId, categoryUrlImage, categoryName)
         initUI()
     }
 
-    private fun initRecyclerViewRecipes() {
-        val recipeListAdapter = categoryId?.let { STUB.getRecipesByCategoryId(it) }
-            ?.let { RecipesListAdapter(it) }
-
-        recipeListAdapter?.setOnRecipeClickListener(object :
+    private fun initUI() {
+        recipesListViewModel.listOfRecipesUiState.observe(viewLifecycleOwner) { newRecipeListState ->
+            recipesListAdapter.dataset = newRecipeListState.listOfRecipes
+            binding.apply {
+                imageViewRecipes.setImageDrawable(newRecipeListState.categoryImage)
+                titleOfRecipes.text = newRecipeListState.titleOfCategories
+            }
+        }
+        recipesListAdapter.setOnRecipeClickListener(object :
             RecipesListAdapter.OnRecipeClickListener {
             override fun onItemClick(recipeId: Int) {
-               openRecipeByRecipeId(recipeId)
+                openRecipeByRecipeId(recipeId)
             }
         })
-        binding.rvRecipes.adapter = recipeListAdapter
+        binding.rvRecipes.adapter = recipesListAdapter
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
-        val recipeIdFromMemory = recipe.id
-        val bundle = bundleOf(ARG_RECIPE to recipeIdFromMemory)
+        val bundle = bundleOf(
+            ARG_RECIPE to
+                    recipesListViewModel.loadFromMemoryId(recipeId)
+        )
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer, args = bundle)
         }
-    }
-
-    private fun initUI() {
-        val drawable = Drawable.createFromStream(categoryUrlImage?.let {
-            requireContext().assets?.open(it)
-        },null)
-        binding.imageViewRecipes.setImageDrawable(drawable)
     }
 }

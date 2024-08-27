@@ -1,4 +1,4 @@
-package com.example.burgershop.ui.recipes.recipe
+package com.example.burgershop.ui.recipes.listOfRecipes
 
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -11,7 +11,7 @@ import com.example.burgershop.databinding.ItemRecipeBinding
 import com.example.burgershop.model.Recipe
 
 class RecipesListAdapter(
-    private val dataset: List<Recipe>
+    var dataset: List<Recipe> = emptyList()
 ) : RecyclerView.Adapter<RecipesListAdapter.RecipesViewHolder>() {
 
     interface OnRecipeClickListener {
