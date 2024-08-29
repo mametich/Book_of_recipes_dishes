@@ -35,12 +35,6 @@ class RecipesListViewModel(
         }
     }
 
-    fun loadFromMemoryId(id: Int) : Int {
-        val recipe = STUB.getRecipeById(id)
-        return recipe.id
-    }
-
-
     data class RecipesUiState(
         val listOfRecipes: List<Recipe> = emptyList(),
         val categoryImage: Drawable? = null,

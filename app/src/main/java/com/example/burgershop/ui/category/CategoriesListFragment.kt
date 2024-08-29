@@ -15,6 +15,7 @@ import com.example.burgershop.ARG_CATEGORY_NAME
 import com.example.burgershop.R
 import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListCategoriesBinding
+import com.example.burgershop.model.Category
 import com.example.burgershop.ui.recipes.listOfRecipes.RecipesListFragment
 
 
@@ -27,6 +28,7 @@ class CategoriesListFragment : Fragment() {
 
     private val categoriesListViewModel: CategoriesListViewModel by viewModels()
     private val categoriesListAdapter = CategoriesListAdapter()
+    private var listOfCategory = emptyList<Category>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +47,10 @@ class CategoriesListFragment : Fragment() {
 
     private fun initUI() {
         categoriesListViewModel.categoryListUiState.observe(viewLifecycleOwner) { newCategoryListUiState ->
-            categoriesListAdapter.dataset = newCategoryListUiState.listOfCategory
+            newCategoryListUiState.let {
+                categoriesListAdapter.dataset = it.listOfCategory
+                listOfCategory = it.listOfCategory
+            }
         }
 
         categoriesListAdapter.setOnItemClickListener(object :
@@ -58,10 +63,12 @@ class CategoriesListFragment : Fragment() {
     }
 
     fun openRecipesByCategoryId(categoryId: Int) {
+        val nameOfCategory = listOfCategory[categoryId].title
+        val nameOfUrl = listOfCategory[categoryId].imgUrl
         val bundle = bundleOf(
             ARG_CATEGORY_ID to categoryId,
-            ARG_CATEGORY_NAME to categoriesListViewModel.loadFromMemoryName(categoryId),
-            ARG_CATEGORY_IMAGE_URL to categoriesListViewModel.loadFromMemoryImageUrl(categoryId)
+            ARG_CATEGORY_NAME to nameOfCategory,
+            ARG_CATEGORY_IMAGE_URL to nameOfUrl
         )
         parentFragmentManager.commit {
             replace<RecipesListFragment>(R.id.mainContainer, args = bundle)

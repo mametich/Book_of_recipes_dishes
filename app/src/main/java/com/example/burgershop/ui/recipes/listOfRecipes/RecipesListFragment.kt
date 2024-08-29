@@ -16,6 +16,7 @@ import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
 import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListRecipesBinding
+import com.example.burgershop.model.Recipe
 import com.example.burgershop.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
@@ -31,6 +32,7 @@ class RecipesListFragment : Fragment() {
 
     private val recipesListViewModel: RecipesListViewModel by viewModels()
     private val recipesListAdapter = RecipesListAdapter()
+    private var listOfRecipes = emptyList<Recipe>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +57,7 @@ class RecipesListFragment : Fragment() {
     private fun initUI() {
         recipesListViewModel.listOfRecipesUiState.observe(viewLifecycleOwner) { newRecipeListState ->
             recipesListAdapter.dataset = newRecipeListState.listOfRecipes
+            listOfRecipes = newRecipeListState.listOfRecipes
             binding.apply {
                 imageViewRecipes.setImageDrawable(newRecipeListState.categoryImage)
                 titleOfRecipes.text = newRecipeListState.titleOfCategories
@@ -70,10 +73,8 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val bundle = bundleOf(
-            ARG_RECIPE to
-                    recipesListViewModel.loadFromMemoryId(recipeId)
-        )
+        val idFromRecipes = listOfRecipes[recipeId].id
+        val bundle = bundleOf(ARG_RECIPE to idFromRecipes)
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer, args = bundle)

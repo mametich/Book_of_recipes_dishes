@@ -33,11 +33,6 @@ class FavoritesListViewModel(
         }
     }
 
-    fun loadFromMemoryId(id: Int) : Int {
-        val recipe = STUB.getRecipeById(id)
-        return recipe.id
-    }
-
     private fun getFavorites(): MutableSet<String> {
         val sharedPref = application.getSharedPreferences(
             SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
@@ -46,6 +41,7 @@ class FavoritesListViewModel(
     }
 
     data class FavoritesUiState(
-        val listOfFavoriteRecipes: List<Recipe> = emptyList()
+        val listOfFavoriteRecipes: List<Recipe> = emptyList(),
+
     )
 }

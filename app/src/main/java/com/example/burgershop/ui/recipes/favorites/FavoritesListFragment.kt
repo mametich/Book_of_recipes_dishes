@@ -13,6 +13,7 @@ import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
 import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListFavoritesBinding
+import com.example.burgershop.model.Recipe
 import com.example.burgershop.ui.recipes.recipe.RecipeFragment
 import com.example.burgershop.ui.recipes.listOfRecipes.RecipesListAdapter
 
@@ -25,6 +26,7 @@ class FavoritesListFragment : Fragment() {
 
     private val favoritesListAdapter = RecipesListAdapter()
     private val favoritesListViewModel: FavoritesListViewModel by viewModels()
+    private var listOfRecipe = emptyList<Recipe>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +46,10 @@ class FavoritesListFragment : Fragment() {
     private fun initUI() {
 
         favoritesListViewModel.favoritesUiState.observe(viewLifecycleOwner) { newFavoritesListState ->
-            favoritesListAdapter.dataset = newFavoritesListState.listOfFavoriteRecipes
+            newFavoritesListState.let {
+                favoritesListAdapter.dataset = it.listOfFavoriteRecipes
+                listOfRecipe = it.listOfFavoriteRecipes
+            }
 
             if (newFavoritesListState.listOfFavoriteRecipes.isNotEmpty()) {
                 binding.rvFavorites.adapter = favoritesListAdapter
@@ -64,10 +69,8 @@ class FavoritesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val bundle = bundleOf(
-            ARG_RECIPE to
-                    favoritesListViewModel.loadFromMemoryId(recipeId)
-        )
+        val idOfRecipe = listOfRecipe[recipeId].id
+        val bundle = bundleOf(ARG_RECIPE to idOfRecipe)
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer, args = bundle)
