@@ -16,18 +16,22 @@ class RecipesListViewModel(
     private val _listOfRecipesUiState = MutableLiveData(RecipesUiState())
     val listOfRecipesUiState: LiveData<RecipesUiState> = _listOfRecipesUiState
 
-    fun loadListOfRecipes(categoryId: Int, categoryImage: String?, categoryName: String) {
+    fun loadListOfRecipes(categoryId: Int) {
         val idOfCategories = STUB.getRecipesByCategoryId(categoryId)
+        val listOfCategory = STUB.getCategories()
+        val nameOfCategory = listOfCategory[categoryId].title
+        val urlImage = listOfCategory[categoryId].imgUrl
 
-        val drawable = Drawable.createFromStream(categoryImage?.let {
+        val drawable = Drawable.createFromStream(urlImage.let {
             application.assets?.open(it)
-        },null)
+        }, null)
 
         try {
             _listOfRecipesUiState.value = RecipesUiState(
                 listOfRecipes = idOfCategories,
                 categoryImage = drawable,
-                titleOfCategories = categoryName
+                titleOfCategories = nameOfCategory,
+                imageUrl = urlImage
             )
         } catch (e: Exception) {
             Log.e("MyTag", "Error listOfRecipes is null")
@@ -39,6 +43,7 @@ class RecipesListViewModel(
         val listOfRecipes: List<Recipe> = emptyList(),
         val categoryImage: Drawable? = null,
         val titleOfCategories: String = "",
+        val imageUrl: String = "",
     )
 
 }

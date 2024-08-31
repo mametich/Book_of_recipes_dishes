@@ -26,7 +26,6 @@ class FavoritesListFragment : Fragment() {
 
     private val favoritesListAdapter = RecipesListAdapter()
     private val favoritesListViewModel: FavoritesListViewModel by viewModels()
-    private var listOfRecipe = emptyList<Recipe>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,10 +45,7 @@ class FavoritesListFragment : Fragment() {
     private fun initUI() {
 
         favoritesListViewModel.favoritesUiState.observe(viewLifecycleOwner) { newFavoritesListState ->
-            newFavoritesListState.let {
-                favoritesListAdapter.dataset = it.listOfFavoriteRecipes
-                listOfRecipe = it.listOfFavoriteRecipes
-            }
+           favoritesListAdapter.dataset = newFavoritesListState.listOfFavoriteRecipes
 
             if (newFavoritesListState.listOfFavoriteRecipes.isNotEmpty()) {
                 binding.rvFavorites.adapter = favoritesListAdapter
@@ -69,8 +65,7 @@ class FavoritesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val idOfRecipe = listOfRecipe[recipeId].id
-        val bundle = bundleOf(ARG_RECIPE to idOfRecipe)
+        val bundle = bundleOf(ARG_RECIPE to recipeId)
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer, args = bundle)

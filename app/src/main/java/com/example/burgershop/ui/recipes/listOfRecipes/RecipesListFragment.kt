@@ -27,12 +27,8 @@ class RecipesListFragment : Fragment() {
             ?: throw IllegalStateException("Binding for FragmentListRecipesBinding must not be null")
 
     private var categoryId: Int = 0
-    private var categoryUrlImage: String = ""
-    private var categoryName: String= ""
-
     private val recipesListViewModel: RecipesListViewModel by viewModels()
     private val recipesListAdapter = RecipesListAdapter()
-    private var listOfRecipes = emptyList<Recipe>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,17 +43,14 @@ class RecipesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         requireArguments().let {
             categoryId = it.getInt(ARG_CATEGORY_ID)
-            categoryName = it.getString(ARG_CATEGORY_NAME).toString()
-            categoryUrlImage = it.getString(ARG_CATEGORY_IMAGE_URL).toString()
         }
-        recipesListViewModel.loadListOfRecipes(categoryId, categoryUrlImage, categoryName)
+        recipesListViewModel.loadListOfRecipes(categoryId)
         initUI()
     }
 
     private fun initUI() {
         recipesListViewModel.listOfRecipesUiState.observe(viewLifecycleOwner) { newRecipeListState ->
             recipesListAdapter.dataset = newRecipeListState.listOfRecipes
-            listOfRecipes = newRecipeListState.listOfRecipes
             binding.apply {
                 imageViewRecipes.setImageDrawable(newRecipeListState.categoryImage)
                 titleOfRecipes.text = newRecipeListState.titleOfCategories
@@ -73,8 +66,7 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val idFromRecipes = listOfRecipes[recipeId].id
-        val bundle = bundleOf(ARG_RECIPE to idFromRecipes)
+        val bundle = bundleOf(ARG_RECIPE to recipeId)
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer, args = bundle)

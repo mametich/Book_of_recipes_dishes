@@ -28,7 +28,6 @@ class CategoriesListFragment : Fragment() {
 
     private val categoriesListViewModel: CategoriesListViewModel by viewModels()
     private val categoriesListAdapter = CategoriesListAdapter()
-    private var listOfCategory = emptyList<Category>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,10 +46,7 @@ class CategoriesListFragment : Fragment() {
 
     private fun initUI() {
         categoriesListViewModel.categoryListUiState.observe(viewLifecycleOwner) { newCategoryListUiState ->
-            newCategoryListUiState.let {
-                categoriesListAdapter.dataset = it.listOfCategory
-                listOfCategory = it.listOfCategory
-            }
+            categoriesListAdapter.dataset = newCategoryListUiState.listOfCategory
         }
 
         categoriesListAdapter.setOnItemClickListener(object :
@@ -63,12 +59,9 @@ class CategoriesListFragment : Fragment() {
     }
 
     fun openRecipesByCategoryId(categoryId: Int) {
-        val nameOfCategory = listOfCategory[categoryId].title
-        val nameOfUrl = listOfCategory[categoryId].imgUrl
+
         val bundle = bundleOf(
             ARG_CATEGORY_ID to categoryId,
-            ARG_CATEGORY_NAME to nameOfCategory,
-            ARG_CATEGORY_IMAGE_URL to nameOfUrl
         )
         parentFragmentManager.commit {
             replace<RecipesListFragment>(R.id.mainContainer, args = bundle)

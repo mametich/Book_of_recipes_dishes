@@ -1,5 +1,6 @@
 package com.example.burgershop.ui.category
 
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -18,7 +19,8 @@ class CategoriesListViewModel : ViewModel() {
 
         try {
             _categoryListUiState.value = CategoriesListUiState(
-                listOfCategory = listOfCategory
+                listOfCategory = listOfCategory,
+
             )
         } catch (e: Exception) {
             Log.e("MyTag", "Error categories is null")
@@ -28,7 +30,5 @@ class CategoriesListViewModel : ViewModel() {
 
     data class CategoriesListUiState(
         val listOfCategory: List<Category> = emptyList(),
-        val categoryName: String = "",
-        val categoryImage: String = ""
     )
 }
