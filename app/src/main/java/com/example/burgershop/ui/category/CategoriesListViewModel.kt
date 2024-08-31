@@ -19,8 +19,7 @@ class CategoriesListViewModel : ViewModel() {
 
         try {
             _categoryListUiState.value = CategoriesListUiState(
-                listOfCategory = listOfCategory,
-
+                listOfCategory = listOfCategory
             )
         } catch (e: Exception) {
             Log.e("MyTag", "Error categories is null")
