@@ -14,7 +14,7 @@ import com.example.burgershop.model.Category
 
 
 class CategoriesListAdapter(
-    private val dataset: List<Category>
+    var dataset: List<Category> = emptyList()
 ) : RecyclerView.Adapter<CategoriesListAdapter.CategoriesViewHolder>() {
 
     interface OnItemClickListener {

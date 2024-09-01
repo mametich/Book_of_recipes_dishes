@@ -1,6 +1,5 @@
 package com.example.burgershop.ui.recipes.favorites
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +8,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
-import com.example.burgershop.SET_ID
-import com.example.burgershop.SHARED_PREF_BURGER_SHOP
 import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListFavoritesBinding
+import com.example.burgershop.model.Recipe
 import com.example.burgershop.ui.recipes.recipe.RecipeFragment
-import com.example.burgershop.ui.recipes.recipe.RecipesListAdapter
+import com.example.burgershop.ui.recipes.listOfRecipes.RecipesListAdapter
 
 class FavoritesListFragment : Fragment() {
 
@@ -24,6 +23,9 @@ class FavoritesListFragment : Fragment() {
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentListCategoriesBinding must not be null")
+
+    private val favoritesListAdapter = RecipesListAdapter()
+    private val favoritesListViewModel: FavoritesListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,48 +38,40 @@ class FavoritesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler()
+        favoritesListViewModel.loadListOfRecipes()
         initUI()
     }
 
-    private fun initRecycler() {
-        val setOfIds = getFavorites()
-        val favoriteListAdapter = RecipesListAdapter(STUB.getRecipesByIds(setOfIds))
+    private fun initUI() {
 
-        favoriteListAdapter.setOnRecipeClickListener(object :
+        favoritesListViewModel.favoritesUiState.observe(viewLifecycleOwner) { newFavoritesListState ->
+           favoritesListAdapter.dataset = newFavoritesListState.listOfFavoriteRecipes
+
+            if (newFavoritesListState.listOfFavoriteRecipes.isNotEmpty()) {
+                binding.rvFavorites.adapter = favoritesListAdapter
+            } else {
+                binding.rvFavorites.visibility = View.GONE
+                binding.tvYorNotAddRecipe.visibility = View.VISIBLE
+            }
+        }
+
+        favoritesListAdapter.setOnRecipeClickListener(object :
             RecipesListAdapter.OnRecipeClickListener {
             override fun onItemClick(recipeId: Int) {
                 openRecipeByRecipeId(recipeId)
             }
         })
-        if (setOfIds.isNotEmpty()) {
-            binding.rvFavorites.adapter = favoriteListAdapter
-        } else {
-            binding.rvFavorites.visibility = View.GONE
-            binding.tvYorNotAddRecipe.visibility = View.VISIBLE
-        }
-    }
-
-    private fun initUI() {
         binding.ivFavorites.setImageResource(R.drawable.bcg_favorites)
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val recipe = STUB.getRecipeById(recipeId)
-        val bundle = bundleOf(ARG_RECIPE to recipe)
+        val bundle = bundleOf(ARG_RECIPE to recipeId)
         parentFragmentManager.commit {
             setReorderingAllowed(true)
             replace<RecipeFragment>(R.id.mainContainer, args = bundle)
         }
     }
 
-    private fun getFavorites(): MutableSet<String> {
-        val sharedPref = requireContext().getSharedPreferences(
-            SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
-        )
-        return HashSet(sharedPref?.getStringSet(SET_ID, HashSet<String>()) ?: mutableSetOf())
-    }
-    
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
