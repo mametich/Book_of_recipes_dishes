@@ -18,7 +18,7 @@ class CategoriesListAdapter(
 ) : RecyclerView.Adapter<CategoriesListAdapter.CategoriesViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(categoryId: Int)
+        fun onItemClick(categoryId:Int)
     }
     private var itemClickListener: OnItemClickListener? = null
 

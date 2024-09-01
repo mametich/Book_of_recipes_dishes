@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.burgershop.databinding.ActivityMainBinding
 import com.example.burgershop.ui.category.CategoriesListFragment
 import com.example.burgershop.ui.recipes.favorites.FavoritesListFragment
@@ -21,17 +23,9 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                add<CategoriesListFragment>(R.id.mainContainer)
-            }
-        }
-
         binding.buttonCategories.setOnClickListener {
             goOnCategoriesFragment()
         }
-
 
         binding.buttonFavourites.setOnClickListener {
             goOnFavouritesFragment()
@@ -39,16 +33,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goOnCategoriesFragment() {
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<CategoriesListFragment>(R.id.mainContainer)
-        }
+        findNavController(R.id.nav_host_fragment).navigate(R.id.categoriesListFragment)
     }
 
     private fun goOnFavouritesFragment() {
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<FavoritesListFragment>(R.id.mainContainer)
-        }
+        findNavController(R.id.nav_host_fragment).navigate(R.id.favoritesListFragment)
     }
 }

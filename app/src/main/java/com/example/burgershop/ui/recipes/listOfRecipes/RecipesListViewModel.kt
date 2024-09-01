@@ -16,7 +16,7 @@ class RecipesListViewModel(
     private val _listOfRecipesUiState = MutableLiveData(RecipesUiState())
     val listOfRecipesUiState: LiveData<RecipesUiState> = _listOfRecipesUiState
 
-    fun loadListOfRecipes(categoryId: Int) {
+    fun openRecipesByCategoryId(categoryId: Int) {
         val idOfCategories = STUB.getRecipesByCategoryId(categoryId)
         val listOfCategory = STUB.getCategories()
         val nameOfCategory = listOfCategory[categoryId].title
@@ -25,6 +25,7 @@ class RecipesListViewModel(
         val drawable = Drawable.createFromStream(urlImage.let {
             application.assets?.open(it)
         }, null)
+
 
         try {
             _listOfRecipesUiState.value = RecipesUiState(

@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.burgershop.ARG_CATEGORY_ID
 import com.example.burgershop.ARG_CATEGORY_IMAGE_URL
 import com.example.burgershop.ARG_CATEGORY_NAME
@@ -26,7 +28,7 @@ class RecipesListFragment : Fragment() {
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentListRecipesBinding must not be null")
 
-    private var categoryId: Int = 0
+    private val args: RecipesListFragmentArgs by navArgs()
     private val recipesListViewModel: RecipesListViewModel by viewModels()
     private val recipesListAdapter = RecipesListAdapter()
 
@@ -41,10 +43,8 @@ class RecipesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireArguments().let {
-            categoryId = it.getInt(ARG_CATEGORY_ID)
-        }
-        recipesListViewModel.loadListOfRecipes(categoryId)
+        val category = args.categoryId
+        recipesListViewModel.openRecipesByCategoryId(category)
         initUI()
     }
 
@@ -66,10 +66,7 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val bundle = bundleOf(ARG_RECIPE to recipeId)
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace<RecipeFragment>(R.id.mainContainer, args = bundle)
-        }
+        val action = RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipeId)
+        findNavController().navigate(action)
     }
 }
