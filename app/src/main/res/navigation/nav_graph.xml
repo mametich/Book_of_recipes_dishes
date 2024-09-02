@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/categoriesListFragment"
+    tools:layout="@+id/categoriesListFragment">
+
+    <fragment
+        android:id="@+id/categoriesListFragment"
+        android:name="com.example.burgershop.ui.category.CategoriesListFragment"
+        android:label="CategoriesListFragment" >
+        <action
+            android:id="@+id/action_categoriesListFragment_to_recipesListFragment"
+            app:destination="@id/recipesListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_categoriesListFragment_to_favoritesListFragment"
+            app:destination="@id/favoritesListFragment" />
+        <argument
+            android:name="category"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesListFragment"
+        android:name="com.example.burgershop.ui.recipes.favorites.FavoritesListFragment"
+        android:label="FavoritesListFragment" >
+        <action
+            android:id="@+id/action_favoritesListFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_favoritesListFragment_to_categoriesListFragment"
+            app:destination="@id/categoriesListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipesListFragment"
+        android:name="com.example.burgershop.ui.recipes.listOfRecipes.RecipesListFragment"
+        android:label="RecipesListFragment" >
+        <action
+            android:id="@+id/action_recipesListFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipeFragment"
+        android:name="com.example.burgershop.ui.recipes.recipe.RecipeFragment"
+        android:label="RecipeFragment" >
+        <action
+            android:id="@+id/action_recipeFragment_to_favoritesListFragment"
+            app:destination="@id/favoritesListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <argument
+            android:name="recipeId"
+            app:argType="integer" />
+    </fragment>
+</navigation>
