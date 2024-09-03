@@ -56,7 +56,7 @@
             app:popExitAnim="@android:anim/fade_out" />
         <argument
             android:name="categoryId"
-            app:argType="integer" />
+            app:argType="com.example.burgershop.model.Category" />
     </fragment>
     <fragment
         android:id="@+id/recipeFragment"
