@@ -20,6 +20,7 @@ class CategoriesListAdapter(
     interface OnItemClickListener {
         fun onItemClick(categoryFromList: Category)
     }
+
     private var itemClickListener: OnItemClickListener? = null
 
     fun setOnItemClickListener(listener: OnItemClickListener) {

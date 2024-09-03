@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.burgershop.ARG_RECIPE
-import com.example.burgershop.R
 import com.example.burgershop.databinding.FragmentListCategoriesBinding
 import com.example.burgershop.model.Category
 
@@ -54,7 +51,10 @@ class CategoriesListFragment : Fragment() {
     }
 
     fun openRecipesByCategoryId(categoryFromList: Category) {
-        val action = CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(categoryFromList)
+        val action =
+            CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
+                categoryFromList
+            )
         findNavController().navigate(action)
     }
 

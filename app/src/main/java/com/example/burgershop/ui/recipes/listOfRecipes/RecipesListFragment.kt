@@ -4,22 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.burgershop.ARG_CATEGORY_ID
-import com.example.burgershop.ARG_CATEGORY_IMAGE_URL
-import com.example.burgershop.ARG_CATEGORY_NAME
-import com.example.burgershop.ARG_RECIPE
-import com.example.burgershop.R
-import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListRecipesBinding
-import com.example.burgershop.model.Recipe
-import com.example.burgershop.ui.recipes.recipe.RecipeFragment
 
 class RecipesListFragment : Fragment() {
 
@@ -43,7 +32,7 @@ class RecipesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val category = args.categoryId
+        val category = args.categoryFromList
         recipesListViewModel.openRecipesByCategoryId(category)
         initUI()
     }
@@ -66,7 +55,8 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val action = RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipeId)
+        val action =
+            RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipeId)
         findNavController().navigate(action)
     }
 }
