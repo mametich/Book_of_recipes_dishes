@@ -6,17 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
-import com.example.burgershop.ARG_CATEGORY_ID
-import com.example.burgershop.ARG_CATEGORY_IMAGE_URL
-import com.example.burgershop.ARG_CATEGORY_NAME
+import androidx.navigation.fragment.findNavController
+import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
-import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListCategoriesBinding
 import com.example.burgershop.model.Category
-import com.example.burgershop.ui.recipes.listOfRecipes.RecipesListFragment
 
 
 class CategoriesListFragment : Fragment() {
@@ -51,22 +46,16 @@ class CategoriesListFragment : Fragment() {
 
         categoriesListAdapter.setOnItemClickListener(object :
             CategoriesListAdapter.OnItemClickListener {
-            override fun onItemClick(categoryId: Int) {
-                openRecipesByCategoryId(categoryId)
+            override fun onItemClick(categoryFromList: Category) {
+                openRecipesByCategoryId(categoryFromList)
             }
         })
         binding.rvCategories.adapter = categoriesListAdapter
     }
 
-    fun openRecipesByCategoryId(categoryId: Int) {
-
-        val bundle = bundleOf(
-            ARG_CATEGORY_ID to categoryId,
-        )
-        parentFragmentManager.commit {
-            replace<RecipesListFragment>(R.id.mainContainer, args = bundle)
-            setReorderingAllowed(true)
-        }
+    fun openRecipesByCategoryId(categoryFromList: Category) {
+        val action = CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(categoryFromList)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

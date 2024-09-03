@@ -16,6 +16,7 @@ class CategoriesListViewModel : ViewModel() {
     //TODO load from network
     fun loadListOfCategory() {
         val listOfCategory = STUB.getCategories()
+        val categoryFromList =
 
         try {
             _categoryListUiState.value = CategoriesListUiState(
@@ -29,5 +30,6 @@ class CategoriesListViewModel : ViewModel() {
 
     data class CategoriesListUiState(
         val listOfCategory: List<Category> = emptyList(),
+
     )
 }

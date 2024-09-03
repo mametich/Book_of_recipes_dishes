@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
@@ -20,6 +21,7 @@ class RecipeFragment : Fragment() {
     private val recipeViewModel: RecipeViewModel by viewModels()
     private var emptyIngredientAdapter = IngredientsAdapter()
     private var emptyMethodAdapter = MethodAdapter()
+    private val args: RecipeFragmentArgs by navArgs()
 
     private var _binding: FragmentRecipeBinding? = null
     private val binding
@@ -35,14 +37,13 @@ class RecipeFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recipeId = arguments?.getInt(ARG_RECIPE)
-        if (recipeId != null) {
+        val recipeId = args.recipeId
             recipeViewModel.loadRecipe(recipeId)
             initUI()
         }
-    }
 
     private fun initUI() {
         val dividerItemDecoration =
