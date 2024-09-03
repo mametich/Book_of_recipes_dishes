@@ -4,19 +4,13 @@ import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.burgershop.R
 import com.example.burgershop.SET_ID
 import com.example.burgershop.SHARED_PREF_BURGER_SHOP
 import com.example.burgershop.data.STUB
 import com.example.burgershop.model.Recipe
-import kotlinx.coroutines.launch
 
 class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
 

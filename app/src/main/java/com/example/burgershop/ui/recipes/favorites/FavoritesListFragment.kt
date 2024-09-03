@@ -4,18 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
-import com.example.burgershop.data.STUB
 import com.example.burgershop.databinding.FragmentListFavoritesBinding
-import com.example.burgershop.model.Recipe
-import com.example.burgershop.ui.recipes.recipe.RecipeFragment
 import com.example.burgershop.ui.recipes.listOfRecipes.RecipesListAdapter
 
 class FavoritesListFragment : Fragment() {
@@ -46,7 +39,7 @@ class FavoritesListFragment : Fragment() {
     private fun initUI() {
 
         favoritesListViewModel.favoritesUiState.observe(viewLifecycleOwner) { newFavoritesListState ->
-           favoritesListAdapter.dataset = newFavoritesListState.listOfFavoriteRecipes
+            favoritesListAdapter.dataset = newFavoritesListState.listOfFavoriteRecipes
 
             if (newFavoritesListState.listOfFavoriteRecipes.isNotEmpty()) {
                 binding.rvFavorites.adapter = favoritesListAdapter
@@ -66,7 +59,8 @@ class FavoritesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val action = FavoritesListFragmentDirections.actionFavoritesListFragmentToRecipeFragment(recipeId)
+        val action =
+            FavoritesListFragmentDirections.actionFavoritesListFragmentToRecipeFragment(recipeId)
         findNavController().navigate(action)
     }
 
