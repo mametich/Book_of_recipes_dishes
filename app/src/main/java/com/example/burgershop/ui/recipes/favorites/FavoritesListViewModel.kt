@@ -43,5 +43,5 @@ class FavoritesListViewModel(
     data class FavoritesUiState(
         val listOfFavoriteRecipes: List<Recipe> = emptyList(),
 
-    )
+        )
 }

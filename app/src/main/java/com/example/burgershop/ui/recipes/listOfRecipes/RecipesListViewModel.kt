@@ -20,7 +20,7 @@ class RecipesListViewModel(
     fun openRecipesByCategoryId(categoryFromList: Category) {
 
         val idOfCategories = try {
-             STUB.getRecipesByCategoryId(categoryFromList.id)
+            STUB.getRecipesByCategoryId(categoryFromList.id)
         } catch (e: Exception) {
             throw IllegalArgumentException("category is null")
         }

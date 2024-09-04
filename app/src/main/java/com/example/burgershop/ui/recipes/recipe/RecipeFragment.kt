@@ -10,7 +10,6 @@ import android.widget.SeekBar
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import com.example.burgershop.ARG_RECIPE
 import com.example.burgershop.R
 
 import com.example.burgershop.databinding.FragmentRecipeBinding
@@ -41,9 +40,9 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recipeId = args.recipeId
-            recipeViewModel.loadRecipe(recipeId)
-            initUI()
-        }
+        recipeViewModel.loadRecipe(recipeId)
+        initUI()
+    }
 
     private fun initUI() {
         val dividerItemDecoration =
