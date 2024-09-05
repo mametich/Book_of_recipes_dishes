@@ -14,11 +14,6 @@ data class Category(
     val title: String,
     @SerialName("description")
     val description: String,
-    @SerialName("imgUrl")
+    @SerialName("imageUrl")
     val imgUrl: String,
 ) : Parcelable
-
-@Serializable
-data class Response(
-    val listOfCategory: List<Category>
-)

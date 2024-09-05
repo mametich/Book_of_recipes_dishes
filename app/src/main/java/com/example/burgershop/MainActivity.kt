@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.example.burgershop.databinding.ActivityMainBinding
-import com.example.burgershop.model.Response
+import com.example.burgershop.model.Category
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 import java.net.URL
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
             val json = Json { ignoreUnknownKeys = true }
 
-            val response = json.decodeFromString<Response>(jsonString)
+            val response = json.decodeFromString<List<Category>>(jsonString)
             Log.d("!!!", "$response")
 
         }
