@@ -1,15 +1,14 @@
 package com.example.burgershop
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.example.burgershop.databinding.ActivityMainBinding
-import com.example.burgershop.ui.category.CategoriesListFragment
-import com.example.burgershop.ui.recipes.favorites.FavoritesListFragment
+import com.example.burgershop.model.Category
+import kotlinx.serialization.json.Json
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +21,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        Log.d("!!!", "Выполняю запрос на потоке: ${Thread.currentThread().name}")
+
+
+        val thread = Thread {
+            val url = URL("https://recipes.androidsprint.ru/api/category")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.connect()
+
+            val jsonString = connection.inputStream.bufferedReader().readText()
+            Log.d("!!!", jsonString)
+
+            val json = Json { ignoreUnknownKeys = true }
+
+            val response = json.decodeFromString<List<Category>>(jsonString)
+            Log.d("!!!", "$response")
+
+        }
+        Log.d("!!!", "Выполняю запрос на потоке: ${thread.name}")
+        thread.start()
+
 
         binding.buttonCategories.setOnClickListener {
             goOnCategoriesFragment()
