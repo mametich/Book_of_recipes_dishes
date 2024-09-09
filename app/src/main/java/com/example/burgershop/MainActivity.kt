@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        threadPool.execute {
+        val thread = Thread {
             val url = URL("https://recipes.androidsprint.ru/api/category")
             val connection = url.openConnection() as HttpURLConnection
             connection.connect()
@@ -42,21 +42,19 @@ class MainActivity : AppCompatActivity() {
             val responseIdList = response.map { it.id }
             Log.d("!!!", "$responseIdList")
 
+            threadPool.execute {
+                for (id in responseIdList) {
+                    val urlId = URL("https://recipes.androidsprint.ru/api/category/${id}/recipes")
+                    val connectionId = urlId.openConnection() as HttpURLConnection
+                    connectionId.connect()
 
-            for (id in responseIdList) {
-                val urlId = URL("https://recipes.androidsprint.ru/api/category/${id}/recipes")
-                val connectionId = urlId.openConnection() as HttpURLConnection
-                connectionId.connect()
-
-                val jsonStringId = connectionId.inputStream.bufferedReader().readText()
-                Log.d("!!!!", jsonStringId)
+                    val jsonStringId = connectionId.inputStream.bufferedReader().readText()
+                    Log.d("!!!!", jsonStringId)
+                }
             }
+            threadPool.shutdown()
         }
-        threadPool.shutdown()
-
-
-
-
+        thread.start()
 
 
 
