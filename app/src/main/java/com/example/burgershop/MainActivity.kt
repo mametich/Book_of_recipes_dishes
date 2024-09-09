@@ -42,9 +42,10 @@ class MainActivity : AppCompatActivity() {
             val responseIdList = response.map { it.id }
             Log.d("!!!", "$responseIdList")
 
-            threadPool.execute {
-                for (id in responseIdList) {
-                    val urlId = URL("https://recipes.androidsprint.ru/api/category/${id}/recipes")
+
+            responseIdList.forEach {
+                threadPool.execute {
+                    val urlId = URL("https://recipes.androidsprint.ru/api/category/${it}/recipes")
                     val connectionId = urlId.openConnection() as HttpURLConnection
                     connectionId.connect()
 
