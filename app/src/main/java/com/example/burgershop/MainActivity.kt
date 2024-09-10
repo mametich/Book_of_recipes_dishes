@@ -7,10 +7,15 @@ import androidx.navigation.findNavController
 import com.example.burgershop.databinding.ActivityMainBinding
 import com.example.burgershop.model.Category
 import kotlinx.serialization.json.Json
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,36 +32,49 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val thread = Thread {
-            val url = URL("https://recipes.androidsprint.ru/api/category")
-            val connection = url.openConnection() as HttpURLConnection
-            connection.connect()
 
-            val jsonString = connection.inputStream.bufferedReader().readText()
-            Log.d("!!!", jsonString)
+            val logger = HttpLoggingInterceptor().apply {
+                setLevel(HttpLoggingInterceptor.Level.BODY)
+            }
+
+            val client = OkHttpClient.Builder()
+                .addInterceptor(logger)
+                .build()
+
+            val request = Request.Builder()
+                .url("https://recipes.androidsprint.ru/api/category")
+                .build()
+
+            val responseOkHttp: Response = client.newCall(request).execute()
+            val listOfCategory = responseOkHttp.body?.string()
 
             val json = Json { ignoreUnknownKeys = true }
 
-            val response = json.decodeFromString<List<Category>>(jsonString)
-            Log.d("!!!", "$response")
+            val response = listOfCategory?.let { json.decodeFromString<List<Category>>(it) }
 
-            val responseIdList = response.map { it.id }
-            Log.d("!!!", "$responseIdList")
+            val responseIdList = response?.map { it.id }
 
-
-            responseIdList.forEach {
+            responseIdList?.forEach {
                 threadPool.execute {
-                    val urlId = URL("https://recipes.androidsprint.ru/api/category/${it}/recipes")
-                    val connectionId = urlId.openConnection() as HttpURLConnection
-                    connectionId.connect()
+                    val loggingId = HttpLoggingInterceptor().apply {
+                        setLevel(HttpLoggingInterceptor.Level.BODY)
+                    }
 
-                    val jsonStringId = connectionId.inputStream.bufferedReader().readText()
-                    Log.d("!!!!", jsonStringId)
+                    val clientId = OkHttpClient.Builder()
+                        .addInterceptor(loggingId)
+                        .build()
+
+                    val requestId = Request.Builder()
+                        .url("https://recipes.androidsprint.ru/api/category/${it}/recipes")
+                        .build()
+
+                    val responseId = clientId.newCall(requestId).execute()
+                    responseId.body?.string()
                 }
             }
             threadPool.shutdown()
         }
         thread.start()
-
 
 
         binding.buttonCategories.setOnClickListener {
