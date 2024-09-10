@@ -9,8 +9,12 @@ import com.example.burgershop.model.Category
 import kotlinx.serialization.json.Json
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
+
+    private val threadPool: ExecutorService = Executors.newFixedThreadPool(10)
 
     private var _binding: ActivityMainBinding? = null
     private val binding
@@ -21,9 +25,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        Log.d("!!!", "Выполняю запрос на потоке: ${Thread.currentThread().name}")
-
 
         val thread = Thread {
             val url = URL("https://recipes.androidsprint.ru/api/category")
@@ -38,9 +39,24 @@ class MainActivity : AppCompatActivity() {
             val response = json.decodeFromString<List<Category>>(jsonString)
             Log.d("!!!", "$response")
 
+            val responseIdList = response.map { it.id }
+            Log.d("!!!", "$responseIdList")
+
+
+            responseIdList.forEach {
+                threadPool.execute {
+                    val urlId = URL("https://recipes.androidsprint.ru/api/category/${it}/recipes")
+                    val connectionId = urlId.openConnection() as HttpURLConnection
+                    connectionId.connect()
+
+                    val jsonStringId = connectionId.inputStream.bufferedReader().readText()
+                    Log.d("!!!!", jsonStringId)
+                }
+            }
+            threadPool.shutdown()
         }
-        Log.d("!!!", "Выполняю запрос на потоке: ${thread.name}")
         thread.start()
+
 
 
         binding.buttonCategories.setOnClickListener {
