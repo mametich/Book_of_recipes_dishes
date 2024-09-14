@@ -4,17 +4,22 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.burgershop.RecipesRepository
 import com.example.burgershop.data.STUB
 import com.example.burgershop.model.Category
+import kotlin.concurrent.thread
 
-class CategoriesListViewModel : ViewModel() {
+class CategoriesListViewModel() : ViewModel() {
+
+    private var recipesRepository = RecipesRepository()
 
     private val _categoryListUiState = MutableLiveData(CategoriesListUiState())
     val categoryListUiState: LiveData<CategoriesListUiState> = _categoryListUiState
 
     //TODO load from network
     fun loadListOfCategory() {
-        val listOfCategory = STUB.getCategories()
+
+        val listOfCategory = recipesRepository.getCategories()
 
         try {
             _categoryListUiState.value = CategoriesListUiState(

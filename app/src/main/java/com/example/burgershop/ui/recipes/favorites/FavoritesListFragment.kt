@@ -39,9 +39,9 @@ class FavoritesListFragment : Fragment() {
     private fun initUI() {
 
         favoritesListViewModel.favoritesUiState.observe(viewLifecycleOwner) { newFavoritesListState ->
-            favoritesListAdapter.dataset = newFavoritesListState.listOfFavoriteRecipes
+            newFavoritesListState.listOfFavoriteRecipes ?: emptyList()
 
-            if (newFavoritesListState.listOfFavoriteRecipes.isNotEmpty()) {
+            if (newFavoritesListState.listOfFavoriteRecipes?.isNotEmpty() == true) {
                 binding.rvFavorites.adapter = favoritesListAdapter
             } else {
                 binding.rvFavorites.visibility = View.GONE

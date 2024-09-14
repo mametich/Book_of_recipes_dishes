@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.burgershop.RecipesRepository
 import com.example.burgershop.data.STUB
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Recipe
@@ -14,18 +15,20 @@ class RecipesListViewModel(
     private val application: Application
 ) : AndroidViewModel(application) {
 
+    private val recipesRepository = RecipesRepository()
+
     private val _listOfRecipesUiState = MutableLiveData(RecipesUiState())
     val listOfRecipesUiState: LiveData<RecipesUiState> = _listOfRecipesUiState
 
     fun openRecipesByCategoryId(categoryFromList: Category) {
 
         val idOfCategories = try {
-            STUB.getRecipesByCategoryId(categoryFromList.id)
+           recipesRepository.getRecipesById(categoryFromList.id)
         } catch (e: Exception) {
             throw IllegalArgumentException("category is null")
         }
 
-        val listOfCategory = STUB.getCategories()
+        val listOfCategory = recipesRepository.getCategories()
         val nameOfCategory = listOfCategory[categoryFromList.id].title
         val urlImage = listOfCategory[categoryFromList.id].imgUrl
 
