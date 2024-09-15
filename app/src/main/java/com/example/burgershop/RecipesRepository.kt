@@ -24,17 +24,17 @@ class RecipesRepository() {
         retrofit.create(RecipeApiService::class.java)
 
 
+    //Иван вообще не могу понять, почему этот код не работает приложение крашиться
     fun getCategories(callback: (List<Category>) -> Unit) {
         val thread = Thread {
             try {
                 val responseCall: Call<List<Category>> = serviceApi.getCategories()
                 val categoryResponse: Response<List<Category>>? = responseCall.execute()
-                if (categoryResponse != null) {
-                    if (categoryResponse.isSuccessful && categoryResponse.body() != null) {
-                        callback(categoryResponse.body()!!)
-                    } else {
-                        callback(emptyList())
-                    }
+                val categories: List<Category>? = categoryResponse?.body()
+                if (categories != null) {
+                    callback(categories)
+                } else {
+                    callback(emptyList())
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
