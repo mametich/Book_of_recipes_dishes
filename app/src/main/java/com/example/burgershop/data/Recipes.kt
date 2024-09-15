@@ -251,8 +251,8 @@ object STUB {
         Category(5, "Салаты", "Хрустящий калейдоскоп под соусом вдохновения", "salad.png")
     )
 
-    fun getRecipesByCategoryId(recipeId: Int): List<Recipe> {
-        return if (recipeId == 0) burgerRecipes else emptyList()
+    fun getRecipesByCategoryId(categoryId: Int): List<Recipe> {
+        return if (categoryId == 0) burgerRecipes else emptyList()
     }
 
     fun getCategories(): List<Category> = categories

@@ -11,11 +11,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 
-private const val BASE_URL = "https://recipes.androidsprint.ru/api/"
-
 class RecipesRepository() {
 
-    private val contentType = "application/json".toMediaType()
+    private val contentType = CONTENT_TYPE.toMediaType()
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -26,20 +24,55 @@ class RecipesRepository() {
         retrofit.create(RecipeApiService::class.java)
 
 
-    fun getCategories(): List<Category> {
-        val result: MutableList<Category> = mutableListOf()
+    fun getCategories(callback: (List<Category>) -> Unit) {
         val thread = Thread {
-            val responseCall: Call<List<Category>> = serviceApi.getCategories()
-            val categoryResponse: Response<List<Category>> = responseCall.execute()
-            val categories: List<Category>? = categoryResponse.body()
-            if (categories != null) {
-                result.addAll(categories)
+            try {
+                val responseCall: Call<List<Category>> = serviceApi.getCategories()
+                val categoryResponse: Response<List<Category>>? = responseCall.execute()
+                if (categoryResponse != null) {
+                    if (categoryResponse.isSuccessful && categoryResponse.body() != null) {
+                        callback(categoryResponse.body()!!)
+                    } else {
+                        callback(emptyList())
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                callback(emptyList())
             }
         }
         thread.start()
-        thread.join()
-        return result
     }
+
+    fun getRecipesById(categoryId: Int, callback: (List<Recipe>) -> Unit) {
+        val result: MutableList<Recipe> = mutableListOf()
+        val thread = Thread {
+            val recipesCall = serviceApi.getRecipesById(categoryId)
+            val recipesResponse = recipesCall.execute()
+            val recipes: List<Recipe>? = recipesResponse.body()
+            if (recipes != null) {
+                result.addAll(recipes)
+            }
+            callback(result)
+        }
+        thread.start()
+    }
+
+    fun getRecipeById(id: Int): Recipe? {
+        val recipeCall = serviceApi.getRecipeById(id)
+        val recipeResponse = recipeCall.execute()
+        val recipe = recipeResponse.body()
+        return recipe
+    }
+
+    fun getRecipesByIds(ids: MutableSet<String>): List<Recipe> {
+        val recipesCall = serviceApi.getRecipes(ids)
+        val recipesResponse = recipesCall.execute()
+        val recipesByIds = recipesResponse.body()
+        recipesByIds?.filter { ids.contains(it.id.toString()) }
+        return recipesByIds ?: emptyList()
+    }
+
 
     fun getCategoryById(id: Int): Category? {
         var category: Category? = null
@@ -56,50 +89,9 @@ class RecipesRepository() {
         return category
     }
 
-    fun getRecipesById(id: Int): List<Recipe> {
-        val result: MutableList<Recipe> = mutableListOf()
-        val thread = Thread {
-            val recipesCall = serviceApi.getRecipesById(id)
-            val recipesResponse = recipesCall.execute()
-            val recipes: List<Recipe>? = recipesResponse.body()
-            if (recipes != null) {
-                result.addAll(recipes)
-            }
-        }
-        thread.start()
-        thread.join()
-        return result
+    companion object {
+        private const val BASE_URL = "https://recipes.androidsprint.ru/api/"
+        private const val CONTENT_TYPE = "application/json"
     }
-
-    fun getRecipes(ids: MutableSet<String>): List<Recipe> {
-        val result: MutableList<Recipe> = mutableListOf()
-        val thread = Thread {
-            val recipesCall = serviceApi.getRecipes(ids)
-            val recipesResponse = recipesCall.execute()
-            val recipesByIds = recipesResponse.body()
-            if (recipesByIds != null) {
-                result.addAll(result.filter { ids.contains(it.id.toString()) })
-            }
-        }
-        thread.start()
-        thread.join()
-        return result
-    }
-
-    fun getRecipeById(id: Int): Recipe? {
-        var recipeBiId: Recipe? = null
-        val thread = Thread {
-            val recipeCall = serviceApi.getRecipeById(id)
-            val recipeResponse = recipeCall.execute()
-            val recipe = recipeResponse.body()
-            if (recipe != null) {
-                recipeBiId = recipe
-            }
-        }
-        thread.start()
-        thread.join()
-        return recipeBiId
-    }
-
 }
 

@@ -6,10 +6,13 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.burgershop.MyApplication
 import com.example.burgershop.RecipesRepository
 import com.example.burgershop.data.STUB
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Recipe
+import com.example.burgershop.ui.category.CategoriesListViewModel.CategoriesListUiState
+import java.util.concurrent.TimeUnit
 
 class RecipesListViewModel(
     private val application: Application
@@ -21,29 +24,17 @@ class RecipesListViewModel(
     val listOfRecipesUiState: LiveData<RecipesUiState> = _listOfRecipesUiState
 
     fun openRecipesByCategoryId(categoryFromList: Category) {
-
-        val idOfCategories = try {
-           recipesRepository.getRecipesById(categoryFromList.id)
-        } catch (e: Exception) {
-            throw IllegalArgumentException("category is null")
-        }
-
-        val listOfCategory = recipesRepository.getCategories()
-        val nameOfCategory = listOfCategory[categoryFromList.id].title
-        val urlImage = listOfCategory[categoryFromList.id].imgUrl
-
-        val drawable = Drawable.createFromStream(urlImage.let {
-            application.assets?.open(it)
-        }, null)
-
-
         try {
-            _listOfRecipesUiState.value = RecipesUiState(
-                listOfRecipes = idOfCategories,
-                categoryImage = drawable,
-                titleOfCategories = nameOfCategory,
-                imageUrl = urlImage
-            )
+            recipesRepository.getRecipesById(categoryFromList.id) {
+                _listOfRecipesUiState.value = RecipesUiState(
+                    listOfRecipes = it,
+                    titleOfCategories = categoryFromList.title,
+                    imageUrl = categoryFromList.imgUrl,
+                    categoryImage = Drawable.createFromStream(categoryFromList.let {
+                        application.assets?.open(it.toString())
+                    }, null)
+                )
+            }
         } catch (e: Exception) {
             Log.e("MyTag", "Error listOfRecipes is null")
             _listOfRecipesUiState.value = null
