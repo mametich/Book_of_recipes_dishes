@@ -1,5 +1,6 @@
 package com.example.burgershop.ui.recipes.listOfRecipes
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,11 +9,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.burgershop.databinding.ItemRecipeBinding
+import com.example.burgershop.model.Category
 import com.example.burgershop.model.Recipe
 
 class RecipesListAdapter(
-    var dataset: List<Recipe> = emptyList()
+    private var dataset: List<Recipe> = emptyList()
 ) : RecyclerView.Adapter<RecipesListAdapter.RecipesViewHolder>() {
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateDataset(newDataset: List<Recipe>) {
+        dataset = newDataset
+        notifyDataSetChanged()
+    }
 
     interface OnRecipeClickListener {
         fun onItemClick(recipeId: Int)

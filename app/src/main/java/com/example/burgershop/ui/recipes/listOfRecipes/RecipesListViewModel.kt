@@ -25,13 +25,17 @@ class RecipesListViewModel(
 
     fun openRecipesByCategoryId(categoryFromList: Category) {
         try {
-            recipesRepository.getRecipesById(categoryFromList.id) {
+            recipesRepository.getRecipesById(categoryFromList.id) { recipes ->
                 _listOfRecipesUiState.value = RecipesUiState(
-                    listOfRecipes = it,
-                    titleOfCategories = categoryFromList.title,
-                    imageUrl = categoryFromList.imgUrl,
-                    categoryImage = Drawable.createFromStream(categoryFromList.let {
-                        application.assets?.open(it.toString())
+                    listOfRecipes = recipes,
+                )
+            }
+            recipesRepository.getCategories { categories ->
+                _listOfRecipesUiState.value = RecipesUiState(
+                    titleOfCategories = categories[categoryFromList.id].title,
+                    imageUrl = categories[categoryFromList.id].imgUrl,
+                    categoryImage = Drawable.createFromStream(categoryFromList.imgUrl.let { imgUrl ->
+                        application.assets?.open(imgUrl)
                     }, null)
                 )
             }

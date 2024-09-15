@@ -39,7 +39,7 @@ class RecipesListFragment : Fragment() {
 
     private fun initUI() {
         recipesListViewModel.listOfRecipesUiState.observe(viewLifecycleOwner) { newRecipeListState ->
-            recipesListAdapter.dataset = newRecipeListState.listOfRecipes
+            recipesListAdapter.updateDataset(newRecipeListState.listOfRecipes)
             binding.apply {
                 imageViewRecipes.setImageDrawable(newRecipeListState.categoryImage)
                 titleOfRecipes.text = newRecipeListState.titleOfCategories

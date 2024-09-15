@@ -3,54 +3,37 @@ package com.example.burgershop.ui.recipes.recipe
 import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.burgershop.MyApplication
 import com.example.burgershop.RecipesRepository
 import com.example.burgershop.SET_ID
 import com.example.burgershop.SHARED_PREF_BURGER_SHOP
-import com.example.burgershop.data.STUB
 import com.example.burgershop.model.Recipe
-import java.util.concurrent.TimeUnit
 
 class RecipeViewModel(
     private val application: Application
 ) : AndroidViewModel(application) {
 
     private val recipesRepository = RecipesRepository()
-    private val myApplication = MyApplication()
 
     private val _recipeUiSt = MutableLiveData(RecipeUiState())
     val recipeUiSt: LiveData<RecipeUiState> = _recipeUiSt
 
     fun loadRecipe(recipeId: Int) {
-        var recipeById: Recipe? = null
-        var drawableFromThread: Drawable? = null
-
-        myApplication.executorService.execute {
-            val newRecipe = recipesRepository.getRecipeById(recipeId)
-            recipeById = newRecipe
-            val drawable = Drawable.createFromStream(
-                newRecipe?.imageUrl?.let { application.assets?.open(it) },
-                null
-            )
-            drawableFromThread = drawable
-        }
-
-        myApplication.executorService.shutdown()
-        myApplication.executorService.awaitTermination(10, TimeUnit.SECONDS)
-
-        try {
-            _recipeUiSt.value = RecipeUiState(
-                recipe = recipeById,
-                isFavorite = getFavorites().contains(recipeById?.id.toString()),
-                recipeImage = drawableFromThread
-            )
-        } catch (e: Exception) {
-            Log.e("MyTag", "Error assets is null")
-            _recipeUiSt.value = null
+        recipesRepository.getRecipeById(recipeId) { recipe ->
+            if (recipe != null) {
+                _recipeUiSt.value = RecipeUiState(
+                    recipe = recipe,
+                    isFavorite = getFavorites().contains(recipe.id.toString()),
+                    recipeImage = Drawable.createFromStream(
+                        recipe.imageUrl.let { application.assets?.open(it) },
+                        null
+                    )
+                )
+            } else {
+                _recipeUiSt.value = null
+            }
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.burgershop
 
+import android.os.Handler
+import android.os.Looper
 import com.example.burgershop.api.RecipeApiService
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Recipe
@@ -14,6 +16,7 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 class RecipesRepository() {
 
     private val contentType = CONTENT_TYPE.toMediaType()
+    private val resultHandler = Handler(Looper.getMainLooper())
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -24,20 +27,21 @@ class RecipesRepository() {
         retrofit.create(RecipeApiService::class.java)
 
 
-    //Иван вообще не могу понять, почему этот код не работает приложение крашиться
     fun getCategories(callback: (List<Category>) -> Unit) {
         val thread = Thread {
             try {
                 val responseCall: Call<List<Category>> = serviceApi.getCategories()
                 val categoryResponse: Response<List<Category>>? = responseCall.execute()
-                val categories: List<Category>? = categoryResponse?.body()
-                if (categories != null) {
-                    callback(categories)
+                if (categoryResponse?.isSuccessful == true && categoryResponse.body() != null) {
+                    resultHandler.post {
+                        callback(categoryResponse.body() ?: emptyList())
+                    }
                 } else {
-                    callback(emptyList())
+                    resultHandler.post {
+                        callback(emptyList())
+                    }
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
                 callback(emptyList())
             }
         }
@@ -45,25 +49,69 @@ class RecipesRepository() {
     }
 
     fun getRecipesById(categoryId: Int, callback: (List<Recipe>) -> Unit) {
-        val result: MutableList<Recipe> = mutableListOf()
         val thread = Thread {
-            val recipesCall = serviceApi.getRecipesById(categoryId)
-            val recipesResponse = recipesCall.execute()
-            val recipes: List<Recipe>? = recipesResponse.body()
-            if (recipes != null) {
-                result.addAll(recipes)
+            try {
+                val recipesCall = serviceApi.getRecipesById(categoryId)
+                val recipesResponse = recipesCall.execute()
+                if (recipesResponse.isSuccessful && recipesResponse.body() != null) {
+                    resultHandler.post {
+                        callback(recipesResponse.body() ?: emptyList())
+                    }
+                } else {
+                    resultHandler.post {
+                        callback(emptyList())
+                    }
+                }
+            } catch (e: Exception) {
+                callback(emptyList())
             }
-            callback(result)
         }
         thread.start()
     }
 
-    fun getRecipeById(id: Int): Recipe? {
-        val recipeCall = serviceApi.getRecipeById(id)
-        val recipeResponse = recipeCall.execute()
-        val recipe = recipeResponse.body()
-        return recipe
+    fun getRecipeById(id: Int, callback: (Recipe?) -> Unit) {
+        val thread = Thread {
+            try {
+                val recipeCall = serviceApi.getRecipeById(id)
+                val recipeResponse = recipeCall.execute()
+                if (recipeResponse.isSuccessful && recipeResponse.body() != null) {
+                    resultHandler.post {
+                        callback(recipeResponse.body())
+                    }
+                } else {
+                    resultHandler.post {
+                        callback(null)
+                    }
+                }
+            } catch (e: Exception) {
+                callback(null)
+            }
+        }
+        thread.start()
     }
+
+
+//    fun getCategoryById(id: Int, callback: (Category?) -> Unit) {
+//        val thread = Thread {
+//            try {
+//                val categoryCall = serviceApi.getCategoryById(id)
+//                val categoryResponse = categoryCall?.execute()
+//                if (categoryResponse?.isSuccessful == true && categoryResponse.body() != null) {
+//                    resultHandler.post {
+//                        callback(categoryResponse.body())
+//                    }
+//                } else {
+//                    resultHandler.post {
+//                        callback(null)
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                callback(null)
+//            }
+//        }
+//        thread.start()
+//    }
+
 
     fun getRecipesByIds(ids: MutableSet<String>): List<Recipe> {
         val recipesCall = serviceApi.getRecipes(ids)
@@ -71,22 +119,6 @@ class RecipesRepository() {
         val recipesByIds = recipesResponse.body()
         recipesByIds?.filter { ids.contains(it.id.toString()) }
         return recipesByIds ?: emptyList()
-    }
-
-
-    fun getCategoryById(id: Int): Category? {
-        var category: Category? = null
-        val thread = Thread {
-            val categoryCall = serviceApi.getCategoryById(id)
-            val categoryResponse = categoryCall?.execute()
-            val categoryFromNet = categoryResponse?.body()
-            if (categoryFromNet != null) {
-                category = categoryFromNet
-            }
-        }
-        thread.start()
-        thread.join()
-        return category
     }
 
     companion object {
