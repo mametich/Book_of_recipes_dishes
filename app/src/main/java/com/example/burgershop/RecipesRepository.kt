@@ -7,6 +7,8 @@ import com.example.burgershop.model.Category
 import com.example.burgershop.model.Recipe
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -15,20 +17,31 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 class RecipesRepository() {
 
+    private val executorService = MyApplication().executorService
+
     private val contentType = CONTENT_TYPE.toMediaType()
     private val resultHandler = Handler(Looper.getMainLooper())
+
+    private val logger = HttpLoggingInterceptor().apply {
+        setLevel(HttpLoggingInterceptor.Level.BODY)
+    }
+
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(logger)
+        .build()
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(Json.asConverterFactory(contentType))
+        .client(client)
         .build()
 
     private val serviceApi: RecipeApiService =
         retrofit.create(RecipeApiService::class.java)
 
 
-    fun getCategories(callback: (List<Category>) -> Unit) {
-        val thread = Thread {
+    fun getAllCategories(callback: (List<Category>) -> Unit) {
+        executorService.execute {
             try {
                 val responseCall: Call<List<Category>> = serviceApi.getCategories()
                 val categoryResponse: Response<List<Category>>? = responseCall.execute()
@@ -45,11 +58,10 @@ class RecipesRepository() {
                 callback(emptyList())
             }
         }
-        thread.start()
     }
 
     fun getRecipesById(categoryId: Int, callback: (List<Recipe>) -> Unit) {
-        val thread = Thread {
+        executorService.execute {
             try {
                 val recipesCall = serviceApi.getRecipesById(categoryId)
                 val recipesResponse = recipesCall.execute()
@@ -66,11 +78,10 @@ class RecipesRepository() {
                 callback(emptyList())
             }
         }
-        thread.start()
     }
 
     fun getRecipeById(id: Int, callback: (Recipe?) -> Unit) {
-        val thread = Thread {
+        executorService.execute {
             try {
                 val recipeCall = serviceApi.getRecipeById(id)
                 val recipeResponse = recipeCall.execute()
@@ -87,38 +98,29 @@ class RecipesRepository() {
                 callback(null)
             }
         }
-        thread.start()
     }
 
+    fun getRecipesByIds(ids: String, callback: (List<Recipe>) -> Unit) {
+        executorService.execute {
+            try {
+                val recipesCall = serviceApi.getRecipesByIds(ids)
+                val recipesResponse = recipesCall.execute()
 
-//    fun getCategoryById(id: Int, callback: (Category?) -> Unit) {
-//        val thread = Thread {
-//            try {
-//                val categoryCall = serviceApi.getCategoryById(id)
-//                val categoryResponse = categoryCall?.execute()
-//                if (categoryResponse?.isSuccessful == true && categoryResponse.body() != null) {
-//                    resultHandler.post {
-//                        callback(categoryResponse.body())
-//                    }
-//                } else {
-//                    resultHandler.post {
-//                        callback(null)
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                callback(null)
-//            }
-//        }
-//        thread.start()
-//    }
-
-
-    fun getRecipesByIds(ids: MutableSet<String>): List<Recipe> {
-        val recipesCall = serviceApi.getRecipes(ids)
-        val recipesResponse = recipesCall.execute()
-        val recipesByIds = recipesResponse.body()
-        recipesByIds?.filter { ids.contains(it.id.toString()) }
-        return recipesByIds ?: emptyList()
+                if (recipesResponse.isSuccessful && recipesResponse.body()?.isNotEmpty() == true) {
+                    resultHandler.post {
+                        callback(recipesResponse.body() ?: emptyList())
+                    }
+                } else {
+                    resultHandler.post {
+                        callback(emptyList())
+                    }
+                }
+            } catch (e: Exception) {
+                resultHandler.post {
+                    callback(emptyList())
+                }
+            }
+        }
     }
 
     companion object {

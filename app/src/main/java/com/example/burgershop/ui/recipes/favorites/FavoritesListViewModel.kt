@@ -21,26 +21,18 @@ class FavoritesListViewModel(
 
     private val recipesRepository = RecipesRepository()
 
-    private val myApplication = MyApplication()
-
     private val _favoritesUiState = MutableLiveData(FavoritesUiState())
     val favoritesUiState: LiveData<FavoritesUiState> = _favoritesUiState
 
     fun loadListOfRecipes() {
-        val listOfRecipesFromThread: MutableList<Recipe> = mutableListOf()
-        val setOfIds = getFavorites()
-        myApplication.executorService.execute {
-            val newListOfRecipes = recipesRepository.getRecipesByIds(setOfIds)
-            listOfRecipesFromThread.addAll(newListOfRecipes)
-        }
-
-        myApplication.executorService.shutdown()
-        myApplication.executorService.awaitTermination(10, TimeUnit.SECONDS)
-
+        val setOfIds = getFavorites().toString()
         try {
-            _favoritesUiState.value = FavoritesUiState(
-                listOfFavoriteRecipes = listOfRecipesFromThread
-            )
+            recipesRepository.getRecipesByIds(setOfIds) { recipes ->
+                _favoritesUiState.value = FavoritesUiState(
+                    listOfFavoriteRecipes = recipes
+                )
+            }
+
         } catch (e: Exception) {
             Log.e("MyTag", "Error favorites is null")
             _favoritesUiState.value = null

@@ -33,7 +33,7 @@ class RecipesListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val category = args.categoryFromList
-        recipesListViewModel.openRecipesByCategoryId(category)
+        recipesListViewModel.openRecipesByCategoryId(category.id)
         initUI()
     }
 

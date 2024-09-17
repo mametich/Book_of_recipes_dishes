@@ -19,7 +19,7 @@ class CategoriesListViewModel() : ViewModel() {
     val categoryListUiState: LiveData<CategoriesListUiState> = _categoryListUiState
 
     fun loadListOfCategory() {
-        recipesRepository.getCategories { categories ->
+        recipesRepository.getAllCategories { categories ->
             if (categories.isNotEmpty()) {
                 _categoryListUiState.value = CategoriesListUiState(
                     listOfCategory = categories

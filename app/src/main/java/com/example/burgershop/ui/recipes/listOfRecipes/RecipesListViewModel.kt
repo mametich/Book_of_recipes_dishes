@@ -23,18 +23,18 @@ class RecipesListViewModel(
     private val _listOfRecipesUiState = MutableLiveData(RecipesUiState())
     val listOfRecipesUiState: LiveData<RecipesUiState> = _listOfRecipesUiState
 
-    fun openRecipesByCategoryId(categoryFromList: Category) {
+    fun openRecipesByCategoryId(categoryId: Int) {
         try {
-            recipesRepository.getRecipesById(categoryFromList.id) { recipes ->
+            recipesRepository.getRecipesById(categoryId) { recipes ->
                 _listOfRecipesUiState.value = RecipesUiState(
                     listOfRecipes = recipes,
                 )
             }
-            recipesRepository.getCategories { categories ->
-                _listOfRecipesUiState.value = RecipesUiState(
-                    titleOfCategories = categories[categoryFromList.id].title,
-                    imageUrl = categories[categoryFromList.id].imgUrl,
-                    categoryImage = Drawable.createFromStream(categoryFromList.imgUrl.let { imgUrl ->
+            recipesRepository.getAllCategories { categories ->
+                _listOfRecipesUiState.value = listOfRecipesUiState.value?.copy(
+                    titleOfCategories = categories[categoryId].title,
+                    imageUrl = categories[categoryId].imgUrl,
+                    categoryImage = Drawable.createFromStream(categories[categoryId].imgUrl.let { imgUrl ->
                         application.assets?.open(imgUrl)
                     }, null)
                 )
@@ -45,11 +45,10 @@ class RecipesListViewModel(
         }
     }
 
-    data class RecipesUiState(
-        val listOfRecipes: List<Recipe> = emptyList(),
-        val categoryImage: Drawable? = null,
-        val titleOfCategories: String = "",
-        val imageUrl: String = "",
-    )
-
-}
+        data class RecipesUiState(
+            val listOfRecipes: List<Recipe> = emptyList(),
+            val categoryImage: Drawable? = null,
+            val titleOfCategories: String = "",
+            val imageUrl: String = "",
+        )
+    }
