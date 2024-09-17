@@ -1,6 +1,9 @@
 package com.example.burgershop.ui.category
 
+import android.app.Application
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +14,9 @@ import com.example.burgershop.model.Category
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
-class CategoriesListViewModel() : ViewModel() {
+class CategoriesListViewModel(
+    private val application: Application
+) : AndroidViewModel(application) {
 
     private var recipesRepository = RecipesRepository()
 
@@ -25,6 +30,7 @@ class CategoriesListViewModel() : ViewModel() {
                     listOfCategory = categories
                 )
             } else {
+                Toast.makeText(application.baseContext, "Ошибка получения данных", Toast.LENGTH_SHORT).show()
                 Log.e("MyTag", "No categories found or categories are null")
                 _categoryListUiState.value = CategoriesListUiState(
                     listOfCategory = emptyList()
