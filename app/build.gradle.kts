@@ -58,7 +58,7 @@ dependencies {
     //api
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
-    implementation (libs.retrofit)
+    implementation(libs.retrofit)
     implementation(libs.kotlinx.serialization.json)
     implementation (libs.squareup.converter.kotlinx.serialization)
     testImplementation(libs.junit)
