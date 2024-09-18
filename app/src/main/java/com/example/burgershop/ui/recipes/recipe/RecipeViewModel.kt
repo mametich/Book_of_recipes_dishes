@@ -3,6 +3,7 @@ package com.example.burgershop.ui.recipes.recipe
 import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,16 +24,18 @@ class RecipeViewModel(
     fun loadRecipe(recipeId: Int) {
         recipesRepository.getRecipeById(recipeId) { recipe ->
             if (recipe != null) {
-                _recipeUiSt.value = RecipeUiState(
-                    recipe = recipe,
-                    isFavorite = getFavorites().contains(recipe.id.toString()),
-                    recipeImage = Drawable.createFromStream(
-                        recipe.imageUrl.let { application.assets?.open(it) },
-                        null
+                _recipeUiSt.postValue(
+                    RecipeUiState(
+                        recipe = recipe,
+                        isFavorite = getFavorites().contains(recipe.id.toString()),
+                        recipeImage = Drawable.createFromStream(
+                            recipe.imageUrl.let { application.assets?.open(it) },
+                            null
+                        )
                     )
                 )
             } else {
-                _recipeUiSt.value = null
+                _recipeUiSt.postValue(null)
             }
         }
     }

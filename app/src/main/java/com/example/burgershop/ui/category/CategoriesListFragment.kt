@@ -38,7 +38,7 @@ class CategoriesListFragment : Fragment() {
 
     private fun initUI() {
         categoriesListViewModel.categoryListUiState.observe(viewLifecycleOwner) { newCategoryListUiState ->
-            categoriesListAdapter.updateDataset(newCategoryListUiState.listOfCategory)
+            newCategoryListUiState?.listOfCategory?.let { categoriesListAdapter.updateDataset(it) }
         }
 
         categoriesListAdapter.setOnItemClickListener(object :
