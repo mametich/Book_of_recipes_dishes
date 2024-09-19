@@ -3,7 +3,6 @@ package com.example.burgershop.ui.recipes.listOfRecipes
 import android.app.Application
 import android.graphics.drawable.Drawable
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,12 +23,11 @@ class RecipesListViewModel(
             recipesRepository.getRecipesById(categoryId) { recipes ->
                 if (recipes.isNotEmpty()) {
                     _listOfRecipesUiState.postValue(
-                        RecipesUiState(
-                            listOfRecipes = recipes,
+                        _listOfRecipesUiState.value?.copy(
+                            listOfRecipes = recipes
                         )
                     )
                 } else {
-                    Toast.makeText(application.baseContext, "Ошибка получения данных", Toast.LENGTH_SHORT).show()
                     _listOfRecipesUiState.postValue(
                         null
                     )
@@ -37,12 +35,14 @@ class RecipesListViewModel(
             }
             recipesRepository.getAllCategories { categories ->
                 if (categories.isNotEmpty()) {
-                    _listOfRecipesUiState.value = listOfRecipesUiState.value?.copy(
-                        titleOfCategories = categories[categoryId].title,
-                        imageUrl = categories[categoryId].imgUrl,
-                        categoryImage = Drawable.createFromStream(categories[categoryId].imgUrl.let { imgUrl ->
-                            application.assets?.open(imgUrl)
-                        }, null)
+                    _listOfRecipesUiState.postValue(
+                        _listOfRecipesUiState.value?.copy(
+                            titleOfCategories = categories[categoryId].title,
+                            imageUrl = categories[categoryId].imgUrl,
+                            categoryImage = Drawable.createFromStream(categories[categoryId].imgUrl.let { imgUrl ->
+                                application.assets?.open(imgUrl)
+                            }, null)
+                        )
                     )
                 }
             }

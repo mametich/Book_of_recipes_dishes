@@ -28,7 +28,7 @@ class FavoritesListViewModel(
             recipesRepository.getRecipesByIds(setOfIds) { recipes ->
                 if (recipes.isNotEmpty()) {
                     _favoritesUiState.postValue(
-                        FavoritesUiState(
+                        _favoritesUiState.value?.copy(
                             listOfFavoriteRecipes = recipes
                         )
                     )

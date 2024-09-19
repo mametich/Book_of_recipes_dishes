@@ -22,7 +22,7 @@ class CategoriesListViewModel(
         recipesRepository.getAllCategories { categories ->
             if (categories.isNotEmpty()) {
                 _categoryListUiState.postValue(
-                    CategoriesListUiState(
+                    _categoryListUiState.value?.copy(
                         listOfCategory = categories
                     )
                 )

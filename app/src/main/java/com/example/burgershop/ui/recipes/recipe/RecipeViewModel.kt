@@ -25,7 +25,7 @@ class RecipeViewModel(
         recipesRepository.getRecipeById(recipeId) { recipe ->
             if (recipe != null) {
                 _recipeUiSt.postValue(
-                    RecipeUiState(
+                    _recipeUiSt.value?.copy(
                         recipe = recipe,
                         isFavorite = getFavorites().contains(recipe.id.toString()),
                         recipeImage = Drawable.createFromStream(

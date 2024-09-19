@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -39,10 +40,14 @@ class RecipesListFragment : Fragment() {
 
     private fun initUI() {
         recipesListViewModel.listOfRecipesUiState.observe(viewLifecycleOwner) { newRecipeListState ->
-            newRecipeListState.listOfRecipes?.let { recipesListAdapter.updateDataset(it) }
-            binding.apply {
-                imageViewRecipes.setImageDrawable(newRecipeListState.categoryImage)
-                titleOfRecipes.text = newRecipeListState.titleOfCategories
+            if (newRecipeListState != null) {
+                newRecipeListState.listOfRecipes?.let { recipesListAdapter.updateDataset(it) }
+                binding.apply {
+                    imageViewRecipes.setImageDrawable(newRecipeListState.categoryImage)
+                    titleOfRecipes.text = newRecipeListState.titleOfCategories
+                }
+            } else {
+                Toast.makeText(context, "Ошибка получения данных", Toast.LENGTH_SHORT).show()
             }
         }
         recipesListAdapter.setOnRecipeClickListener(object :
