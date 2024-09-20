@@ -36,7 +36,11 @@ class FavoritesListViewModel(
             }
         } catch (e: Exception) {
             Log.e("MyTag", "Error favorites is null")
-            _favoritesUiState.postValue(null)
+            _favoritesUiState.postValue(
+                _favoritesUiState.value?.copy(
+                    listOfFavoriteRecipes = null
+                )
+            )
         }
     }
 

@@ -29,7 +29,9 @@ class RecipesListViewModel(
                     )
                 } else {
                     _listOfRecipesUiState.postValue(
-                        null
+                        _listOfRecipesUiState.value?.copy(
+                            listOfRecipes = null
+                        )
                     )
                 }
             }
@@ -48,14 +50,20 @@ class RecipesListViewModel(
             }
         } catch (e: Exception) {
             Log.e("MyTag", "Error listOfRecipes is null")
-            _listOfRecipesUiState.postValue(null)
+            _listOfRecipesUiState.postValue(
+                _listOfRecipesUiState.value?.copy(
+                    titleOfCategories = null,
+                    imageUrl = null,
+                    categoryImage = null
+                )
+            )
         }
     }
 
     data class RecipesUiState(
         val listOfRecipes: List<Recipe>? = emptyList(),
         val categoryImage: Drawable? = null,
-        val titleOfCategories: String = "",
-        val imageUrl: String = "",
+        val titleOfCategories: String? = "",
+        val imageUrl: String? = "",
     )
 }

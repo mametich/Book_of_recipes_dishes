@@ -16,7 +16,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 
-class RecipesRepository() {
+class RecipesRepository {
 
     private val executorService = MyApplication().executorService
 

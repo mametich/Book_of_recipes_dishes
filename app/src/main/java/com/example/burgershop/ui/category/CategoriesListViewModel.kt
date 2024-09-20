@@ -28,7 +28,11 @@ class CategoriesListViewModel(
                 )
             } else {
                 Log.e("MyTag", "No categories found or categories are null")
-                _categoryListUiState.postValue(null)
+                _categoryListUiState.postValue(
+                    _categoryListUiState.value?.copy(
+                        listOfCategory = null
+                    )
+                )
             }
         }
     }

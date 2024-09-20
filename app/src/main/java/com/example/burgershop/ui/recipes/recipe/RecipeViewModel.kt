@@ -35,7 +35,13 @@ class RecipeViewModel(
                     )
                 )
             } else {
-                _recipeUiSt.postValue(null)
+                _recipeUiSt.postValue(
+                    _recipeUiSt.value?.copy(
+                        recipe = null,
+                        isFavorite = false,
+                        recipeImage = null
+                    )
+                )
             }
         }
     }
