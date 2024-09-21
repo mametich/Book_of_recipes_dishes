@@ -1,33 +1,43 @@
 package com.example.burgershop.ui.category
 
+import android.app.Application
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.burgershop.data.STUB
+import com.example.burgershop.RecipesRepository
 import com.example.burgershop.model.Category
 
-class CategoriesListViewModel : ViewModel() {
+class CategoriesListViewModel(
+    private val application: Application
+) : AndroidViewModel(application) {
+
+    private var recipesRepository = RecipesRepository()
 
     private val _categoryListUiState = MutableLiveData(CategoriesListUiState())
     val categoryListUiState: LiveData<CategoriesListUiState> = _categoryListUiState
 
-    //TODO load from network
     fun loadListOfCategory() {
-        val listOfCategory = STUB.getCategories()
-
-        try {
-            _categoryListUiState.value = CategoriesListUiState(
-                listOfCategory = listOfCategory
-            )
-        } catch (e: Exception) {
-            Log.e("MyTag", "Error categories is null")
-            _categoryListUiState.value = null
+        recipesRepository.getAllCategories { categories ->
+            if (categories.isNotEmpty()) {
+                _categoryListUiState.postValue(
+                    _categoryListUiState.value?.copy(
+                        listOfCategory = categories
+                    )
+                )
+            } else {
+                Log.e("MyTag", "No categories found or categories are null")
+                _categoryListUiState.postValue(
+                    _categoryListUiState.value?.copy(
+                        listOfCategory = null
+                    )
+                )
+            }
         }
     }
 
     data class CategoriesListUiState(
-        val listOfCategory: List<Category> = emptyList(),
-
-        )
+        val listOfCategory: List<Category>? = emptyList()
+    )
 }

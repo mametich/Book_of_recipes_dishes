@@ -6,52 +6,64 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.burgershop.data.STUB
-import com.example.burgershop.model.Category
+import com.example.burgershop.RecipesRepository
 import com.example.burgershop.model.Recipe
 
 class RecipesListViewModel(
     private val application: Application
 ) : AndroidViewModel(application) {
 
+    private val recipesRepository = RecipesRepository()
+
     private val _listOfRecipesUiState = MutableLiveData(RecipesUiState())
     val listOfRecipesUiState: LiveData<RecipesUiState> = _listOfRecipesUiState
 
-    fun openRecipesByCategoryId(categoryFromList: Category) {
-
-        val idOfCategories = try {
-            STUB.getRecipesByCategoryId(categoryFromList.id)
-        } catch (e: Exception) {
-            throw IllegalArgumentException("category is null")
-        }
-
-        val listOfCategory = STUB.getCategories()
-        val nameOfCategory = listOfCategory[categoryFromList.id].title
-        val urlImage = listOfCategory[categoryFromList.id].imgUrl
-
-        val drawable = Drawable.createFromStream(urlImage.let {
-            application.assets?.open(it)
-        }, null)
-
-
+    fun openRecipesByCategoryId(categoryId: Int) {
         try {
-            _listOfRecipesUiState.value = RecipesUiState(
-                listOfRecipes = idOfCategories,
-                categoryImage = drawable,
-                titleOfCategories = nameOfCategory,
-                imageUrl = urlImage
-            )
+            recipesRepository.getRecipesById(categoryId) { recipes ->
+                if (recipes.isNotEmpty()) {
+                    _listOfRecipesUiState.postValue(
+                        _listOfRecipesUiState.value?.copy(
+                            listOfRecipes = recipes
+                        )
+                    )
+                } else {
+                    _listOfRecipesUiState.postValue(
+                        _listOfRecipesUiState.value?.copy(
+                            listOfRecipes = null
+                        )
+                    )
+                }
+            }
+            recipesRepository.getAllCategories { categories ->
+                if (categories.isNotEmpty()) {
+                    _listOfRecipesUiState.postValue(
+                        _listOfRecipesUiState.value?.copy(
+                            titleOfCategories = categories[categoryId].title,
+                            imageUrl = categories[categoryId].imgUrl,
+                            categoryImage = Drawable.createFromStream(categories[categoryId].imgUrl.let { imgUrl ->
+                                application.assets?.open(imgUrl)
+                            }, null)
+                        )
+                    )
+                }
+            }
         } catch (e: Exception) {
             Log.e("MyTag", "Error listOfRecipes is null")
-            _listOfRecipesUiState.value = null
+            _listOfRecipesUiState.postValue(
+                _listOfRecipesUiState.value?.copy(
+                    titleOfCategories = null,
+                    imageUrl = null,
+                    categoryImage = null
+                )
+            )
         }
     }
 
     data class RecipesUiState(
-        val listOfRecipes: List<Recipe> = emptyList(),
+        val listOfRecipes: List<Recipe>? = emptyList(),
         val categoryImage: Drawable? = null,
-        val titleOfCategories: String = "",
-        val imageUrl: String = "",
+        val titleOfCategories: String? = "",
+        val imageUrl: String? = "",
     )
-
 }

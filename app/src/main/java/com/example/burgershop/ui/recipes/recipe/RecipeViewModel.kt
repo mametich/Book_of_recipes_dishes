@@ -3,38 +3,46 @@ package com.example.burgershop.ui.recipes.recipe
 import android.app.Application
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.burgershop.RecipesRepository
 import com.example.burgershop.SET_ID
 import com.example.burgershop.SHARED_PREF_BURGER_SHOP
-import com.example.burgershop.data.STUB
 import com.example.burgershop.model.Recipe
 
-class RecipeViewModel(private val application: Application) : AndroidViewModel(application) {
+class RecipeViewModel(
+    private val application: Application
+) : AndroidViewModel(application) {
+
+    private val recipesRepository = RecipesRepository()
 
     private val _recipeUiSt = MutableLiveData(RecipeUiState())
     val recipeUiSt: LiveData<RecipeUiState> = _recipeUiSt
 
-    //TODO load from network
     fun loadRecipe(recipeId: Int) {
-        val newRecipe = STUB.getRecipeById(recipeId)
-
-        val drawable = Drawable.createFromStream(
-            newRecipe.imageUrl.let { application.assets.open(it) },
-            null
-        )
-
-        try {
-            _recipeUiSt.value = RecipeUiState(
-                recipe = newRecipe,
-                isFavorite = getFavorites().contains(newRecipe.id.toString()),
-                recipeImage = drawable
-            )
-        } catch (e: Exception) {
-            Log.e("MyTag", "Error assets is null")
-            _recipeUiSt.value = null
+        recipesRepository.getRecipeById(recipeId) { recipe ->
+            if (recipe != null) {
+                _recipeUiSt.postValue(
+                    _recipeUiSt.value?.copy(
+                        recipe = recipe,
+                        isFavorite = getFavorites().contains(recipe.id.toString()),
+                        recipeImage = Drawable.createFromStream(
+                            recipe.imageUrl.let { application.assets?.open(it) },
+                            null
+                        )
+                    )
+                )
+            } else {
+                _recipeUiSt.postValue(
+                    _recipeUiSt.value?.copy(
+                        recipe = null,
+                        isFavorite = false,
+                        recipeImage = null
+                    )
+                )
+            }
         }
     }
 

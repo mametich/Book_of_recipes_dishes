@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -37,35 +38,34 @@ class FavoritesListFragment : Fragment() {
     }
 
     private fun initUI() {
-
         favoritesListViewModel.favoritesUiState.observe(viewLifecycleOwner) { newFavoritesListState ->
-            favoritesListAdapter.dataset = newFavoritesListState.listOfFavoriteRecipes
+            if (newFavoritesListState.listOfFavoriteRecipes != null) {
+                    favoritesListAdapter.updateDataset(newFavoritesListState.listOfFavoriteRecipes)
+                    binding.rvFavorites.adapter = favoritesListAdapter
 
-            if (newFavoritesListState.listOfFavoriteRecipes.isNotEmpty()) {
-                binding.rvFavorites.adapter = favoritesListAdapter
-            } else {
-                binding.rvFavorites.visibility = View.GONE
-                binding.tvYorNotAddRecipe.visibility = View.VISIBLE
+                } else {
+                    binding.rvFavorites.visibility = View.GONE
+                    binding.tvYorNotAddRecipe.visibility = View.VISIBLE
+                }
             }
+
+            favoritesListAdapter.setOnRecipeClickListener(object :
+                RecipesListAdapter.OnRecipeClickListener {
+                override fun onItemClick(recipeId: Int) {
+                    openRecipeByRecipeId(recipeId)
+                }
+            })
+            binding.ivFavorites.setImageResource(R.drawable.bcg_favorites)
         }
 
-        favoritesListAdapter.setOnRecipeClickListener(object :
-            RecipesListAdapter.OnRecipeClickListener {
-            override fun onItemClick(recipeId: Int) {
-                openRecipeByRecipeId(recipeId)
-            }
-        })
-        binding.ivFavorites.setImageResource(R.drawable.bcg_favorites)
-    }
+        private fun openRecipeByRecipeId(recipeId: Int) {
+            val action =
+                FavoritesListFragmentDirections.actionFavoritesListFragmentToRecipeFragment(recipeId)
+            findNavController().navigate(action)
+        }
 
-    private fun openRecipeByRecipeId(recipeId: Int) {
-        val action =
-            FavoritesListFragmentDirections.actionFavoritesListFragmentToRecipeFragment(recipeId)
-        findNavController().navigate(action)
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-}

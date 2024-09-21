@@ -51,15 +51,18 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.fragment.ktx)
 
-
+    //navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    //api
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
-
+    implementation(libs.retrofit)
     implementation(libs.kotlinx.serialization.json)
-
+    implementation (libs.squareup.converter.kotlinx.serialization)
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

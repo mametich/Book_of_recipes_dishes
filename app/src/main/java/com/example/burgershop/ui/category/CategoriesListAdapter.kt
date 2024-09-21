@@ -1,5 +1,6 @@
 package com.example.burgershop.ui.category
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,8 +15,14 @@ import com.example.burgershop.model.Category
 
 
 class CategoriesListAdapter(
-    var dataset: List<Category> = emptyList()
+    private var dataset: List<Category> = emptyList()
 ) : RecyclerView.Adapter<CategoriesListAdapter.CategoriesViewHolder>() {
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateDataset(newDataset: List<Category>) {
+        dataset = newDataset
+        notifyDataSetChanged()
+    }
 
     interface OnItemClickListener {
         fun onItemClick(categoryFromList: Category)
