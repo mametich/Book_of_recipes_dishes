@@ -3,7 +3,7 @@ package com.example.burgershop
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import com.example.burgershop.api.RecipeApiService
+import com.example.burgershop.data.api.RecipeApiService
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Recipe
 import kotlinx.serialization.json.Json

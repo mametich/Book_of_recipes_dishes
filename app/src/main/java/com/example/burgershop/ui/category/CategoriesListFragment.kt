@@ -39,8 +39,8 @@ class CategoriesListFragment : Fragment() {
 
     private fun initUI() {
         categoriesListViewModel.categoryListUiState.observe(viewLifecycleOwner) { newCategoryListUiState ->
-            if (newCategoryListUiState != null) {
-                newCategoryListUiState.listOfCategory?.let { categoriesListAdapter.updateDataset(it) }
+            if (newCategoryListUiState.listOfCategory != null) {
+                categoriesListAdapter.updateDataset(newCategoryListUiState.listOfCategory)
             } else {
                 Toast.makeText(context, "Ошибка получения данных", Toast.LENGTH_SHORT).show()
             }

@@ -1,4 +1,4 @@
-package com.example.burgershop.api
+package com.example.burgershop.data.api
 
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Recipe
