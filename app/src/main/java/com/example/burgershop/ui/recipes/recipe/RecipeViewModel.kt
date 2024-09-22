@@ -28,10 +28,7 @@ class RecipeViewModel(
                     _recipeUiSt.value?.copy(
                         recipe = recipe,
                         isFavorite = getFavorites().contains(recipe.id.toString()),
-                        recipeImage = Drawable.createFromStream(
-                            recipe.imageUrl.let { application.assets?.open(it) },
-                            null
-                        )
+                        recipeImage = recipe.imageUrl
                     )
                 )
             } else {
@@ -86,6 +83,6 @@ class RecipeViewModel(
         val recipe: Recipe? = null,
         val portionsCount: Int = 1,
         val isFavorite: Boolean = false,
-        val recipeImage: Drawable? = null,
+        val recipeImage: String? = null,
     )
 }

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.bumptech.glide.Glide
 import com.example.burgershop.RecipesRepository
 import com.example.burgershop.model.Recipe
 
@@ -41,9 +42,7 @@ class RecipesListViewModel(
                         _listOfRecipesUiState.value?.copy(
                             titleOfCategories = categories[categoryId].title,
                             imageUrl = categories[categoryId].imgUrl,
-                            categoryImage = Drawable.createFromStream(categories[categoryId].imgUrl.let { imgUrl ->
-                                application.assets?.open(imgUrl)
-                            }, null)
+                            categoryImage = categories[categoryId].title
                         )
                     )
                 }
@@ -54,7 +53,6 @@ class RecipesListViewModel(
                 _listOfRecipesUiState.value?.copy(
                     titleOfCategories = null,
                     imageUrl = null,
-                    categoryImage = null
                 )
             )
         }
@@ -62,7 +60,7 @@ class RecipesListViewModel(
 
     data class RecipesUiState(
         val listOfRecipes: List<Recipe>? = emptyList(),
-        val categoryImage: Drawable? = null,
+        val categoryImage: String? = null,
         val titleOfCategories: String? = "",
         val imageUrl: String? = "",
     )

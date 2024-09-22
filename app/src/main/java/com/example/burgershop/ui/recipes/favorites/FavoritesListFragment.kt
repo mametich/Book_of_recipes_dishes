@@ -42,7 +42,6 @@ class FavoritesListFragment : Fragment() {
             if (newFavoritesListState.listOfFavoriteRecipes != null) {
                     favoritesListAdapter.updateDataset(newFavoritesListState.listOfFavoriteRecipes)
                     binding.rvFavorites.adapter = favoritesListAdapter
-
                 } else {
                     binding.rvFavorites.visibility = View.GONE
                     binding.tvYorNotAddRecipe.visibility = View.VISIBLE

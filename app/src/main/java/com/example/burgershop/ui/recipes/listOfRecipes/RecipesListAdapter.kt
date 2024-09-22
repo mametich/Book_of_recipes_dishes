@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.burgershop.R
 import com.example.burgershop.databinding.ItemRecipeBinding
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Recipe
@@ -54,16 +56,16 @@ class RecipesListAdapter(
             recipeClickListener?.onItemClick(recipe.id)
         }
 
-        val drawable = try {
-            Drawable.createFromStream(
-                holder.imageView.context.assets.open(recipe.imageUrl), null
-            )
-        } catch (e: Exception) {
-            Log.d("!!!", "Image not found: ${recipe.imageUrl}")
-            null
-        }
-        holder.imageView.setImageDrawable(drawable)
+        Glide.with(holder.imageView.context)
+            .load("$URL_FOR_IMAGE${recipe.imageUrl}")
+            .error(R.drawable.img_error)
+            .placeholder(R.drawable.img_placeholder)
+            .into(holder.imageView)
     }
 
     override fun getItemCount(): Int = dataset.size
+
+    companion object {
+        private const val URL_FOR_IMAGE = "https://recipes.androidsprint.ru/api/images/"
+    }
 }
