@@ -1,5 +1,6 @@
 package com.example.burgershop.ui.recipes.recipe
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -19,15 +20,18 @@ class IngredientsAdapter(
 
         fun bind(ingredient: Ingredient, quantity: Int) {
             val bigDecimalQuantity = BigDecimal(quantity)
-            var countOfQuantity = BigDecimal(ingredient.quantity).multiply(bigDecimalQuantity)
-            if (countOfQuantity.scale() > 0) {
-                countOfQuantity = countOfQuantity.setScale(1, RoundingMode.HALF_UP)
-            }
-
-            binding.apply {
-                ingredientName.text = ingredient.description
-                ingredientUnitOfMeasure.text = ingredient.unitOfMeasure
-                ingredientQuantity.text = countOfQuantity.toPlainString()
+            try {
+                var countOfQuantity = BigDecimal(ingredient.quantity).multiply(bigDecimalQuantity)
+                if (countOfQuantity.scale() > 0) {
+                    countOfQuantity = countOfQuantity.setScale(1, RoundingMode.HALF_UP)
+                }
+                binding.apply {
+                    ingredientName.text = ingredient.description
+                    ingredientUnitOfMeasure.text = ingredient.unitOfMeasure
+                    ingredientQuantity.text = countOfQuantity.toPlainString()
+                }
+            } catch (e: NumberFormatException) {
+                Log.d("Error", "Invalid quantity format")
             }
         }
     }
