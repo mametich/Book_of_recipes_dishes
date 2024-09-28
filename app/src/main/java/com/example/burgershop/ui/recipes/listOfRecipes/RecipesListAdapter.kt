@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.burgershop.R
 import com.example.burgershop.databinding.ItemRecipeBinding
 import com.example.burgershop.model.Category
+import com.example.burgershop.model.Constants
 import com.example.burgershop.model.Recipe
 
 class RecipesListAdapter(
@@ -57,15 +58,11 @@ class RecipesListAdapter(
         }
 
         Glide.with(holder.imageView.context)
-            .load("$URL_FOR_IMAGE${recipe.imageUrl}")
+            .load("${Constants.URL_FOR_IMAGE}${recipe.imageUrl}")
             .error(R.drawable.img_error)
             .placeholder(R.drawable.img_placeholder)
             .into(holder.imageView)
     }
 
     override fun getItemCount(): Int = dataset.size
-
-    companion object {
-        private const val URL_FOR_IMAGE = "https://recipes.androidsprint.ru/api/images/"
-    }
 }

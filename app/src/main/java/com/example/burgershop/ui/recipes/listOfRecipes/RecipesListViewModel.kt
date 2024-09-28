@@ -36,13 +36,13 @@ class RecipesListViewModel(
                     )
                 }
             }
-            recipesRepository.getAllCategories { categories ->
-                if (categories.isNotEmpty()) {
+            recipesRepository.getCategoryById(categoryId) { category ->
+                if (category != null) {
                     _listOfRecipesUiState.postValue(
                         _listOfRecipesUiState.value?.copy(
-                            titleOfCategories = categories[categoryId].title,
-                            imageUrl = categories[categoryId].imgUrl,
-                            categoryImage = categories[categoryId].title
+                            titleOfCategories = category.title,
+                            imageUrl = category.imgUrl,
+                            categoryImage = category.title
                         )
                     )
                 }

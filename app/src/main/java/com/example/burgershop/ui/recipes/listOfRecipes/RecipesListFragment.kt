@@ -12,8 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.burgershop.R
 import com.example.burgershop.databinding.FragmentListRecipesBinding
-import com.example.burgershop.ui.category.CategoriesListAdapter
-import com.example.burgershop.ui.category.CategoriesListAdapter.Companion
+import com.example.burgershop.model.Constants
 
 class RecipesListFragment : Fragment() {
 
@@ -48,7 +47,7 @@ class RecipesListFragment : Fragment() {
                 recipesListAdapter.updateDataset(newRecipeListState.listOfRecipes)
                 binding.apply {
                     Glide.with(requireContext())
-                        .load("$URL_FOR_IMAGE${newRecipeListState.imageUrl}")
+                        .load("${Constants.URL_FOR_IMAGE}${newRecipeListState.imageUrl}")
                         .error(R.drawable.img_error)
                         .placeholder(R.drawable.img_placeholder)
                         .into(imageViewRecipes)
@@ -71,9 +70,5 @@ class RecipesListFragment : Fragment() {
         val action =
             RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipeId)
         findNavController().navigate(action)
-    }
-
-    companion object {
-        private const val URL_FOR_IMAGE = "https://recipes.androidsprint.ru/api/images/"
     }
 }

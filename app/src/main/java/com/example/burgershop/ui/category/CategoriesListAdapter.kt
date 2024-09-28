@@ -1,8 +1,6 @@
 package com.example.burgershop.ui.category
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.burgershop.R
 import com.example.burgershop.databinding.ItemCategoryBinding
 import com.example.burgershop.model.Category
-import kotlinx.coroutines.withContext
+import com.example.burgershop.model.Constants
 
 
 class CategoriesListAdapter(
@@ -59,15 +57,11 @@ class CategoriesListAdapter(
         holder.descriptionTextView.text = category.description
 
         Glide.with(holder.imageView.context)
-            .load("$URL_FOR_IMAGE${category.imgUrl}"  )
+            .load("${Constants.URL_FOR_IMAGE}${category.imgUrl}")
             .error(R.drawable.img_error)
             .placeholder(R.drawable.img_placeholder)
             .into(holder.imageView)
     }
 
     override fun getItemCount(): Int = dataset.size
-
-    companion object {
-        private const val URL_FOR_IMAGE = "https://recipes.androidsprint.ru/api/images/"
-    }
 }
