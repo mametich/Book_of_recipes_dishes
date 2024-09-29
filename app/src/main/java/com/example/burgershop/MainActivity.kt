@@ -3,6 +3,7 @@ package com.example.burgershop
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import com.example.burgershop.databinding.ActivityMainBinding
 
 
@@ -29,10 +30,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goOnCategoriesFragment() {
-        findNavController(R.id.nav_host_fragment).navigate(R.id.categoriesListFragment)
+        val navOptions = navOptions {
+            anim {
+                enter = R.anim.slide_in_right
+                exit = R.anim.slide_out_left
+                popEnter = R.anim.slide_in_left
+                popExit = R.anim.slide_out_right
+            }
+        }
+        findNavController(R.id.nav_host_fragment)
+            .navigate(
+                R.id.categoriesListFragment,
+                null,
+                navOptions
+            )
     }
 
     private fun goOnFavouritesFragment() {
-        findNavController(R.id.nav_host_fragment).navigate(R.id.favoritesListFragment)
+        val navOptions = navOptions {
+            anim {
+                enter = R.anim.slide_in_right
+                exit = R.anim.slide_out_left
+                popEnter = R.anim.slide_in_left
+                popExit = R.anim.slide_out_right
+            }
+        }
+        findNavController(R.id.nav_host_fragment)
+            .navigate(
+                R.id.favoritesListFragment,
+                null,
+                navOptions
+            )
     }
 }

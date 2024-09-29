@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
+import com.example.burgershop.R
 import com.example.burgershop.databinding.FragmentListCategoriesBinding
 import com.example.burgershop.model.Category
 
@@ -56,11 +58,19 @@ class CategoriesListFragment : Fragment() {
     }
 
     fun openRecipesByCategoryId(categoryFromList: Category) {
+        val navOptions = navOptions {
+            anim {
+                enter = R.anim.slide_in_right
+                exit = R.anim.slide_out_left
+                popEnter = R.anim.slide_in_left
+                popExit = R.anim.slide_out_right
+            }
+        }
         val action =
             CategoriesListFragmentDirections.actionCategoriesListFragmentToRecipesListFragment(
                 categoryFromList
             )
-        findNavController().navigate(action)
+        findNavController().navigate(action, navOptions)
     }
 
     override fun onDestroyView() {
