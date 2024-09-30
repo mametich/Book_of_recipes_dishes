@@ -68,16 +68,8 @@ class RecipesListFragment : Fragment() {
     }
 
     private fun openRecipeByRecipeId(recipeId: Int) {
-        val navOptions = navOptions {
-            anim {
-                enter = R.anim.slide_in_right
-                exit = R.anim.slide_out_left
-                popEnter = R.anim.slide_in_left
-                popExit = R.anim.slide_out_right
-            }
-        }
         val action =
             RecipesListFragmentDirections.actionRecipesListFragmentToRecipeFragment(recipeId)
-        findNavController().navigate(action, navOptions)
+        findNavController().navigate(action)
     }
 }

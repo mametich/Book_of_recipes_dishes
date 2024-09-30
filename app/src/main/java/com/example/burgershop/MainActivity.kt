@@ -14,6 +14,15 @@ class MainActivity : AppCompatActivity() {
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null")
 
+    private val navOptions = navOptions {
+        anim {
+            enter = R.anim.slide_in_right
+            exit = R.anim.slide_out_left
+            popEnter = R.anim.slide_in_left
+            popExit = R.anim.slide_out_right
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,14 +39,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goOnCategoriesFragment() {
-        val navOptions = navOptions {
-            anim {
-                enter = R.anim.slide_in_right
-                exit = R.anim.slide_out_left
-                popEnter = R.anim.slide_in_left
-                popExit = R.anim.slide_out_right
-            }
-        }
         findNavController(R.id.nav_host_fragment)
             .navigate(
                 R.id.categoriesListFragment,
@@ -47,14 +48,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goOnFavouritesFragment() {
-        val navOptions = navOptions {
-            anim {
-                enter = R.anim.slide_in_right
-                exit = R.anim.slide_out_left
-                popEnter = R.anim.slide_in_left
-                popExit = R.anim.slide_out_right
-            }
-        }
         findNavController(R.id.nav_host_fragment)
             .navigate(
                 R.id.favoritesListFragment,
