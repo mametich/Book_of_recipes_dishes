@@ -6,9 +6,11 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.example.burgershop.RecipesRepository
 import com.example.burgershop.model.Recipe
+import kotlinx.coroutines.launch
 
 class RecipesListViewModel(
     private val application: Application
@@ -21,30 +23,34 @@ class RecipesListViewModel(
 
     fun openRecipesByCategoryId(categoryId: Int) {
         try {
-            recipesRepository.getRecipesById(categoryId) { recipes ->
-                if (recipes.isNotEmpty()) {
-                    _listOfRecipesUiState.postValue(
-                        _listOfRecipesUiState.value?.copy(
-                            listOfRecipes = recipes
+            viewModelScope.launch {
+                recipesRepository.getRecipesById(categoryId) { recipes ->
+                    if (recipes.isNotEmpty()) {
+                        _listOfRecipesUiState.postValue(
+                            _listOfRecipesUiState.value?.copy(
+                                listOfRecipes = recipes
+                            )
                         )
-                    )
-                } else {
-                    _listOfRecipesUiState.postValue(
-                        _listOfRecipesUiState.value?.copy(
-                            listOfRecipes = null
+                    } else {
+                        _listOfRecipesUiState.postValue(
+                            _listOfRecipesUiState.value?.copy(
+                                listOfRecipes = null
+                            )
                         )
-                    )
+                    }
                 }
             }
-            recipesRepository.getCategoryById(categoryId) { category ->
-                if (category != null) {
-                    _listOfRecipesUiState.postValue(
-                        _listOfRecipesUiState.value?.copy(
-                            titleOfCategories = category.title,
-                            imageUrl = category.imgUrl,
-                            categoryImage = category.title
+            viewModelScope.launch {
+                recipesRepository.getCategoryById(categoryId) { category ->
+                    if (category != null) {
+                        _listOfRecipesUiState.postValue(
+                            _listOfRecipesUiState.value?.copy(
+                                titleOfCategories = category.title,
+                                imageUrl = category.imgUrl,
+                                categoryImage = category.title
+                            )
                         )
-                    )
+                    }
                 }
             }
         } catch (e: Exception) {

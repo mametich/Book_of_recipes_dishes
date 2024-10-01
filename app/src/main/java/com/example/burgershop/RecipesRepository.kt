@@ -6,6 +6,8 @@ import com.example.burgershop.data.api.RecipeApiService
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Constants
 import com.example.burgershop.model.Recipe
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -17,8 +19,6 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 
 class RecipesRepository {
-
-    private val executorService = MyApplication().executorService
 
     private val contentType = Constants.CONTENT_TYPE.toMediaType()
     private val resultHandler = Handler(Looper.getMainLooper())
@@ -41,8 +41,8 @@ class RecipesRepository {
         retrofit.create(RecipeApiService::class.java)
 
 
-    fun getAllCategories(callback: (List<Category>) -> Unit) {
-        executorService.execute {
+    suspend fun getAllCategories(callback: (List<Category>) -> Unit) {
+        withContext(Dispatchers.IO) {
             try {
                 val responseCall: Call<List<Category>> = serviceApi.getCategories()
                 val categoryResponse: Response<List<Category>>? = responseCall.execute()
@@ -61,8 +61,8 @@ class RecipesRepository {
         }
     }
 
-    fun getRecipesById(categoryId: Int, callback: (List<Recipe>) -> Unit) {
-        executorService.execute {
+    suspend fun getRecipesById(categoryId: Int, callback: (List<Recipe>) -> Unit) {
+        withContext(Dispatchers.IO) {
             try {
                 val recipesCall = serviceApi.getRecipesById(categoryId)
                 val recipesResponse = recipesCall.execute()
@@ -81,8 +81,8 @@ class RecipesRepository {
         }
     }
 
-    fun getRecipeById(id: Int, callback: (Recipe?) -> Unit) {
-        executorService.execute {
+    suspend fun getRecipeById(id: Int, callback: (Recipe?) -> Unit) {
+        withContext(Dispatchers.IO) {
             try {
                 val recipeCall = serviceApi.getRecipeById(id)
                 val recipeResponse = recipeCall.execute()
@@ -101,8 +101,8 @@ class RecipesRepository {
         }
     }
 
-    fun getRecipesByIds(ids: String, callback: (List<Recipe>) -> Unit) {
-        executorService.execute {
+    suspend fun getRecipesByIds(ids: String, callback: (List<Recipe>) -> Unit) {
+        withContext(Dispatchers.IO) {
             try {
                 val recipesCall = serviceApi.getRecipesByIds(ids)
                 val recipesResponse = recipesCall.execute()
@@ -124,8 +124,8 @@ class RecipesRepository {
         }
     }
 
-    fun getCategoryById(categoryId: Int, callback: (Category?) -> Unit) {
-        executorService.execute {
+    suspend fun getCategoryById(categoryId: Int, callback: (Category?) -> Unit) {
+        withContext(Dispatchers.IO) {
             try {
                 val recipesCallById = serviceApi.getCategoryById(categoryId)
                 val recipesByIdResponse = recipesCallById.execute()
