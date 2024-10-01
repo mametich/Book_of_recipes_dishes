@@ -7,13 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.burgershop.R
 
 import com.example.burgershop.databinding.FragmentRecipeBinding
+import com.example.burgershop.model.Constants
 import com.google.android.material.divider.MaterialDividerItemDecoration
 
 class RecipeFragment : Fragment() {
@@ -88,8 +89,13 @@ class RecipeFragment : Fragment() {
                 }
 
                 binding.apply {
-                    imageViewRecipes.setImageDrawable(newRecipeUiState.recipeImage)
+                    Glide.with(requireContext())
+                        .load("${Constants.URL_FOR_IMAGE}${newRecipeUiState.recipeImage}")
+                        .error(R.drawable.img_error)
+                        .placeholder(R.drawable.img_placeholder)
+                        .into(imageViewRecipes)
                     titleOfRecipe.text = newRecipeUiState.recipe.title
+
                     if (newRecipeUiState.isFavorite) {
                         ivHeartFavourites.setImageResource(R.drawable.ic_heart_favourites)
                     } else {

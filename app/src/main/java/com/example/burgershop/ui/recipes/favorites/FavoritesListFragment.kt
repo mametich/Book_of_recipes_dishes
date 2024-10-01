@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.example.burgershop.R
 import com.example.burgershop.databinding.FragmentListFavoritesBinding
 import com.example.burgershop.ui.recipes.listOfRecipes.RecipesListAdapter
@@ -42,7 +42,6 @@ class FavoritesListFragment : Fragment() {
             if (newFavoritesListState.listOfFavoriteRecipes != null) {
                     favoritesListAdapter.updateDataset(newFavoritesListState.listOfFavoriteRecipes)
                     binding.rvFavorites.adapter = favoritesListAdapter
-
                 } else {
                     binding.rvFavorites.visibility = View.GONE
                     binding.tvYorNotAddRecipe.visibility = View.VISIBLE

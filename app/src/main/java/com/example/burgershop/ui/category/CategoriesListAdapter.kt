@@ -1,17 +1,17 @@
 package com.example.burgershop.ui.category
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.burgershop.R
 import com.example.burgershop.databinding.ItemCategoryBinding
 import com.example.burgershop.model.Category
+import com.example.burgershop.model.Constants
 
 
 class CategoriesListAdapter(
@@ -56,15 +56,11 @@ class CategoriesListAdapter(
         holder.titleTextView.text = category.title
         holder.descriptionTextView.text = category.description
 
-        val drawable = try {
-            Drawable.createFromStream(
-                holder.imageView.context.assets.open(category.imgUrl), null
-            )
-        } catch (e: Exception) {
-            Log.d("!!!", "Image not found: ${category.imgUrl}")
-            null
-        }
-        holder.imageView.setImageDrawable(drawable)
+        Glide.with(holder.imageView.context)
+            .load("${Constants.URL_FOR_IMAGE}${category.imgUrl}")
+            .error(R.drawable.img_error)
+            .placeholder(R.drawable.img_placeholder)
+            .into(holder.imageView)
     }
 
     override fun getItemCount(): Int = dataset.size

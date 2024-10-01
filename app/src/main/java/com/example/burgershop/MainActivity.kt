@@ -3,6 +3,7 @@ package com.example.burgershop
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import com.example.burgershop.databinding.ActivityMainBinding
 
 
@@ -12,6 +13,15 @@ class MainActivity : AppCompatActivity() {
     private val binding
         get() = _binding
             ?: throw IllegalStateException("Binding for ActivityMainBinding must not be null")
+
+    private val navOptions = navOptions {
+        anim {
+            enter = R.anim.slide_in_right
+            exit = R.anim.slide_out_left
+            popEnter = R.anim.slide_in_left
+            popExit = R.anim.slide_out_right
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +39,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goOnCategoriesFragment() {
-        findNavController(R.id.nav_host_fragment).navigate(R.id.categoriesListFragment)
+        findNavController(R.id.nav_host_fragment)
+            .navigate(
+                R.id.categoriesListFragment,
+                null,
+                navOptions
+            )
     }
 
     private fun goOnFavouritesFragment() {
-        findNavController(R.id.nav_host_fragment).navigate(R.id.favoritesListFragment)
+        findNavController(R.id.nav_host_fragment)
+            .navigate(
+                R.id.favoritesListFragment,
+                null,
+                navOptions
+            )
     }
 }

@@ -3,13 +3,11 @@ package com.example.burgershop.ui.recipes.favorites
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.burgershop.RecipesRepository
-import com.example.burgershop.SET_ID
-import com.example.burgershop.SHARED_PREF_BURGER_SHOP
+import com.example.burgershop.model.Constants
 import com.example.burgershop.model.Recipe
 
 
@@ -46,9 +44,9 @@ class FavoritesListViewModel(
 
     private fun getFavorites(): MutableSet<String> {
         val sharedPref = application.getSharedPreferences(
-            SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
+            Constants.SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
         )
-        return HashSet(sharedPref?.getStringSet(SET_ID, HashSet<String>()) ?: mutableSetOf())
+        return HashSet(sharedPref?.getStringSet(Constants.SET_ID, HashSet<String>()) ?: mutableSetOf())
     }
 
     data class FavoritesUiState(

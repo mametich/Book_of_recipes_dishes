@@ -2,9 +2,9 @@ package com.example.burgershop
 
 import android.os.Handler
 import android.os.Looper
-import android.widget.Toast
 import com.example.burgershop.data.api.RecipeApiService
 import com.example.burgershop.model.Category
+import com.example.burgershop.model.Constants
 import com.example.burgershop.model.Recipe
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -20,7 +20,7 @@ class RecipesRepository {
 
     private val executorService = MyApplication().executorService
 
-    private val contentType = CONTENT_TYPE.toMediaType()
+    private val contentType = Constants.CONTENT_TYPE.toMediaType()
     private val resultHandler = Handler(Looper.getMainLooper())
 
     private val logger = HttpLoggingInterceptor().apply {
@@ -32,7 +32,7 @@ class RecipesRepository {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(Constants.BASE_URL)
         .addConverterFactory(Json.asConverterFactory(contentType))
         .client(client)
         .build()
@@ -124,9 +124,27 @@ class RecipesRepository {
         }
     }
 
-    companion object {
-        private const val BASE_URL = "https://recipes.androidsprint.ru/api/"
-        private const val CONTENT_TYPE = "application/json"
+    fun getCategoryById(categoryId: Int, callback: (Category?) -> Unit) {
+        executorService.execute {
+            try {
+                val recipesCallById = serviceApi.getCategoryById(categoryId)
+                val recipesByIdResponse = recipesCallById.execute()
+
+                if (recipesByIdResponse.isSuccessful && recipesByIdResponse.body() != null) {
+                    resultHandler.post {
+                        callback(recipesByIdResponse.body())
+                    }
+                } else {
+                    resultHandler.post {
+                        callback(null)
+                    }
+                }
+            } catch (e: Exception) {
+                resultHandler.post {
+                    callback(null)
+                }
+            }
+        }
     }
 }
 

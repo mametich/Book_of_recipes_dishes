@@ -2,14 +2,11 @@ package com.example.burgershop.ui.recipes.recipe
 
 import android.app.Application
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.burgershop.RecipesRepository
-import com.example.burgershop.SET_ID
-import com.example.burgershop.SHARED_PREF_BURGER_SHOP
+import com.example.burgershop.model.Constants
 import com.example.burgershop.model.Recipe
 
 class RecipeViewModel(
@@ -28,10 +25,7 @@ class RecipeViewModel(
                     _recipeUiSt.value?.copy(
                         recipe = recipe,
                         isFavorite = getFavorites().contains(recipe.id.toString()),
-                        recipeImage = Drawable.createFromStream(
-                            recipe.imageUrl.let { application.assets?.open(it) },
-                            null
-                        )
+                        recipeImage = recipe.imageUrl
                     )
                 )
             } else {
@@ -67,17 +61,17 @@ class RecipeViewModel(
 
     private fun getFavorites(): MutableSet<String> {
         val sharedPr = application.getSharedPreferences(
-            SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
+            Constants.SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
         )
-        return HashSet(sharedPr.getStringSet(SET_ID, HashSet<String>()) ?: mutableSetOf())
+        return HashSet(sharedPr.getStringSet(Constants.SET_ID, HashSet<String>()) ?: mutableSetOf())
     }
 
     private fun saveFavorites(setId: Set<String>) {
         val sharedPref = application.getSharedPreferences(
-            SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
+            Constants.SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
         )
         with(sharedPref.edit()) {
-            putStringSet(SET_ID, setId)
+            putStringSet(Constants.SET_ID, setId)
             apply()
         }
     }
@@ -86,6 +80,6 @@ class RecipeViewModel(
         val recipe: Recipe? = null,
         val portionsCount: Int = 1,
         val isFavorite: Boolean = false,
-        val recipeImage: Drawable? = null,
+        val recipeImage: String? = null,
     )
 }

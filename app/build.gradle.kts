@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.fragment.ktx)
+    implementation (libs.glide)
 
     //navigation
     implementation(libs.androidx.navigation.fragment.ktx)
