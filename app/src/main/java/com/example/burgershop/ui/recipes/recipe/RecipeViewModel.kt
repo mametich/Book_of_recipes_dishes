@@ -5,9 +5,11 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.burgershop.RecipesRepository
 import com.example.burgershop.model.Constants
 import com.example.burgershop.model.Recipe
+import kotlinx.coroutines.launch
 
 class RecipeViewModel(
     private val application: Application
@@ -19,7 +21,8 @@ class RecipeViewModel(
     val recipeUiSt: LiveData<RecipeUiState> = _recipeUiSt
 
     fun loadRecipe(recipeId: Int) {
-        recipesRepository.getRecipeById(recipeId) { recipe ->
+        viewModelScope.launch {
+            val recipe = recipesRepository.getRecipeById(recipeId)
             if (recipe != null) {
                 _recipeUiSt.postValue(
                     _recipeUiSt.value?.copy(

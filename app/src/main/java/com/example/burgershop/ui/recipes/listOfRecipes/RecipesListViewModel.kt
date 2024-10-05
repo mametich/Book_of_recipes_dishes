@@ -6,9 +6,11 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.example.burgershop.RecipesRepository
 import com.example.burgershop.model.Recipe
+import kotlinx.coroutines.launch
 
 class RecipesListViewModel(
     private val application: Application
@@ -21,7 +23,8 @@ class RecipesListViewModel(
 
     fun openRecipesByCategoryId(categoryId: Int) {
         try {
-            recipesRepository.getRecipesById(categoryId) { recipes ->
+            viewModelScope.launch {
+                val recipes = recipesRepository.getRecipesById(categoryId)
                 if (recipes.isNotEmpty()) {
                     _listOfRecipesUiState.postValue(
                         _listOfRecipesUiState.value?.copy(
@@ -36,7 +39,9 @@ class RecipesListViewModel(
                     )
                 }
             }
-            recipesRepository.getCategoryById(categoryId) { category ->
+
+            viewModelScope.launch {
+                val category = recipesRepository.getCategoryById(categoryId)
                 if (category != null) {
                     _listOfRecipesUiState.postValue(
                         _listOfRecipesUiState.value?.copy(

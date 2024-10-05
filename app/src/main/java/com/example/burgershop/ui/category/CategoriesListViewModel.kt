@@ -5,8 +5,10 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.burgershop.RecipesRepository
 import com.example.burgershop.model.Category
+import kotlinx.coroutines.launch
 
 class CategoriesListViewModel(
     private val application: Application
@@ -18,7 +20,8 @@ class CategoriesListViewModel(
     val categoryListUiState: LiveData<CategoriesListUiState> = _categoryListUiState
 
     fun loadListOfCategory() {
-        recipesRepository.getAllCategories { categories ->
+        viewModelScope.launch {
+            val categories = recipesRepository.getAllCategories()
             if (categories.isNotEmpty()) {
                 _categoryListUiState.postValue(
                     _categoryListUiState.value?.copy(
@@ -35,8 +38,8 @@ class CategoriesListViewModel(
             }
         }
     }
-
-    data class CategoriesListUiState(
-        val listOfCategory: List<Category>? = emptyList()
-    )
 }
+
+data class CategoriesListUiState(
+    val listOfCategory: List<Category>? = emptyList()
+)
