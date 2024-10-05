@@ -41,110 +41,86 @@ class RecipesRepository {
         retrofit.create(RecipeApiService::class.java)
 
 
-    suspend fun getAllCategories(callback: (List<Category>) -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun getAllCategories(): List<Category> {
+        return withContext(Dispatchers.IO) {
             try {
                 val responseCall: Call<List<Category>> = serviceApi.getCategories()
                 val categoryResponse: Response<List<Category>>? = responseCall.execute()
                 if (categoryResponse?.isSuccessful == true && categoryResponse.body() != null) {
-                    resultHandler.post {
-                        callback(categoryResponse.body() ?: emptyList())
-                    }
+                    categoryResponse.body() ?: emptyList()
                 } else {
-                    resultHandler.post {
-                        callback(emptyList())
-                    }
+                    emptyList()
                 }
             } catch (e: Exception) {
-                callback(emptyList())
+                emptyList()
             }
         }
     }
 
-    suspend fun getRecipesById(categoryId: Int, callback: (List<Recipe>) -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun getRecipesById(categoryId: Int): List<Recipe> {
+        return withContext(Dispatchers.IO) {
             try {
                 val recipesCall = serviceApi.getRecipesById(categoryId)
                 val recipesResponse = recipesCall.execute()
                 if (recipesResponse.isSuccessful && recipesResponse.body() != null) {
-                    resultHandler.post {
-                        callback(recipesResponse.body() ?: emptyList())
-                    }
+                    recipesResponse.body() ?: emptyList()
                 } else {
-                    resultHandler.post {
-                        callback(emptyList())
-                    }
+                    emptyList()
                 }
             } catch (e: Exception) {
-                callback(emptyList())
+                emptyList()
             }
         }
     }
 
-    suspend fun getRecipeById(id: Int, callback: (Recipe?) -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun getRecipeById(id: Int): Recipe? {
+        return withContext(Dispatchers.IO) {
             try {
                 val recipeCall = serviceApi.getRecipeById(id)
                 val recipeResponse = recipeCall.execute()
                 if (recipeResponse.isSuccessful && recipeResponse.body() != null) {
-                    resultHandler.post {
-                        callback(recipeResponse.body())
-                    }
+                    recipeResponse.body()
                 } else {
-                    resultHandler.post {
-                        callback(null)
-                    }
+                    null
                 }
             } catch (e: Exception) {
-                callback(null)
+                null
             }
         }
     }
 
-    suspend fun getRecipesByIds(ids: String, callback: (List<Recipe>) -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun getRecipesByIds(ids: String): List<Recipe> {
+        return withContext(Dispatchers.IO) {
             try {
                 val recipesCall = serviceApi.getRecipesByIds(ids)
                 val recipesResponse = recipesCall.execute()
-
                 if (recipesResponse.isSuccessful && recipesResponse.body()?.isNotEmpty() == true) {
-                    resultHandler.post {
-                        callback(recipesResponse.body() ?: emptyList())
-                    }
+                    recipesResponse.body() ?: emptyList()
                 } else {
-                    resultHandler.post {
-                        callback(emptyList())
-                    }
+                    emptyList()
                 }
             } catch (e: Exception) {
-                resultHandler.post {
-                    callback(emptyList())
-                }
+                emptyList()
             }
         }
     }
 
-    suspend fun getCategoryById(categoryId: Int, callback: (Category?) -> Unit) {
-        withContext(Dispatchers.IO) {
+    suspend fun getCategoryById(categoryId: Int): Category? {
+        return withContext(Dispatchers.IO) {
             try {
                 val recipesCallById = serviceApi.getCategoryById(categoryId)
                 val recipesByIdResponse = recipesCallById.execute()
-
                 if (recipesByIdResponse.isSuccessful && recipesByIdResponse.body() != null) {
-                    resultHandler.post {
-                        callback(recipesByIdResponse.body())
-                    }
+                    recipesByIdResponse.body()
                 } else {
-                    resultHandler.post {
-                        callback(null)
-                    }
+                    null
                 }
             } catch (e: Exception) {
-                resultHandler.post {
-                    callback(null)
-                }
+                null
             }
         }
     }
 }
+
+
 

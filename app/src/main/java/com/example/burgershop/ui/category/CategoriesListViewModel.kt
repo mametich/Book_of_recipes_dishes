@@ -21,26 +21,25 @@ class CategoriesListViewModel(
 
     fun loadListOfCategory() {
         viewModelScope.launch {
-            recipesRepository.getAllCategories { categories ->
-                if (categories.isNotEmpty()) {
-                    _categoryListUiState.postValue(
-                        _categoryListUiState.value?.copy(
-                            listOfCategory = categories
-                        )
+            val categories = recipesRepository.getAllCategories()
+            if (categories.isNotEmpty()) {
+                _categoryListUiState.postValue(
+                    _categoryListUiState.value?.copy(
+                        listOfCategory = categories
                     )
-                } else {
-                    Log.e("MyTag", "No categories found or categories are null")
-                    _categoryListUiState.postValue(
-                        _categoryListUiState.value?.copy(
-                            listOfCategory = null
-                        )
+                )
+            } else {
+                Log.e("MyTag", "No categories found or categories are null")
+                _categoryListUiState.postValue(
+                    _categoryListUiState.value?.copy(
+                        listOfCategory = null
                     )
-                }
+                )
             }
         }
     }
-
-    data class CategoriesListUiState(
-        val listOfCategory: List<Category>? = emptyList()
-    )
 }
+
+data class CategoriesListUiState(
+    val listOfCategory: List<Category>? = emptyList()
+)

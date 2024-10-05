@@ -24,33 +24,32 @@ class RecipesListViewModel(
     fun openRecipesByCategoryId(categoryId: Int) {
         try {
             viewModelScope.launch {
-                recipesRepository.getRecipesById(categoryId) { recipes ->
-                    if (recipes.isNotEmpty()) {
-                        _listOfRecipesUiState.postValue(
-                            _listOfRecipesUiState.value?.copy(
-                                listOfRecipes = recipes
-                            )
+                val recipes = recipesRepository.getRecipesById(categoryId)
+                if (recipes.isNotEmpty()) {
+                    _listOfRecipesUiState.postValue(
+                        _listOfRecipesUiState.value?.copy(
+                            listOfRecipes = recipes
                         )
-                    } else {
-                        _listOfRecipesUiState.postValue(
-                            _listOfRecipesUiState.value?.copy(
-                                listOfRecipes = null
-                            )
+                    )
+                } else {
+                    _listOfRecipesUiState.postValue(
+                        _listOfRecipesUiState.value?.copy(
+                            listOfRecipes = null
                         )
-                    }
+                    )
                 }
             }
+
             viewModelScope.launch {
-                recipesRepository.getCategoryById(categoryId) { category ->
-                    if (category != null) {
-                        _listOfRecipesUiState.postValue(
-                            _listOfRecipesUiState.value?.copy(
-                                titleOfCategories = category.title,
-                                imageUrl = category.imgUrl,
-                                categoryImage = category.title
-                            )
+                val category = recipesRepository.getCategoryById(categoryId)
+                if (category != null) {
+                    _listOfRecipesUiState.postValue(
+                        _listOfRecipesUiState.value?.copy(
+                            titleOfCategories = category.title,
+                            imageUrl = category.imgUrl,
+                            categoryImage = category.title
                         )
-                    }
+                    )
                 }
             }
         } catch (e: Exception) {

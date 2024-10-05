@@ -26,32 +26,33 @@ class FavoritesListViewModel(
         val setOfIds = getFavorites().joinToString(",")
         try {
             viewModelScope.launch {
-                recipesRepository.getRecipesByIds(setOfIds) { recipes ->
-                    if (recipes.isNotEmpty()) {
-                        _favoritesUiState.postValue(
-                            _favoritesUiState.value?.copy(
-                                listOfFavoriteRecipes = recipes
-                            )
+                val recipes = recipesRepository.getRecipesByIds(setOfIds)
+                if (recipes.isNotEmpty()) {
+                    _favoritesUiState.postValue(
+                        _favoritesUiState.value?.copy(
+                            listOfFavoriteRecipes = recipes
                         )
-                    }
+                    )
                 }
             }
-            } catch (e: Exception) {
-                Log.e("MyTag", "Error favorites is null")
-                _favoritesUiState.postValue(
-                    _favoritesUiState.value?.copy(
-                        listOfFavoriteRecipes = null
-                    )
+        } catch (e: Exception) {
+            Log.e("MyTag", "Error favorites is null")
+            _favoritesUiState.postValue(
+                _favoritesUiState.value?.copy(
+                    listOfFavoriteRecipes = null
                 )
-            }
+            )
         }
+    }
 
 
     private fun getFavorites(): MutableSet<String> {
         val sharedPref = application.getSharedPreferences(
             Constants.SHARED_PREF_BURGER_SHOP, Context.MODE_PRIVATE
         )
-        return HashSet(sharedPref?.getStringSet(Constants.SET_ID, HashSet<String>()) ?: mutableSetOf())
+        return HashSet(
+            sharedPref?.getStringSet(Constants.SET_ID, HashSet<String>()) ?: mutableSetOf()
+        )
     }
 
     data class FavoritesUiState(

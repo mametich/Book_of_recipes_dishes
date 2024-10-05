@@ -22,24 +22,23 @@ class RecipeViewModel(
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
-            recipesRepository.getRecipeById(recipeId) { recipe ->
-                if (recipe != null) {
-                    _recipeUiSt.postValue(
-                        _recipeUiSt.value?.copy(
-                            recipe = recipe,
-                            isFavorite = getFavorites().contains(recipe.id.toString()),
-                            recipeImage = recipe.imageUrl
-                        )
+            val recipe = recipesRepository.getRecipeById(recipeId)
+            if (recipe != null) {
+                _recipeUiSt.postValue(
+                    _recipeUiSt.value?.copy(
+                        recipe = recipe,
+                        isFavorite = getFavorites().contains(recipe.id.toString()),
+                        recipeImage = recipe.imageUrl
                     )
-                } else {
-                    _recipeUiSt.postValue(
-                        _recipeUiSt.value?.copy(
-                            recipe = null,
-                            isFavorite = false,
-                            recipeImage = null
-                        )
+                )
+            } else {
+                _recipeUiSt.postValue(
+                    _recipeUiSt.value?.copy(
+                        recipe = null,
+                        isFavorite = false,
+                        recipeImage = null
                     )
-                }
+                )
             }
         }
     }
