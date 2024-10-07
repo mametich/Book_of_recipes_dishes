@@ -14,14 +14,15 @@ class CategoriesListViewModel(
     private val application: Application
 ) : AndroidViewModel(application) {
 
-    private var recipesRepository = RecipesRepository()
+    private var recipesRepository = RecipesRepository(application.baseContext)
 
     private val _categoryListUiState = MutableLiveData(CategoriesListUiState())
     val categoryListUiState: LiveData<CategoriesListUiState> = _categoryListUiState
 
     fun loadListOfCategory() {
         viewModelScope.launch {
-            val categories = recipesRepository.getAllCategories()
+            val categories = recipesRepository.getCategoriesFromCache()
+
             if (categories.isNotEmpty()) {
                 _categoryListUiState.postValue(
                     _categoryListUiState.value?.copy(
