@@ -21,7 +21,6 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 class RecipesRepository {
 
     private val contentType = Constants.CONTENT_TYPE.toMediaType()
-    private val resultHandler = Handler(Looper.getMainLooper())
 
     private val logger = HttpLoggingInterceptor().apply {
         setLevel(HttpLoggingInterceptor.Level.BODY)
