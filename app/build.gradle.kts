@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.androidx.navigation.safeargs)
-    kotlin("plugin.serialization") version "2.0.20"
+    alias(libs.plugins.serialization)
     alias(libs.plugins.ksp)
 
 }
