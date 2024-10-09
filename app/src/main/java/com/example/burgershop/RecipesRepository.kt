@@ -1,7 +1,14 @@
 package com.example.burgershop
 
+import android.app.Application
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.example.burgershop.data.CategoriesDao
+import com.example.burgershop.data.CategoryDatabase
 import com.example.burgershop.data.api.RecipeApiService
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Constants
@@ -18,8 +25,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 
-class RecipesRepository {
-
+class RecipesRepository(
+    context: Context
+) {
     private val contentType = Constants.CONTENT_TYPE.toMediaType()
 
     private val logger = HttpLoggingInterceptor().apply {
@@ -39,6 +47,13 @@ class RecipesRepository {
     private val serviceApi: RecipeApiService =
         retrofit.create(RecipeApiService::class.java)
 
+    private val categoryDao: CategoriesDao = CategoryDatabase.getDatabase(context.applicationContext).categoriesDao()
+
+    suspend fun getCategoriesFromCache() : List<Category> {
+        val categories = getAllCategories()
+        categoryDao.addCategory(categories)
+        return categoryDao.getAllCategories()
+    }
 
     suspend fun getAllCategories(): List<Category> {
         return withContext(Dispatchers.IO) {
