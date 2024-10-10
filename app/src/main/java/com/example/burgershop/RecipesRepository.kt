@@ -9,6 +9,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.burgershop.data.CategoriesDao
 import com.example.burgershop.data.CategoryDatabase
+import com.example.burgershop.data.RecipesDao
 import com.example.burgershop.data.api.RecipeApiService
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Constants
@@ -48,6 +49,7 @@ class RecipesRepository(
         retrofit.create(RecipeApiService::class.java)
 
     private val categoryDao: CategoriesDao = CategoryDatabase.getDatabase(context.applicationContext).categoriesDao()
+    private val recipesDao: RecipesDao = CategoryDatabase.getDatabase(context.applicationContext).recipesDao()
 
     suspend fun getCategoriesFromCache() : List<Category> {
         val categories = getAllCategories()
@@ -55,7 +57,13 @@ class RecipesRepository(
         return categoryDao.getAllCategories()
     }
 
-    suspend fun getAllCategories(): List<Category> {
+    suspend fun getRecipesFromCache(id: Int) : List<Recipe> {
+        val recipes = getRecipesById(id)
+        recipesDao.addRecipes(recipes)
+        return recipesDao.getAllRecipes()
+    }
+
+    private suspend fun getAllCategories(): List<Category> {
         return withContext(Dispatchers.IO) {
             try {
                 val responseCall: Call<List<Category>> = serviceApi.getCategories()
