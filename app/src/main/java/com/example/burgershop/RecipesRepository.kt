@@ -52,12 +52,14 @@ class RecipesRepository(
     private val recipesDao: RecipesDao = CategoryDatabase.getDatabase(context.applicationContext).recipesDao()
 
     suspend fun getCategoriesFromCache() : List<Category> {
+        categoryDao.deleteAll()
         val categories = getAllCategories()
         categoryDao.addCategory(categories)
         return categoryDao.getAllCategories()
     }
 
     suspend fun getRecipesFromCache(id: Int) : List<Recipe> {
+        recipesDao.deleteAllRecipes()
         val recipes = getRecipesById(id)
         recipesDao.addRecipes(recipes)
         return recipesDao.getAllRecipes()
