@@ -9,7 +9,7 @@ import com.example.burgershop.model.Category
 import com.example.burgershop.model.Constants
 import com.example.burgershop.model.Recipe
 
-@Database(entities = [Category::class, Recipe::class], version = 1, exportSchema = false)
+@Database(entities = [Category::class, Recipe::class], version = 2, exportSchema = false)
 @TypeConverters(IngredientsConverter::class, MethodConverter::class)
 
 abstract class CategoryDatabase : RoomDatabase() {

@@ -1,7 +1,6 @@
 package com.example.burgershop.data
 
 import androidx.room.TypeConverter
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -14,6 +13,7 @@ class MethodConverter {
         return json.encodeToString(listOfMethod)
     }
 
+    @TypeConverter
     fun toMethod(methodString: String) : List<String> {
         return json.decodeFromString(methodString)
     }
