@@ -24,8 +24,7 @@ class RecipesListViewModel(
     fun openRecipesByCategoryId(categoryId: Int) {
         try {
             viewModelScope.launch {
-
-                val recipes = recipesRepository.getRecipesFromCache(categoryId)
+                val recipes = recipesRepository.getRecipes(categoryId)
                 if (recipes.isNotEmpty()) {
                     _listOfRecipesUiState.postValue(
                         _listOfRecipesUiState.value?.copy(

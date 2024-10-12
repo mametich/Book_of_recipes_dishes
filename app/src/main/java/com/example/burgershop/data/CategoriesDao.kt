@@ -10,11 +10,9 @@ import com.example.burgershop.model.Category
 interface CategoriesDao {
 
     @Query("SELECT * FROM Category")
-    suspend fun getAllCategories() : List<Category>
+    suspend fun getAllCategoriesFromCache() : List<Category>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCategory(listOfCategory: List<Category>)
 
-    @Query("DELETE FROM Category")
-    suspend fun deleteAll()
 }

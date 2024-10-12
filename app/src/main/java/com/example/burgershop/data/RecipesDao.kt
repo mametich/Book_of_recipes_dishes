@@ -9,13 +9,10 @@ import com.example.burgershop.model.Recipe
 @Dao
 interface RecipesDao {
 
-    @Query("SELECT * FROM Recipe")
-    suspend fun getAllRecipes() : List<Recipe>
+    @Query("SELECT * FROM Recipe WHERE categoryId=:categoryId")
+    suspend fun getRecipesById(categoryId: Int) : List<Recipe>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addRecipes(listOfRecipes: List<Recipe>)
-
-    @Query("DELETE FROM Recipe")
-    suspend fun deleteAllRecipes()
 
 }

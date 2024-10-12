@@ -48,24 +48,25 @@ class RecipesRepository(
     private val serviceApi: RecipeApiService =
         retrofit.create(RecipeApiService::class.java)
 
-    private val categoryDao: CategoriesDao = CategoryDatabase.getDatabase(context.applicationContext).categoriesDao()
-    private val recipesDao: RecipesDao = CategoryDatabase.getDatabase(context.applicationContext).recipesDao()
+    private val categoryDao: CategoriesDao =
+        CategoryDatabase.getDatabase(context.applicationContext).categoriesDao()
+    private val recipesDao: RecipesDao =
+        CategoryDatabase.getDatabase(context.applicationContext).recipesDao()
 
-    suspend fun getCategoriesFromCache() : List<Category> {
-        categoryDao.deleteAll()
-        val categories = getAllCategories()
-        categoryDao.addCategory(categories)
-        return categoryDao.getAllCategories()
+    suspend fun getCategories(): List<Category> {
+        var categories = getAllCategoriesFromCache()
+        if (categories.isEmpty()) {
+            categories = getAllCategoriesFromApi()
+            categoryDao.addCategory(categories)
+        }
+        return categories
     }
 
-    suspend fun getRecipesFromCache(id: Int) : List<Recipe> {
-        recipesDao.deleteAllRecipes()
-        val recipes = getRecipesById(id)
-        recipesDao.addRecipes(recipes)
-        return recipesDao.getAllRecipes()
+    private suspend fun getAllCategoriesFromCache(): List<Category> {
+        return categoryDao.getAllCategoriesFromCache()
     }
 
-    private suspend fun getAllCategories(): List<Category> {
+    private suspend fun getAllCategoriesFromApi(): List<Category> {
         return withContext(Dispatchers.IO) {
             try {
                 val responseCall: Call<List<Category>> = serviceApi.getCategories()
@@ -81,7 +82,22 @@ class RecipesRepository(
         }
     }
 
-    suspend fun getRecipesById(categoryId: Int): List<Recipe> {
+    suspend fun getRecipes(categoryId: Int): List<Recipe> {
+        var recipes = getRecipesFromCache(categoryId)
+        if (recipes.isEmpty()) {
+            recipes = getRecipesByIdFromApi(categoryId)
+            if (recipes.isNotEmpty()) {
+                recipesDao.addRecipes(recipes)
+            }
+        }
+        return recipes
+    }
+
+    private suspend fun getRecipesFromCache(categoryId: Int): List<Recipe> {
+        return recipesDao.getRecipesById(categoryId)
+    }
+
+    private suspend fun getRecipesByIdFromApi(categoryId: Int): List<Recipe> {
         return withContext(Dispatchers.IO) {
             try {
                 val recipesCall = serviceApi.getRecipesById(categoryId)
@@ -93,6 +109,22 @@ class RecipesRepository(
                 }
             } catch (e: Exception) {
                 emptyList()
+            }
+        }
+    }
+
+    suspend fun getCategoryById(categoryId: Int): Category? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val recipesCallById = serviceApi.getCategoryById(categoryId)
+                val recipesByIdResponse = recipesCallById.execute()
+                if (recipesByIdResponse.isSuccessful && recipesByIdResponse.body() != null) {
+                    recipesByIdResponse.body()
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                null
             }
         }
     }
@@ -125,22 +157,6 @@ class RecipesRepository(
                 }
             } catch (e: Exception) {
                 emptyList()
-            }
-        }
-    }
-
-    suspend fun getCategoryById(categoryId: Int): Category? {
-        return withContext(Dispatchers.IO) {
-            try {
-                val recipesCallById = serviceApi.getCategoryById(categoryId)
-                val recipesByIdResponse = recipesCallById.execute()
-                if (recipesByIdResponse.isSuccessful && recipesByIdResponse.body() != null) {
-                    recipesByIdResponse.body()
-                } else {
-                    null
-                }
-            } catch (e: Exception) {
-                null
             }
         }
     }

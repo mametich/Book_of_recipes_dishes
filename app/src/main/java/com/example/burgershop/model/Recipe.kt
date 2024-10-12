@@ -15,9 +15,14 @@ data class Recipe(
     @SerialName("id")
     @PrimaryKey
     var id: Int,
+
     @SerialName("title")
     @ColumnInfo(name = "title")
     val title: String,
+
+    @SerialName("CategoryId")
+    @ColumnInfo(name = "categoryId")
+    val categoryId: Int,
 
     @SerialName("ingredients")
     @ColumnInfo(name = "ingredients")
