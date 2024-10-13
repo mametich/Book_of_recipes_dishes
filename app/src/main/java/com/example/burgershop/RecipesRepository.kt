@@ -1,12 +1,7 @@
 package com.example.burgershop
 
-import android.app.Application
+
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.burgershop.data.CategoriesDao
 import com.example.burgershop.data.CategoryDatabase
 import com.example.burgershop.data.RecipesDao
@@ -63,7 +58,7 @@ class RecipesRepository(
     }
 
     private suspend fun getAllCategoriesFromCache(): List<Category> {
-        return categoryDao.getAllCategoriesFromCache()
+        return categoryDao.getAllCategories()
     }
 
     private suspend fun getAllCategoriesFromApi(): List<Category> {
@@ -87,6 +82,7 @@ class RecipesRepository(
         if (recipes.isEmpty()) {
             recipes = getRecipesByIdFromApi(categoryId)
             if (recipes.isNotEmpty()) {
+                recipes = recipes.map { it.copy(categoryId = categoryId) }
                 recipesDao.addRecipes(recipes)
             }
         }

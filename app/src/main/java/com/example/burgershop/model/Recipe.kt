@@ -20,9 +20,8 @@ data class Recipe(
     @ColumnInfo(name = "title")
     val title: String,
 
-    @SerialName("CategoryId")
     @ColumnInfo(name = "categoryId")
-    val categoryId: Int,
+    val categoryId: Int = -1,
 
     @SerialName("ingredients")
     @ColumnInfo(name = "ingredients")
