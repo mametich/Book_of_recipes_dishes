@@ -21,7 +21,7 @@ class CategoriesListViewModel(
 
     fun loadListOfCategory() {
         viewModelScope.launch {
-            val categories = recipesRepository.getCategoriesFromCache()
+            val categories = recipesRepository.getCategories()
 
             if (categories.isNotEmpty()) {
                 _categoryListUiState.postValue(
