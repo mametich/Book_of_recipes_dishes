@@ -23,6 +23,9 @@ data class Recipe(
     @ColumnInfo(name = "categoryId")
     val categoryId: Int = -1,
 
+    @ColumnInfo(name = "favorites")
+    val isFavorites: Boolean = false,
+
     @SerialName("ingredients")
     @ColumnInfo(name = "ingredients")
     val ingredients: List<Ingredient>,
