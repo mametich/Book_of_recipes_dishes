@@ -24,7 +24,7 @@ data class Recipe(
     val categoryId: Int = -1,
 
     @ColumnInfo(name = "favorites")
-    val isFavorites: Boolean = false,
+    var isFavorites: Boolean = false,
 
     @SerialName("ingredients")
     @ColumnInfo(name = "ingredients")

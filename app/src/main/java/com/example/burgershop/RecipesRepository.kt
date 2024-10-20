@@ -109,17 +109,21 @@ class RecipesRepository(
         }
     }
 
-    suspend fun getFavoritesRecipesFromCache() : List<Recipe> {
-        return recipesDao.getAllRecipes()
+
+
+    suspend fun getRecipesByFavorites(isFavorites: Boolean) : List<Recipe> {
+        return recipesDao.getFavoritesRecipes(isFavorites)
+    }
+
+    suspend fun updateRecipe(recipe: Recipe) {
+        recipesDao.updateRecipe(recipe)
     }
 
     suspend fun addRecipes(recipes: List<Recipe>) {
         recipesDao.addRecipes(recipes)
     }
 
-    suspend fun getRecipesByFavorites(isFavorites: Boolean) : List<Recipe> {
-        return recipesDao.getFavoritesRecipes(isFavorites)
-    }
+
 
     suspend fun getRecipesByIds(ids: String): List<Recipe> {
         return withContext(Dispatchers.IO) {
