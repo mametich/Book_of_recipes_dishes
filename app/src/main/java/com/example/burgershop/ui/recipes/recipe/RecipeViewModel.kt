@@ -20,17 +20,12 @@ class RecipeViewModel(
 
     fun loadRecipe(recipeId: Int) {
         viewModelScope.launch {
-            val recipe = recipesRepository.getRecipeById(recipeId)
-            val favorites = getFavorites()
-
+            val recipe = recipesRepository.getRecipeByIdFromCache(recipeId)
             if (recipe != null) {
-
-                val isFavorites = favorites.any { it.id == recipe.id }
-
                 _recipeUiSt.postValue(
                     _recipeUiSt.value?.copy(
                         recipe = recipe,
-                        isFavorite = isFavorites,
+                        isFavorite = getFavorites().contains(recipe),
                         recipeImage = recipe.imageUrl
                     )
                 )
@@ -55,7 +50,10 @@ class RecipeViewModel(
             val recipe = _recipeUiSt.value?.recipe
             if (recipe != null) {
                 val updatedRecipe = recipe.copy(isFavorites = !recipe.isFavorites)
-                _recipeUiSt.value = _recipeUiSt.value?.copy(recipe = updatedRecipe)
+                _recipeUiSt.value = _recipeUiSt.value?.copy(
+                    recipe = updatedRecipe,
+                    isFavorite = !recipe.isFavorites
+                )
                 recipesRepository.updateRecipe(updatedRecipe)
             }
         }
@@ -64,7 +62,6 @@ class RecipeViewModel(
     private suspend fun getFavorites() : List<Recipe> {
         return recipesRepository.getRecipesByFavorites(true)
     }
-
 
     data class RecipeUiState(
         val recipe: Recipe? = null,

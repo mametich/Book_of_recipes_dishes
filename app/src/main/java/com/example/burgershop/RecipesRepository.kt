@@ -109,9 +109,7 @@ class RecipesRepository(
         }
     }
 
-
-
-    suspend fun getRecipesByFavorites(isFavorites: Boolean) : List<Recipe> {
+    suspend fun getRecipesByFavorites(isFavorites: Boolean): List<Recipe> {
         return recipesDao.getFavoritesRecipes(isFavorites)
     }
 
@@ -119,58 +117,8 @@ class RecipesRepository(
         recipesDao.updateRecipe(recipe)
     }
 
-    suspend fun addRecipes(recipes: List<Recipe>) {
-        recipesDao.addRecipes(recipes)
-    }
-
-
-
-    suspend fun getRecipesByIds(ids: String): List<Recipe> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val recipesCall = serviceApi.getRecipesByIds(ids)
-                val recipesResponse = recipesCall.execute()
-                if (recipesResponse.isSuccessful && recipesResponse.body()?.isNotEmpty() == true) {
-                    recipesResponse.body() ?: emptyList()
-                } else {
-                    emptyList()
-                }
-            } catch (e: Exception) {
-                emptyList()
-            }
-        }
-    }
-
-    suspend fun getCategoryById(categoryId: Int): Category? {
-        return withContext(Dispatchers.IO) {
-            try {
-                val recipesCallById = serviceApi.getCategoryById(categoryId)
-                val recipesByIdResponse = recipesCallById.execute()
-                if (recipesByIdResponse.isSuccessful && recipesByIdResponse.body() != null) {
-                    recipesByIdResponse.body()
-                } else {
-                    null
-                }
-            } catch (e: Exception) {
-                null
-            }
-        }
-    }
-
-    suspend fun getRecipeById(id: Int): Recipe? {
-        return withContext(Dispatchers.IO) {
-            try {
-                val recipeCall = serviceApi.getRecipeById(id)
-                val recipeResponse = recipeCall.execute()
-                if (recipeResponse.isSuccessful && recipeResponse.body() != null) {
-                    recipeResponse.body()
-                } else {
-                    null
-                }
-            } catch (e: Exception) {
-                null
-            }
-        }
+    suspend fun getRecipeByIdFromCache(id: Int): Recipe {
+        return recipesDao.getRecipeById(id)
     }
 }
 
