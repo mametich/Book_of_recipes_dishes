@@ -46,6 +46,7 @@ class RecipeFragment : Fragment() {
         initUI()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initUI() {
         val dividerItemDecoration =
             MaterialDividerItemDecoration(requireContext(), RecyclerView.VERTICAL)
