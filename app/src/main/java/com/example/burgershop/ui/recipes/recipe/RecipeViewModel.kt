@@ -4,16 +4,15 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.burgershop.RecipesRepository
 import com.example.burgershop.model.Recipe
 import kotlinx.coroutines.launch
 
 class RecipeViewModel(
-    private val application: Application
-) : AndroidViewModel(application) {
-
-    private val recipesRepository = RecipesRepository(application.baseContext)
+    private val recipesRepository: RecipesRepository
+) : ViewModel() {
 
     private val _recipeUiSt = MutableLiveData(RecipeUiState())
     val recipeUiSt: LiveData<RecipeUiState> = _recipeUiSt
