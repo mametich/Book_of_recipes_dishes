@@ -46,7 +46,7 @@
         android:layout_marginTop="@dimen/height_for_text_attention"
         android:layout_marginEnd="@dimen/margin_16"
         android:gravity="center"
-        android:text="@string/textYorNotAddRecipe"
+        android:text="@string/title_text_for_not_add_recipe"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView

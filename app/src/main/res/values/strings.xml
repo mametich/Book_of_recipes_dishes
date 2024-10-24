@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">BurgerShop</string>
+    <string name="title_app_name">BurgerShop</string>
     <string name="title_categories">категории</string>
     <string name="title_favourites">избранное</string>
     <string name="title_burgers">бургеры</string>
     <string name="title_ingredients">ингредиенты</string>
-    <string name="title_cookingMethod">способ приготовления</string>
-    <string name="nameOfPortion">Порции:</string>
-    <string name="defaultCountOfPortion">1</string>
-    <string name="addToFavorites">добавить в избранное</string>
-    <string name="textYorNotAddRecipe">Вы еще не добавили ни одного рецепта в избранное</string>
+    <string name="title_cooking_method">способ приготовления</string>
+    <string name="title_name_of_portion">Порции:</string>
+    <string name="title_default_count_of_portion">1</string>
+    <string name="title_add_to_favorites">добавить в избранное</string>
+    <string name="title_text_for_not_add_recipe">Вы еще не добавили ни одного рецепта в избранное</string>
 </resources>

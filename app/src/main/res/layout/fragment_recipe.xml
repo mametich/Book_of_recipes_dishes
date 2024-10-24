@@ -50,7 +50,7 @@
                 android:layout_marginEnd="@dimen/margin_16"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
-                android:contentDescription="@string/addToFavorites"
+                android:contentDescription="@string/title_add_to_favorites"
                 android:focusable="true"
                 tools:src="@drawable/ic_heart_favourites_default"
                 app:layout_constraintEnd_toEndOf="@+id/imageViewRecipes"
@@ -82,7 +82,7 @@
                     android:layout_marginTop="@dimen/margin_6"
                     android:layout_marginEnd="@dimen/margin_6"
                     android:layout_marginBottom="@dimen/margin_6"
-                    android:text="@string/nameOfPortion" />
+                    android:text="@string/title_name_of_portion" />
 
                 <TextView
                     android:id="@+id/countOfPortion"
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_6"
                     android:layout_marginBottom="@dimen/margin_6"
-                    android:text="@string/defaultCountOfPortion" />
+                    android:text="@string/title_default_count_of_portion" />
 
             </LinearLayout>
 
@@ -132,7 +132,7 @@
             android:layout_marginStart="@dimen/margin_16"
             android:layout_marginTop="@dimen/margin_16"
             android:layout_marginBottom="@dimen/margin_12"
-            android:text="@string/title_cookingMethod" />
+            android:text="@string/title_cooking_method" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
