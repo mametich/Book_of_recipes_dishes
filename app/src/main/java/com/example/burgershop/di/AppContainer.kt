@@ -20,7 +20,6 @@ class AppContainer(
     context: Context
 ) {
 
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
     private val categoryDao: CategoriesDao =
         CategoryDatabase.getDatabase(context.applicationContext).categoriesDao()
     private val recipesDao: RecipesDao =
@@ -45,11 +44,10 @@ class AppContainer(
     private val serviceApi: RecipeApiService =
         retrofit.create(RecipeApiService::class.java)
 
-    val repository = RecipesRepository(
+    private val repository = RecipesRepository(
         recipesDao = recipesDao,
         categoriesDao = categoryDao,
         recipeApiService = serviceApi,
-        ioDispatcher = ioDispatcher
     )
 
     val favoriteListViewModelFactory = FavoriteListViewModelFactory(repository)

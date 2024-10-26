@@ -27,7 +27,6 @@ class RecipesRepository(
     private val categoriesDao: CategoriesDao,
     private val recipesDao: RecipesDao,
     private val recipeApiService: RecipeApiService,
-    private val ioDispatcher: CoroutineContext,
 ) {
 
     suspend fun getCategories(): List<Category> {

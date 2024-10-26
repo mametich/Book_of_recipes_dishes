@@ -20,7 +20,6 @@ androidx-navigation = "2.7.7"
 retrofit = "2.11.0"
 roomKtxVersion = "2.6.1"
 ksp = "2.0.10-1.0.24"
-uiDesktop = "1.7.0"
 
 [libraries]
 
@@ -45,7 +44,6 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtxVersion" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomKtxVersion" }
 squareup-converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit" }
-androidx-ui-desktop = { group = "androidx.compose.ui", name = "ui-desktop", version.ref = "uiDesktop" }
 
 [plugins]
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

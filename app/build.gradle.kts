@@ -60,7 +60,6 @@ dependencies {
     //room
     implementation(libs.room.ktx)
     implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.ui.desktop)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
 
