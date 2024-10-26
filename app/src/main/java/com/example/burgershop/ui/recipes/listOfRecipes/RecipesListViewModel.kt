@@ -1,23 +1,17 @@
 package com.example.burgershop.ui.recipes.listOfRecipes
 
-import android.app.Application
-import android.graphics.drawable.Drawable
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
 import com.example.burgershop.RecipesRepository
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Recipe
 import kotlinx.coroutines.launch
 
 class RecipesListViewModel(
-    private val application: Application
-) : AndroidViewModel(application) {
-
-    private val recipesRepository = RecipesRepository(application.baseContext)
+    private val recipesRepository: RecipesRepository
+) : ViewModel() {
 
     private val _listOfRecipesUiState = MutableLiveData(RecipesUiState())
     val listOfRecipesUiState: LiveData<RecipesUiState> = _listOfRecipesUiState
@@ -48,7 +42,6 @@ class RecipesListViewModel(
                     categoryImage = category.title
                 )
             )
-
         }
     }
 

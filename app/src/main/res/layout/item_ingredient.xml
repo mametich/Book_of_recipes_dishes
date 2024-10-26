@@ -17,10 +17,11 @@
         <TextView
             android:id="@+id/ingredientName"
             style="@style/TextIngredients14"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ingredientQuantity"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Творог" />
 
@@ -28,18 +29,21 @@
             android:id="@+id/ingredientQuantity"
             style="@style/TextIngredients14"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/margin_6"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_8"
+            app:layout_constraintStart_toEndOf="@id/ingredientName"
             app:layout_constraintEnd_toStartOf="@id/ingredientUnitOfMeasure"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="350" />
 
         <TextView
             android:id="@+id/ingredientUnitOfMeasure"
             style="@style/TextIngredients14"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/ingredientQuantity"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

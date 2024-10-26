@@ -5,16 +5,15 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.burgershop.RecipesRepository
 import com.example.burgershop.model.Category
 import kotlinx.coroutines.launch
 
 class CategoriesListViewModel(
-    private val application: Application
-) : AndroidViewModel(application) {
-
-    private var recipesRepository = RecipesRepository(application.baseContext)
+    private val recipesRepository: RecipesRepository
+) : ViewModel() {
 
     private val _categoryListUiState = MutableLiveData(CategoriesListUiState())
     val categoryListUiState: LiveData<CategoriesListUiState> = _categoryListUiState
