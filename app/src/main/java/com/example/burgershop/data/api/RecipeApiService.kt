@@ -12,16 +12,6 @@ interface RecipeApiService {
     @GET("category")
     fun getCategories() : Call<List<Category>>
 
-    @GET("category/{id}")
-    fun getCategoryById(@Path("id") id: Int) : Call<Category>
-
     @GET("category/{id}/recipes")
     fun getRecipesById(@Path("id") id: Int) : Call<List<Recipe>>
-
-    @GET("recipes")
-    fun getRecipesByIds(@Query("ids") ids: String) : Call<List<Recipe>>
-
-    @GET("recipe/{id}")
-    fun getRecipeById(@Path("id") id: Int) : Call<Recipe>
-
 }

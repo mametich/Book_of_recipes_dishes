@@ -15,7 +15,9 @@ import com.example.burgershop.R
 import com.example.burgershop.RecipesApplication
 import com.example.burgershop.databinding.FragmentListRecipesBinding
 import com.example.burgershop.model.Constants
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipesListFragment : Fragment() {
 
     private var _binding: FragmentListRecipesBinding? = null
@@ -24,15 +26,9 @@ class RecipesListFragment : Fragment() {
             ?: throw IllegalStateException("Binding for FragmentListRecipesBinding must not be null")
 
     private val args: RecipesListFragmentArgs by navArgs()
-    private lateinit var recipesListViewModel: RecipesListViewModel
+    private val recipesListViewModel: RecipesListViewModel by viewModels()
     private val recipesListAdapter = RecipesListAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        recipesListViewModel = appContainer.recipesListViewModelFactory.create()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

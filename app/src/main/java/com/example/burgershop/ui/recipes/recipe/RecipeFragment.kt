@@ -17,10 +17,12 @@ import com.example.burgershop.RecipesApplication
 import com.example.burgershop.databinding.FragmentRecipeBinding
 import com.example.burgershop.model.Constants
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipeFragment : Fragment() {
 
-    private lateinit var recipeViewModel: RecipeViewModel
+    private val recipeViewModel: RecipeViewModel by viewModels()
     private var emptyIngredientAdapter = IngredientsAdapter()
     private var emptyMethodAdapter = MethodAdapter()
     private val args: RecipeFragmentArgs by navArgs()
@@ -30,12 +32,6 @@ class RecipeFragment : Fragment() {
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentRecipeBinding must not be null")
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        recipeViewModel = appContainer.recipeListViewModelFactory.create()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

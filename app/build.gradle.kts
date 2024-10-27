@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.androidx.navigation.safeargs)
     alias(libs.plugins.serialization)
     alias(libs.plugins.ksp)
-
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -70,6 +70,10 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation (libs.squareup.converter.kotlinx.serialization)
     testImplementation(libs.junit)
+
+    //di
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
