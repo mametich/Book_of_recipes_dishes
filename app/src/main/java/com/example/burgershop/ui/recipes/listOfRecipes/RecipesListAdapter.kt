@@ -1,8 +1,6 @@
 package com.example.burgershop.ui.recipes.listOfRecipes
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -11,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.burgershop.R
 import com.example.burgershop.databinding.ItemRecipeBinding
-import com.example.burgershop.model.Category
 import com.example.burgershop.model.Constants
 import com.example.burgershop.model.Recipe
 

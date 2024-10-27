@@ -8,9 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.burgershop.R
-import com.example.burgershop.RecipesApplication
 import com.example.burgershop.databinding.FragmentListFavoritesBinding
-import com.example.burgershop.di.FavoriteListViewModelFactory
 import com.example.burgershop.ui.recipes.listOfRecipes.RecipesListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 

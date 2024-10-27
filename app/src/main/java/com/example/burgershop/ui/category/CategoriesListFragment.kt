@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.burgershop.RecipesApplication
 import com.example.burgershop.databinding.FragmentListCategoriesBinding
 import com.example.burgershop.model.Category
 import dagger.hilt.android.AndroidEntryPoint

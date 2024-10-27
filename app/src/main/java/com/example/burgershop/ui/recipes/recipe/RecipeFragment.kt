@@ -12,8 +12,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.burgershop.R
-import com.example.burgershop.RecipesApplication
-
 import com.example.burgershop.databinding.FragmentRecipeBinding
 import com.example.burgershop.model.Constants
 import com.google.android.material.divider.MaterialDividerItemDecoration

@@ -9,10 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navOptions
 import com.bumptech.glide.Glide
 import com.example.burgershop.R
-import com.example.burgershop.RecipesApplication
 import com.example.burgershop.databinding.FragmentListRecipesBinding
 import com.example.burgershop.model.Constants
 import dagger.hilt.android.AndroidEntryPoint
