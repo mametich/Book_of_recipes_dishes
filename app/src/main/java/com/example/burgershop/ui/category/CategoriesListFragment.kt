@@ -8,14 +8,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
-import com.example.burgershop.R
-import com.example.burgershop.RecipesApplication
 import com.example.burgershop.databinding.FragmentListCategoriesBinding
-import com.example.burgershop.di.AppContainer
 import com.example.burgershop.model.Category
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class CategoriesListFragment : Fragment() {
 
     private var _binding: FragmentListCategoriesBinding? = null
@@ -23,15 +20,8 @@ class CategoriesListFragment : Fragment() {
         get() = _binding
             ?: throw IllegalStateException("Binding for FragmentListCategoriesBinding must not be null")
 
-    private lateinit var categoriesListViewModel: CategoriesListViewModel
+    private val categoriesListViewModel: CategoriesListViewModel by viewModels()
     private val categoriesListAdapter = CategoriesListAdapter()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val appContainer = (requireActivity().application as RecipesApplication).appContainer
-        categoriesListViewModel = appContainer.categoryListViewModelFactory.create()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

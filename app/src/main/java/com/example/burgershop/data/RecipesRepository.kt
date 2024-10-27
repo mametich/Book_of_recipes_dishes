@@ -1,29 +1,17 @@
-package com.example.burgershop
+package com.example.burgershop.data
 
-
-import android.content.Context
-import com.example.burgershop.data.CategoriesDao
-import com.example.burgershop.data.CategoryDatabase
-import com.example.burgershop.data.RecipesDao
 import com.example.burgershop.data.api.RecipeApiService
 import com.example.burgershop.model.Category
-import com.example.burgershop.model.Constants
 import com.example.burgershop.model.Recipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import okhttp3.Dispatcher
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlin.coroutines.CoroutineContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class RecipesRepository(
+@Singleton
+class RecipesRepository @Inject constructor (
     private val categoriesDao: CategoriesDao,
     private val recipesDao: RecipesDao,
     private val recipeApiService: RecipeApiService,

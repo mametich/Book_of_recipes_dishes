@@ -1,7 +1,6 @@
 package com.example.burgershop.data
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,9 +18,6 @@ interface RecipesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addRecipes(listOfRecipes: List<Recipe>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addRecipe(recipe: Recipe)
 
     @Update
     suspend fun updateRecipe(recipe: Recipe)

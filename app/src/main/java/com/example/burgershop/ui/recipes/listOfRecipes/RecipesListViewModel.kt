@@ -4,12 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.burgershop.RecipesRepository
+import com.example.burgershop.data.RecipesRepository
 import com.example.burgershop.model.Category
 import com.example.burgershop.model.Recipe
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipesListViewModel(
+@HiltViewModel
+class RecipesListViewModel @Inject constructor(
     private val recipesRepository: RecipesRepository
 ) : ViewModel() {
 
